@@ -9,8 +9,7 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "check": "biome check ./src",
-    "check:fix": "biome check --apply ./src",
-    "vercel-build": "expo export -p web"
+    "check:fix": "biome check --apply ./src"
   },
   "jest": {
     "preset": "jest-expo"

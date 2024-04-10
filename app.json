@@ -30,7 +30,18 @@
       "favicon": "./src/assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      [
+        "expo-router",
+        {
+          "origin": "https://dolary-expo.vercel.app" 
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": ["./src/assets/fonts/GeistVF.ttf", "./src/assets/fonts/GeistMonoVF.ttf"]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

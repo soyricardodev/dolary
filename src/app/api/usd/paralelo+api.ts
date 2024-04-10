@@ -1,4 +1,4 @@
-import { getParaleloData } from "@/app/lib/scrapper/get-data";
+import { getParaleloData } from "@/lib/scrapper/get-data";
 
 export async function GET() {
 	const { usd } = await getParaleloData();

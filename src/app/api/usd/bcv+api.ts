@@ -1,4 +1,4 @@
-import { getDolarBcvData } from "@/app/lib/scrapper/get-data";
+import { getDolarBcvData } from "@/lib/scrapper/get-data";
 
 export async function GET() {
 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";

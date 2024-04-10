@@ -3,7 +3,12 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ["Geist"],
+        mono: ["GeistMono"],
+      }
+    },
   },
   plugins: [],
 }

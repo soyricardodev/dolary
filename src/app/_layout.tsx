@@ -1,9 +1,9 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import {
-	DarkTheme,
-	DefaultTheme,
-	ThemeProvider,
-} from "@react-navigation/native";
+// import {
+// 	DarkTheme,
+// 	DefaultTheme,
+// 	ThemeProvider,
+// } from "@react-navigation/native";
 import {
 	Query,
 	QueryClient,
@@ -11,7 +11,7 @@ import {
 	focusManager,
 } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Slot, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { type AppStateStatus, Platform } from "react-native";
@@ -19,7 +19,7 @@ import { type AppStateStatus, Platform } from "react-native";
 import { useAppState } from "@/hooks/use-app-state";
 import { useOnlineManager } from "@/hooks/use-online-manager";
 
-import { useColorScheme } from "@//components/useColorScheme";
+// import { useColorScheme } from "@/components/useColorScheme";
 
 import "./globals.css";
 
@@ -71,22 +71,22 @@ export default function RootLayout() {
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<RootLayoutNav />
+			<Slot />
 		</QueryClientProvider>
 	);
 }
 
-function RootLayoutNav() {
-	const colorScheme = useColorScheme();
+// function RootLayoutNav() {
+// 	const colorScheme = useColorScheme();
 
-	return (
-		<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-			<Stack>
-				<Stack.Screen
-					name="index"
-					options={{ headerShown: false, title: "Home" }}
-				/>
-			</Stack>
-		</ThemeProvider>
-	);
-}
+// 	return (
+// 		<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+// 			<Stack>
+// 				<Stack.Screen
+// 					name="index"
+// 					options={{ headerShown: false, title: "Home" }}
+// 				/>
+// 			</Stack>
+// 		</ThemeProvider>
+// 	);
+// }

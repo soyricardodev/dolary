@@ -10,22 +10,10 @@ export default function Root({ children }: { children: React.ReactNode }) {
 					name="viewport"
 					content="width=device-width, initial-scale=1, shrink-to-fit=no"
 				/>
+				<title>Dolary - Tasa del dolar en Venezuela en tiempo real</title>
 				<ScrollViewStyleReset />
-				{/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
-				<style dangerouslySetInnerHTML={{ __html: responsiveBackground }} />
-				{/* Add any additional <head> elements that you want globally available on web... */}
 			</head>
-			<body>{children}</body>
+			<body className="font-sans antialiased min-h-dvh">{children}</body>
 		</html>
 	);
 }
-
-const responsiveBackground = `
-body {
-  background-color: #fff;
-}
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #000;
-  }
-}`;

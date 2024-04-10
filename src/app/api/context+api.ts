@@ -4,11 +4,11 @@ export function createContext({
 	req,
 	resHeaders,
 }: FetchCreateContextFnOptions) {
-	const user = { name: req.headers.get('username') ?? 'anonymous' };
+	const user = { name: req.headers.get("username") ?? "anonymous" };
 	return {
 		req,
 		resHeaders,
-		user
+		user,
 	};
 }
 

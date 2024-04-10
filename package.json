@@ -8,8 +8,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "check": "biome check ./app ./components ./constants",
-    "check:fix": "biome check --apply ./app ./components ./constants",
+    "check": "biome check ./src",
+    "check:fix": "biome check --apply ./src",
     "vercel-build": "expo export -p web"
   },
   "jest": {

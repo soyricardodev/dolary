@@ -17,6 +17,7 @@ function extractNumbersAndComma(value: string): number {
 }
 
 async function getBcvData() {
+	process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 	const data = await getWebsiteData(bcv.url);
 	const parsedData = parse(data);
 
@@ -46,6 +47,7 @@ async function getBcvData() {
 }
 
 async function getDolarBcvData() {
+	process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 	const data = await getWebsiteData(bcv.url);
 	const parsedData = parse(data);
 

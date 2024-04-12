@@ -82,9 +82,10 @@ const styles = StyleSheet.create({
 		top: 4,
 		paddingVertical: 5,
 		paddingHorizontal: 10,
+		color: "#000",
+		borderWidth: 1,
+		borderColor: "#ccc",
 		borderRadius: 9999,
-		backgroundColor: "#222",
-		color: "#fff",
 	},
 	header: {},
 	headerTitle: {

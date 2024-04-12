@@ -9,7 +9,7 @@ import { Slot, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { type AppStateStatus, Platform } from "react-native";
-
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppState } from "@/hooks/use-app-state";
 import { useOnlineManager } from "@/hooks/use-online-manager";
 
@@ -58,7 +58,23 @@ export default function RootLayout() {
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<Slot />
+			<SafeAreaView style={{ flex: 1 }}>
+				<Stack>
+					<Stack.Screen
+						name="index"
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name="feedback-modal"
+						options={{
+							presentation: "modal",
+							headerTitle: "Dejar Sugerencias",
+						}}
+					/>
+				</Stack>
+			</SafeAreaView>
 		</QueryClientProvider>
 	);
 }

@@ -22,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.soyricardodev.dolary"
     },
     "web": {
       "bundler": "metro",
@@ -33,18 +34,29 @@
       [
         "expo-router",
         {
-          "origin": "https://dolary-expo.vercel.app" 
+          "origin": "https://dolary-expo.vercel.app"
         }
       ],
       [
         "expo-font",
         {
-          "fonts": ["./src/assets/fonts/GeistVF.ttf", "./src/assets/fonts/GeistMonoVF.ttf"]
+          "fonts": [
+            "./src/assets/fonts/GeistVF.ttf",
+            "./src/assets/fonts/GeistMonoVF.ttf"
+          ]
         }
       ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": "https://dolary-expo.vercel.app"
+      },
+      "eas": {
+        "projectId": "7386b879-75ee-4341-83d1-b6e1e07e2890"
+      }
     }
   }
 }

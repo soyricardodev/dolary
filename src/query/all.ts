@@ -1,8 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 
 export interface Currency {
+	label: string;
 	name: string;
 	value: number;
+	currency: "USD" | "EUR" | "CNY";
+	color: string;
 }
 
 export interface AllCurrencies {

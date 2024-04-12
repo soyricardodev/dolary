@@ -13,7 +13,7 @@ export default function Root({ children }: { children: React.ReactNode }) {
 				<title>Dolary - Tasa del dolar en Venezuela en tiempo real</title>
 				<ScrollViewStyleReset />
 			</head>
-			<body className="font-sans antialiased min-h-dvh">{children}</body>
+			<body>{children}</body>
 		</html>
 	);
 }

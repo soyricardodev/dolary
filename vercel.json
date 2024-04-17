@@ -12,5 +12,11 @@
       "source": "/(.*)",
       "destination": "/api/index.js"
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron",
+      "schedule": "*/15 12-22 * * 1-5"
+    }
   ]
 }

@@ -13,8 +13,6 @@ import { useEffect } from "react";
 import { type AppStateStatus, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import "./globals.css";
-
 function onAppStateChange(status: AppStateStatus) {
 	if (Platform.OS !== "web") {
 		focusManager.setFocused(status === "active");

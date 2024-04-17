@@ -6,7 +6,7 @@ export const mockData: AllCurrencies = {
 			label: "Paralelo",
 			name: "BS/USD",
 			currency: "USD",
-			value: 20,
+			value: 0,
 			color: "rgb(34 197 94)",
 		},
 		{
@@ -20,7 +20,7 @@ export const mockData: AllCurrencies = {
 			label: "Euro",
 			name: "BS/EUR",
 			currency: "EUR",
-			value: 20,
+			value: 0,
 			color: "rgb(59 130 246)",
 		},
 		{

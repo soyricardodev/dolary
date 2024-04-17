@@ -1,4 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { mockData } from "@/server/queries";
 
 export interface Currency {
 	label: string;
@@ -22,11 +23,13 @@ export type Currencies =
 	| "usd";
 
 export function allCurrenciesQuery() {
+	// const queryClient = useQueryClient();
 	return useQuery({
 		queryKey: ["all"],
 		queryFn: async () =>
 			await fetch("/api/all").then(
 				(res) => res.json() as Promise<AllCurrencies>,
 			),
+		placeholderData: () => mockData,
 	});
 }

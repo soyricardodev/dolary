@@ -42,8 +42,7 @@
         "expo-font",
         {
           "fonts": [
-            "./src/assets/fonts/SpaceMono-Regular.ttf",
-            "./src/assets/fonts/SpaceMono-Bold.ttf"
+            "./src/assets/fonts/OpenSans.ttf"
           ]
         }
       ]

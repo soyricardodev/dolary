@@ -1,3 +1,5 @@
+import { useAppState } from "@/hooks/use-app-state";
+import { useOnlineManager } from "@/hooks/use-online-manager";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
 	QueryClient,
@@ -10,8 +12,6 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { type AppStateStatus, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useAppState } from "@/hooks/use-app-state";
-import { useOnlineManager } from "@/hooks/use-online-manager";
 
 import "./globals.css";
 
@@ -37,8 +37,7 @@ export default function RootLayout() {
 	useOnlineManager();
 	useAppState(onAppStateChange);
 	const [loaded, error] = useFonts({
-		SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-		SpaceMonoBold: require("../assets/fonts/SpaceMono-Bold.ttf"),
+		OpenSans: require("../assets/fonts/OpenSans.ttf"),
 		...FontAwesome.font,
 	});
 

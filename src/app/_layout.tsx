@@ -5,7 +5,7 @@ import {
 	focusManager,
 } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
-import { Slot, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { type AppStateStatus, Platform } from "react-native";
@@ -37,8 +37,8 @@ export default function RootLayout() {
 	useOnlineManager();
 	useAppState(onAppStateChange);
 	const [loaded, error] = useFonts({
-		Geist: require("../assets/fonts/GeistVF.ttf"),
-		GeistMono: require("../assets/fonts/GeistMonoVF.ttf"),
+		SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+		SpaceMonoBold: require("../assets/fonts/SpaceMono-Bold.ttf"),
 		...FontAwesome.font,
 	});
 

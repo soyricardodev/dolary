@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
 		fontSize: 44,
 		textAlign: "center",
 		fontWeight: "600",
-		fontFamily: "OpenSansBold",
+		fontFamily: "OpenSans",
 	},
 	headerStatus: {
 		fontSize: 14,
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
 		fontWeight: "600",
 		fontSize: 16,
 		backgroundColor: "#f7f7f7",
-		fontFamily: "OpenSansBold",
+		fontFamily: "OpenSans",
 	},
 	currencyName: {
 		fontSize: 16,
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
 	currencyValue: {
 		fontSize: 20,
 		fontWeight: "600",
-		fontFamily: "OpenSansBold",
+		fontFamily: "OpenSans",
 	},
 	currencyValueName: {
 		fontSize: 15,

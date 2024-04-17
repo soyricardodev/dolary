@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
+		fontFamily: "SpaceMono",
 	},
 	feedbackButton: {
 		position: "absolute",
@@ -86,13 +87,14 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: "#ccc",
 		borderRadius: 9999,
+		fontFamily: "SpaceMono",
 	},
 	header: {},
 	headerTitle: {
 		fontSize: 44,
 		textAlign: "center",
 		fontWeight: "600",
-		fontFamily: "monospace",
+		fontFamily: "SpaceMonoBold",
 	},
 	headerStatus: {
 		fontSize: 14,
@@ -103,6 +105,7 @@ const styles = StyleSheet.create({
 		paddingRight: 8,
 		borderRadius: 9999,
 		backgroundColor: "#eee",
+		fontFamily: "SpaceMono",
 	},
 	currencies: {
 		width: "100%",
@@ -146,11 +149,13 @@ const styles = StyleSheet.create({
 		fontWeight: "600",
 		fontSize: 16,
 		backgroundColor: "#f7f7f7",
+		fontFamily: "SpaceMonoBold",
 	},
 	currencyName: {
 		fontSize: 16,
 		fontWeight: "300",
 		backgroundColor: "#f7f7f7",
+		fontFamily: "SpaceMono",
 	},
 	currencyValueContainer: {
 		display: "flex",
@@ -161,6 +166,7 @@ const styles = StyleSheet.create({
 	currencyValue: {
 		fontSize: 20,
 		fontWeight: "600",
+		fontFamily: "SpaceMonoBold",
 	},
 	currencyValueName: {
 		fontSize: 15,

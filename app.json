@@ -42,8 +42,8 @@
         "expo-font",
         {
           "fonts": [
-            "./src/assets/fonts/GeistVF.ttf",
-            "./src/assets/fonts/GeistMonoVF.ttf"
+            "./src/assets/fonts/SpaceMono-Regular.ttf",
+            "./src/assets/fonts/SpaceMono-Bold.ttf"
           ]
         }
       ]

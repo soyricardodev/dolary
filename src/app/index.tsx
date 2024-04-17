@@ -1,16 +1,32 @@
-import { StyleSheet, Pressable } from "react-native";
-import { setStringAsync } from "expo-clipboard";
+import { useEffect } from "react";
 import { Text, View } from "@/components/Themed";
-import { allCurrenciesQuery } from "@/query/all";
 import { CurrencyIcon } from "@/components/icons";
+import { type AllCurrencies, allCurrenciesQuery } from "@/query/all";
+import { setStringAsync } from "expo-clipboard";
 import { Link } from "expo-router";
+import { Pressable, StyleSheet } from "react-native";
+import { mockData } from "@/server/queries";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function App() {
-	const { data, isLoading } = allCurrenciesQuery();
+	const queryClient = useQueryClient();
+	const { data, isLoading } = useQuery({
+		queryKey: ["all"],
+		queryFn: async () =>
+			await fetch("/api/all").then(
+				(res) => res.json() as Promise<AllCurrencies>,
+			),
+		placeholderData: () => mockData,
+		initialData: queryClient.getQueryData(["all"]),
+	});
 
 	async function copyValueToClipboard(value: string) {
 		await setStringAsync(value);
 	}
+
+	useEffect(() => {
+		console.log("data", data);
+	}, [data]);
 
 	return (
 		<View style={styles.container}>
@@ -38,9 +54,7 @@ export default function App() {
 							onPress={() => copyValueToClipboard(currencyValueFormatted)}
 							key={`${currency.label}-${currency.name}-${index}`}
 						>
-							<View
-								style={styles.currencyContainer}
-							>
+							<View style={styles.currencyContainer}>
 								<View style={styles.currencyNameContainer}>
 									<View
 										style={{
@@ -75,7 +89,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		fontFamily: "SpaceMono",
+		fontFamily: "OpenSans",
 	},
 	feedbackButton: {
 		position: "absolute",
@@ -87,14 +101,14 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: "#ccc",
 		borderRadius: 9999,
-		fontFamily: "SpaceMono",
+		fontFamily: "OpenSans",
 	},
 	header: {},
 	headerTitle: {
 		fontSize: 44,
 		textAlign: "center",
 		fontWeight: "600",
-		fontFamily: "SpaceMonoBold",
+		fontFamily: "OpenSansBold",
 	},
 	headerStatus: {
 		fontSize: 14,
@@ -105,7 +119,7 @@ const styles = StyleSheet.create({
 		paddingRight: 8,
 		borderRadius: 9999,
 		backgroundColor: "#eee",
-		fontFamily: "SpaceMono",
+		fontFamily: "OpenSans",
 	},
 	currencies: {
 		width: "100%",
@@ -149,13 +163,13 @@ const styles = StyleSheet.create({
 		fontWeight: "600",
 		fontSize: 16,
 		backgroundColor: "#f7f7f7",
-		fontFamily: "SpaceMonoBold",
+		fontFamily: "OpenSansBold",
 	},
 	currencyName: {
 		fontSize: 16,
 		fontWeight: "300",
 		backgroundColor: "#f7f7f7",
-		fontFamily: "SpaceMono",
+		fontFamily: "OpenSans",
 	},
 	currencyValueContainer: {
 		display: "flex",
@@ -166,11 +180,11 @@ const styles = StyleSheet.create({
 	currencyValue: {
 		fontSize: 20,
 		fontWeight: "600",
-		fontFamily: "SpaceMonoBold",
+		fontFamily: "OpenSansBold",
 	},
 	currencyValueName: {
 		fontSize: 15,
-		fontWeight: "400",
+		fontWeight: "300",
 		marginLeft: 2,
 		paddingLeft: 2,
 	},

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AppHeader } from "./components/app-header";
 import { CurrencyMonitors } from "./components/currency-monitors";
 import { CurrencyCalculator } from "./components/currency-calculator";
+import { AppFooter } from "./components/app-footer";
 
 export default function App() {
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null)
@@ -23,9 +24,8 @@ export default function App() {
       <div className="flex-grow flex flex-col justify-center">
         <CurrencyMonitors onCardClick={handleCardClick} />
       </div>
-      {/* 
+
       <AppFooter />
-      */}
 
       {selectedCurrency && (
         <CurrencyCalculator currency={selectedCurrency} isOpen={calculatorVisible} onClose={closeCalculator} />

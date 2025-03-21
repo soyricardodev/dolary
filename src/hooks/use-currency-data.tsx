@@ -52,11 +52,7 @@ export function useCurrencyData() {
     queryKey: ["dollarRates"],
     queryFn: async () => {
       try {
-        const response = await fetch("https://pydolarve.org/api/v1/dollar?rounded_price=false", {
-          headers: {
-            Authorization: `Bearer ${import.meta.env.PYDOLAR_KEY}`,
-          }
-        })
+        const response = await fetch("https://pydolarve.org/api/v1/dollar?rounded_price=false")
         if (!response.ok) {
           throw new Error("Network response was not ok")
         }

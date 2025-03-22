@@ -3,6 +3,16 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+	font-family: InterVariable;
+	font-style: normal;
+	font-weight: 100 900;
+	font-display: swap;
+	src: url("./assets/InterVariable.woff2") format("woff2");
+	font-feature-settings: "ss02", "cv02", "cv03", "cv04", "cv11", "salt";
+}
+
+
 :root {
   --bg: #E0E7F1;
   --bw: #fff;
@@ -39,6 +49,7 @@
 }
 
 @theme inline {
+  --font-sans: InterVariable, sans-serif;
   --color-secondaryBlack: #212121;
   --color-overlay: var(--overlay);
   --color-main: var(--main);

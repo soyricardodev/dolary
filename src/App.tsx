@@ -5,31 +5,35 @@ import { CurrencyCalculator } from "./components/currency-calculator";
 import { AppFooter } from "./components/app-footer";
 
 export default function App() {
-  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null)
-  const [calculatorVisible, setCalculatorVisible] = useState(false)
+	const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
+	const [calculatorVisible, setCalculatorVisible] = useState(false);
 
-  const handleCardClick = (currency: string) => {
-    setSelectedCurrency(currency)
-    setCalculatorVisible(true)
-  }
+	const handleCardClick = (currency: string) => {
+		setSelectedCurrency(currency);
+		setCalculatorVisible(true);
+	};
 
-  const closeCalculator = () => {
-    setCalculatorVisible(false)
-  }
+	const closeCalculator = () => {
+		setCalculatorVisible(false);
+	};
 
-  return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-3 flex flex-col">
-      <AppHeader />
+	return (
+		<main className="min-h-screen p-3 flex flex-col">
+			<AppHeader />
 
-      <div className="flex-grow flex flex-col justify-center">
-        <CurrencyMonitors onCardClick={handleCardClick} />
-      </div>
+			<div className="flex-grow flex flex-col justify-center">
+				<CurrencyMonitors onCardClick={handleCardClick} />
+			</div>
 
-      <AppFooter />
+			<AppFooter />
 
-      {selectedCurrency && (
-        <CurrencyCalculator currency={selectedCurrency} isOpen={calculatorVisible} onClose={closeCalculator} />
-      )}
-    </main>
-  )
+			{selectedCurrency && (
+				<CurrencyCalculator
+					currency={selectedCurrency}
+					isOpen={calculatorVisible}
+					onClose={closeCalculator}
+				/>
+			)}
+		</main>
+	);
 }

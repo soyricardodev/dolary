@@ -21,7 +21,7 @@ function CardHeader({
 }: React.HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div
-			className={cn("flex flex-col space-y-1.5 p-6", className)}
+			className={cn("flex flex-col space-y-1.5 p-6 px-3", className)}
 			{...props}
 		/>
 	);
@@ -61,7 +61,7 @@ function CardContent({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-	return <div className={cn("p-6 pt-0", className)} {...props} />;
+	return <div className={cn("p-6 pt-0 px-3", className)} {...props} />;
 }
 CardContent.displayName = "CardContent";
 
@@ -70,7 +70,10 @@ function CardFooter({
 	...props
 }: React.HTMLAttributes<HTMLDivElement>) {
 	return (
-		<div className={cn("flex items-center p-6 pt-0", className)} {...props} />
+		<div
+			className={cn("flex items-center p-6 pt-0 px-3", className)}
+			{...props}
+		/>
 	);
 }
 CardFooter.displayName = "CardFooter";

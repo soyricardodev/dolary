@@ -33,7 +33,7 @@ export interface CurrencyCardProps {
   change: number
   percent: number
   color: string
-  lastUpdate: string
+  lastUpdate?: string
   onClick: () => void
   gradient: string
   className?: string

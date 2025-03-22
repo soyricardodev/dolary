@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --bg: #dfe5f2;
+  --bg: #E0E7F1;
   --bw: #fff;
   --blank: #000;
   --border: #000;
@@ -13,7 +13,7 @@
   --ring: #000;
   --ring-offset: #fff;
 
-  --main: #88aaee;
+  --main: #A3E636;
   --overlay: rgba(0, 0, 0, 0.8);
 
   --border-radius: 5px;

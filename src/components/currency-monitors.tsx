@@ -49,14 +49,14 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 	return (
 		<div className="relative">
 			{isRefetching && (
-				<div className="absolute top-0 right-0 bg-primary text-white px-2 py-1 rounded-md text-xs animate-pulse z-10">
+				<div className="absolute top-0 right-0 text-black px-2 py-1 rounded-md text-xs animate-pulse z-10">
 					Actualizando...
 				</div>
 			)}
 
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
 				<CurrencyCard
-					title="BCV (Oficial)"
+					title="BCV"
 					price={data.monitors.bcv.price}
 					symbol={data.monitors.bcv.symbol}
 					change={data.monitors.bcv.change}
@@ -86,7 +86,6 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 					change={promedioChange}
 					percent={promedioPercent}
 					color={promedioChange >= 0 ? "#28a745" : "#dc3545"}
-					lastUpdate={`${data.datetime.date} ${data.datetime.time}`}
 					onClick={() => onCardClick("promedio")}
 					gradient="from-amber-500 to-orange-500"
 					className="sm:col-span-2 lg:col-span-1"

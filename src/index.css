@@ -14,7 +14,7 @@
 
 
 :root {
-  --bg: #E0E7F1;
+  --bg: #FEF2E8;
   --bw: #fff;
   --blank: #000;
   --border: #000;
@@ -23,7 +23,7 @@
   --ring: #000;
   --ring-offset: #fff;
 
-  --main: #A3E636;
+  --main: #FFDC58;
   --overlay: rgba(0, 0, 0, 0.8);
 
   --border-radius: 5px;

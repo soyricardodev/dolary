@@ -29,7 +29,7 @@ export function CurrencyCalculator({
 	const usdInputRef = useRef<HTMLInputElement>(null);
 	const bsInputRef = useRef<HTMLInputElement>(null);
 
-	const { data, refetch, isRefetching } = useCurrencyData();
+	const { data } = useCurrencyData();
 
 	useEffect(() => {
 		if (isOpen && usdInputRef.current) {
@@ -141,18 +141,18 @@ export function CurrencyCalculator({
 		}
 	};
 
-	const getCurrencyName = () => {
-		switch (currency) {
-			case "bcv":
-				return "BCV";
-			case "paralelo":
-				return "Paralelo";
-			case "promedio":
-				return "Promedio";
-			default:
-				return "";
-		}
-	};
+	// const getCurrencyName = () => {
+	// 	switch (currency) {
+	// 		case "bcv":
+	// 			return "BCV";
+	// 		case "paralelo":
+	// 			return "Paralelo";
+	// 		case "promedio":
+	// 			return "Promedio";
+	// 		default:
+	// 			return "";
+	// 	}
+	// };
 
 	return (
 		<ResponsiveDialog open={isOpen} onOpenChange={onClose}>
@@ -215,7 +215,7 @@ export function CurrencyCalculator({
 					<div className="flex items-center justify-between mb-2">
 						<Label>Bolívares (Bs.)</Label>
 						<Button size="icon" onClick={handleCopyBs} className="">
-							{copiedUsd ? (
+							{copiedBs ? (
 								<Check className="h-4 w-4 mr-1" />
 							) : (
 								<Copy className="h-4 w-4 mr-1" />

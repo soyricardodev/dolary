@@ -1,3 +1,5 @@
+"use client";
+
 import { DollarSign, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCurrencyData } from "@/hooks/use-currency-data";

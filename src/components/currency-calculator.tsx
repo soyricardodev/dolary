@@ -8,6 +8,7 @@ import { formatCurrency } from "@/lib/utils";
 import { useCurrencyData } from "@/hooks/use-currency-data";
 import { Label } from "./ui/label";
 import { ResponsiveDialog } from "./responsive-dialog";
+import { DialogTitle } from "./ui/dialog";
 
 interface CalculatorProps {
 	currency: string;
@@ -156,6 +157,7 @@ export function CurrencyCalculator({
 
 	return (
 		<ResponsiveDialog open={isOpen} onOpenChange={onClose}>
+			<DialogTitle>test</DialogTitle>
 			<div className="p-5">
 				<div className="mb-4">
 					<div className="flex items-center justify-between mb-2">

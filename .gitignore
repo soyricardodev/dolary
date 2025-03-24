@@ -22,7 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-dev-dist
 .env
 .vercel
 .env*.local
+.next

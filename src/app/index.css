@@ -8,7 +8,7 @@
 	font-style: normal;
 	font-weight: 100 900;
 	font-display: swap;
-	src: url("./assets/InterVariable.woff2") format("woff2");
+	src: url("./InterVariable.woff2") format("woff2");
 	font-feature-settings: "ss02", "cv02", "cv03", "cv04", "cv11", "salt";
 }
 

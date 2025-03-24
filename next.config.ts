@@ -1,4 +1,11 @@
-const config = {
+import withSerwistInit from "@serwist/next";
+
+const withSerwist = withSerwistInit({
+  swSrc: "app/sw.ts",
+  swDest: "public/sw.js",
+});
+
+export default withSerwist({
   eslint: { ignoreDuringBuilds: true },
 	typescript: { ignoreBuildErrors: true },
   async headers() {
@@ -39,6 +46,4 @@ const config = {
       },
     ]
   },
-}
-
-export default config
+});

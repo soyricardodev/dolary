@@ -1,0 +1,15 @@
+import type { DolarApiResponse } from "./types";
+
+export async function getDolarRates() {
+  const response = await fetch(
+    "https://pydolarve.org/api/v1/dollar?rounded_price=false",
+  );
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  
+  const data = (await response.json()) as DolarApiResponse;
+
+  return data
+}

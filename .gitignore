@@ -26,3 +26,7 @@ dist-ssr
 .vercel
 .env*.local
 .next
+
+# Serwist
+public/sw*
+public/swe-worker*

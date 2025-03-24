@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { shouldRefetch } from "@/lib/utils";
 import type { DolarApiResponse } from "@/types";
+import { getDolarRates } from "@/queries";
 
 const CURRENCY_CACHE_KEY = "currency_data_cache";
 const CACHE_TIMESTAMP_KEY = "currency_cache_timestamp";
@@ -57,13 +58,7 @@ export function useCurrencyData() {
 		queryKey: ["dollarRates"],
 		queryFn: async () => {
 			try {
-				const response = await fetch(
-					"https://pydolarve.org/api/v1/dollar?rounded_price=false",
-				);
-				if (!response.ok) {
-					throw new Error("Network response was not ok");
-				}
-				const data = (await response.json()) as DolarApiResponse;
+				const data = await getDolarRates();
 
 				saveToCache(data);
 
@@ -80,6 +75,6 @@ export function useCurrencyData() {
 		gcTime: 24 * 60 * 60 * 1000, // 24 hours
 		refetchOnWindowFocus: false,
 		refetchOnMount: false,
-		refetchOnReconnect: false,
+		refetchOnReconnect: true,
 	});
 }

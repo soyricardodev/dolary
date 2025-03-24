@@ -1,8 +1,8 @@
 import withSerwistInit from "@serwist/next";
 
 const withSerwist = withSerwistInit({
-  swSrc: "app/sw.ts",
-  swDest: "public/sw.js",
+  swSrc: "./src/app/sw.ts",
+  swDest: "./public/sw.js",
 });
 
 export default withSerwist({
@@ -37,10 +37,6 @@ export default withSerwist({
           {
             key: 'Cache-Control',
             value: 'no-cache, no-store, must-revalidate',
-          },
-          {
-            key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self'",
           },
         ],
       },

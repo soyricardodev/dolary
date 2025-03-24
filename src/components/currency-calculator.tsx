@@ -157,7 +157,7 @@ export function CurrencyCalculator({
 
 	return (
 		<ResponsiveDialog open={isOpen} onOpenChange={onClose}>
-			<DialogTitle>test</DialogTitle>
+			<DialogTitle className="hidden">test</DialogTitle>
 			<div className="p-5">
 				<div className="mb-4">
 					<div className="flex items-center justify-between mb-2">

@@ -21,7 +21,7 @@ export default function App() {
 	return (
 		<>
 			<Analytics />
-			<main className="min-h-screen p-3 flex flex-col font-sans">
+			<main className="min-h-screen p-3 flex flex-col font-sans mx-auto">
 				<AppHeader />
 
 				<div className="flex-grow flex flex-col justify-center">

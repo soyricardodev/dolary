@@ -1,15 +1,25 @@
+import { unstable_cache } from "next/cache";
 import type { DolarApiResponse } from "./types";
 
-export async function getDolarRates() {
-  const response = await fetch(
-    "https://pydolarve.org/api/v1/dollar?rounded_price=false",
-  );
+export const getDolarRates = unstable_cache(
+	async () => {
+		const response = await fetch(
+			"https://pydolarve.org/api/v1/dollar?rounded_price=false",
+			{
+				next: {
+					revalidate: 900,
+				},
+			},
+		);
 
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
-  
-  const data = (await response.json()) as DolarApiResponse;
+		if (!response.ok) {
+			throw new Error("Network response was not ok");
+		}
 
-  return data
-}
+		const data = (await response.json()) as DolarApiResponse;
+
+		return data;
+	},
+	["rates"],
+	{ revalidate: 900, tags: ["rates"] },
+);

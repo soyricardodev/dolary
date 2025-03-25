@@ -6,7 +6,7 @@ import {
 	text,
 } from "drizzle-orm/sqlite-core";
 
-export const createTable = sqliteTableCreator((name) => `dolary_${name}`);
+const createTable = sqliteTableCreator((name) => `dolary_${name}`);
 
 const id = integer("id").primaryKey({ autoIncrement: true });
 const createdAt = text("created_at")
@@ -60,6 +60,8 @@ export const monitorTable = createTable("monitor", {
 	updatedAt,
 	isActive,
 });
+export type InsertMonitor = typeof monitorTable.$inferInsert;
+export type UpdateMonitor = Omit<InsertMonitor, "createdAt" | "updatedAt">;
 
 export const historyTable = createTable("history", {
 	id,
@@ -72,3 +74,4 @@ export const historyTable = createTable("history", {
 	updatedAt,
 	isActive,
 });
+export type InsertHistory = typeof historyTable.$inferInsert;

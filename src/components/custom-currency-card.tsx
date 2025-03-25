@@ -15,10 +15,10 @@ import { CustomPromedioKey, type CustomPromedio } from "@/types";
 import { Button } from "./ui/button";
 import useLocalStorage from "@/hooks/use-local-storage";
 import { AddCustomPromedio } from "./add-custom-promedio";
+import { ModifyCustomPromedio } from "./modify-custom-promedio";
 
 export function CustomCurrencyCard({ onClick }: { onClick: () => void }) {
 	const [customPromedio] = useLocalStorage<CustomPromedio>(CustomPromedioKey);
-
 	const [copied, setCopied] = useState(false);
 
 	if (!customPromedio) return <AddCustomPromedio />;
@@ -31,18 +31,22 @@ export function CustomCurrencyCard({ onClick }: { onClick: () => void }) {
 	};
 
 	return (
-		<Card onClick={onClick}>
+		<Card>
 			<CardHeader className="pt-2 pb-0 flex flex-row w-full justify-between items-center">
 				<div className="flex gap-4">
 					<h2 className="text-xl font-bold">{customPromedio?.name}</h2>
 				</div>
-				<Button onClick={handleCopy} title="Copiar valor" size="icon">
-					{copied ? (
-						<Check className="h-4 w-4" />
-					) : (
-						<Copy className="h-4 w-4" />
-					)}
-				</Button>
+				<div className="flex items-center gap-4">
+					<ModifyCustomPromedio />
+
+					<Button onClick={handleCopy} title="Copiar valor" size="icon">
+						{copied ? (
+							<Check className="h-4 w-4" />
+						) : (
+							<Copy className="h-4 w-4" />
+						)}
+					</Button>
+				</div>
 			</CardHeader>
 			<CardContent className="py-0">
 				<div className="relative h-full flex flex-col">
@@ -56,7 +60,7 @@ export function CustomCurrencyCard({ onClick }: { onClick: () => void }) {
 			<CardFooter className="flex items-center justify-between pb-3 -mt-5">
 				<div />
 
-				<Button size="sm" variant="neutral">
+				<Button size="sm" variant="neutral" onClick={onClick}>
 					Calcular
 				</Button>
 			</CardFooter>

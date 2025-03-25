@@ -28,7 +28,7 @@ export function ResponsiveDialog({
 
 	return (
 		<Drawer open={open} onOpenChange={onOpenChange}>
-			<DrawerContent>{children}</DrawerContent>
+			<DrawerContent className="px-4 py-2">{children}</DrawerContent>
 		</Drawer>
 	);
 }

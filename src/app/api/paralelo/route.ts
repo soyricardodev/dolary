@@ -13,7 +13,7 @@ function getFormattedDate(dateString: string) {
 	return date.toISO(); // Return in ISO format
 }
 
-async function loadData() {
+async function getParalelo() {
 	const response = await fetch(PROVIDERS.EnParaleloVzla.provider);
 	const text = await response.text();
 	const $ = cheerio.load(text);
@@ -98,7 +98,7 @@ function getDateMessage(dataMessage: cheerio.Cheerio<any>): string {
 
 export async function GET() {
 	try {
-		const data = await loadData();
+		const data = await getParalelo();
 		return NextResponse.json({ data });
 	} catch (error) {
 		return NextResponse.error();

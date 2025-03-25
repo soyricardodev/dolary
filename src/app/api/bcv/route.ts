@@ -86,8 +86,6 @@ async function getBcv() {
 export async function GET() {
 	const data = await getBcv();
 
-	console.log(data);
-
 	return Response.json({
 		data,
 	});

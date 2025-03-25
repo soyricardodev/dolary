@@ -20,6 +20,15 @@ const isActive = integer("is_active", { mode: "boolean" })
 	.notNull()
 	.default(true);
 
+export const pageTable = createTable("page", {
+	id,
+	name: text("name").notNull(),
+	url: text("url").notNull(),
+	createdAt,
+	updatedAt,
+	isActive,
+});
+
 export const currencyTable = createTable("currency", {
 	id,
 	symbol: text("symbol").notNull(),
@@ -30,6 +39,9 @@ export const currencyTable = createTable("currency", {
 
 export const monitorTable = createTable("monitor", {
 	id,
+	idPage: integer("id_page")
+		.references(() => pageTable.id)
+		.notNull(),
 	idCurrency: integer("id_currency")
 		.references(() => currencyTable.id)
 		.notNull(),

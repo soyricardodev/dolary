@@ -8,6 +8,13 @@
       "when": 1742874137419,
       "tag": "0000_equal_rictor",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1742874461788,
+      "tag": "0001_tough_warbird",
+      "breakpoints": true
     }
   ]
 }

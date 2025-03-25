@@ -1,8 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { subscribeUser, unsubscribeUser, sendNotification } from "./actions";
-
+import { subscribeUser, unsubscribeUser } from "./actions";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "../ui/button";
+import { BellIcon } from "lucide-react";
 function urlBase64ToUint8Array(base64String: string) {
 	const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
 	const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
@@ -21,7 +27,6 @@ export function PushNotificationManager() {
 	const [subscription, setSubscription] = useState<PushSubscription | null>(
 		null,
 	);
-	const [message, setMessage] = useState("");
 
 	useEffect(() => {
 		if ("serviceWorker" in navigator && "PushManager" in window) {
@@ -58,44 +63,34 @@ export function PushNotificationManager() {
 		await unsubscribeUser();
 	}
 
-	async function sendTestNotification() {
-		if (subscription) {
-			await sendNotification(message);
-			setMessage("");
-		}
-	}
-
 	if (!isSupported) {
-		return <p>Push notifications are not supported in this browser.</p>;
+		return null;
 	}
 
 	return (
-		<div>
-			<h3>Push Notifications</h3>
-			{subscription ? (
-				<>
-					<p>You are subscribed to push notifications.</p>
-					<button onClick={unsubscribeFromPush} type="button">
-						Unsubscribe
-					</button>
-					<input
-						type="text"
-						placeholder="Enter notification message"
-						value={message}
-						onChange={(e) => setMessage(e.target.value)}
-					/>
-					<button onClick={sendTestNotification} type="button">
-						Send Test
-					</button>
-				</>
-			) : (
-				<>
-					<p>You are not subscribed to push notifications.</p>
-					<button onClick={subscribeToPush} type="button">
-						Subscribe
-					</button>
-				</>
-			)}
-		</div>
+		<Popover>
+			<PopoverTrigger asChild>
+				<Button size="icon">
+					<BellIcon className="size-5" />
+				</Button>
+			</PopoverTrigger>
+			<PopoverContent className="text-mtext">
+				{subscription ? (
+					<div className="flex justify-center gap-2 flex-col">
+						<p>Recibiras notificaciones de las tasas del dolar.</p>
+						<Button onClick={unsubscribeFromPush} variant="neutral">
+							Dejar de Recibir Notificaciones
+						</Button>
+					</div>
+				) : (
+					<div className="flex justify-center gap-2 flex-col">
+						<p>No estas suscrito a las notificaciones.</p>
+						<Button onClick={subscribeToPush} variant="neutral">
+							Recibir Notificaciones
+						</Button>
+					</div>
+				)}
+			</PopoverContent>
+		</Popover>
 	);
 }

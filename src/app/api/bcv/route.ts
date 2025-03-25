@@ -4,8 +4,9 @@ import { getUrlImage } from "../utils";
 import { getDateStringToDateTime } from "../date-utils";
 import { DateTime } from "luxon";
 import type { Rate } from "../types";
+import { Redis } from "@upstash/redis";
 
-async function getBcv() {
+export async function getBcv() {
 	// Disable SSL certificate validation
 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
@@ -63,8 +64,6 @@ async function getBcv() {
 		},
 	);
 
-	console.log({ sectionTipoDeCambioOficialLastUpdate, parsedDate });
-
 	// Extracting currency rates
 	for (const [code, values] of Object.entries(CURRENCIES)) {
 		// Assuming currencies is defined
@@ -83,8 +82,10 @@ async function getBcv() {
 	return rates;
 }
 
+const redis = Redis.fromEnv();
+
 export async function GET() {
-	const data = await getBcv();
+	const data = await redis.get("bcv");
 
 	return Response.json({
 		data,

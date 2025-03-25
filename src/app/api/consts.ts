@@ -1,5 +1,5 @@
 export const UPDATE_SCHEDULE = {
-	enparalelovzla: {
+	paralelo: {
 		not: ["Sat", "Sun"],
 		hours: [
 			["08:45", "10:00"],
@@ -33,8 +33,8 @@ export const PROVIDERS = {
 		currencies: ["usd"],
 		provider: "https://dolartoday.com/",
 	},
-	EnParaleloVzla: {
-		id: "enparalelovzla",
+	paralelo: {
+		id: "paralelo",
 		currencies: ["usd"],
 		provider: "https://t.me/s/EnParaleloVzlatelegram",
 	},

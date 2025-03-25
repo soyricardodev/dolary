@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { db } from "./db";
 import {
 	pageTable,
@@ -8,6 +8,7 @@ import {
 	type InsertMonitor,
 	type UpdateMonitor,
 	type InsertHistory,
+	lower,
 } from "./schema";
 
 export async function createPage(pageName: string, pageUrl: string) {
@@ -53,6 +54,15 @@ export async function getMonitorById(monitorId: number) {
 	return monitor;
 }
 
+export async function getMonitorByKey(key: string) {
+	const [monitor] = await db
+		.select()
+		.from(monitorTable)
+		.where(eq(monitorTable.key, key));
+
+	return monitor;
+}
+
 export async function getUniqueMonitorsIds() {
 	const ids = await db
 		.selectDistinct({ id: monitorTable.id })
@@ -67,6 +77,10 @@ export async function createMonitor(input: InsertMonitor) {
 		.values(input)
 		.returning({ id: currencyTable.id });
 	return newCurrency.id;
+}
+
+export async function createMonitors(input: InsertMonitor[]) {
+	await db.insert(monitorTable).values(input);
 }
 
 export async function updateMonitor(input: UpdateMonitor) {
@@ -120,4 +134,60 @@ export async function updateMonitor(input: UpdateMonitor) {
 
 export async function addHistoryPrice(input: InsertHistory) {
 	await db.insert(historyTable).values(input);
+}
+
+export async function isExistPage(name: string) {
+	const [page] = await db
+		.select({ id: pageTable.id })
+		.from(pageTable)
+		.where(eq(lower(pageTable.name), name.toLowerCase()))
+		.limit(1);
+
+	if (!page) return null;
+	return page;
+}
+
+export async function isExistCurrency(symbol: string) {
+	const [currency] = await db
+		.select({ id: currencyTable.id })
+		.from(currencyTable)
+		.where(eq(lower(currencyTable.symbol), symbol.toLowerCase()))
+		.limit(1);
+	if (!currency) return null;
+	return currency;
+}
+
+export async function isExistMonitor(
+	pageId: number,
+	currencyId: number,
+): Promise<boolean> {
+	const count = await db
+		.select({ count: sql<number>`COUNT(*)` })
+		.from(monitorTable)
+		.where(
+			and(
+				eq(monitorTable.idPage, pageId),
+				eq(monitorTable.idCurrency, currencyId),
+			),
+		)
+		.limit(1);
+
+	return count.length > 0 && count[0].count > 0;
+}
+export async function isMonitorExists(
+	pageId: number,
+	currencyId: number,
+): Promise<boolean> {
+	const count = await db
+		.select({ count: sql<number>`COUNT(*)` })
+		.from(monitorTable)
+		.where(
+			and(
+				eq(monitorTable.idPage, pageId),
+				eq(monitorTable.idCurrency, currencyId),
+			),
+		)
+		.limit(1);
+
+	return count.length > 0 && count[0].count > 0;
 }

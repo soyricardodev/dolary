@@ -1,5 +1,6 @@
-import { sql } from "drizzle-orm";
+import { type SQL, sql } from "drizzle-orm";
 import {
+	type AnySQLiteColumn,
 	integer,
 	real,
 	sqliteTableCreator,
@@ -75,3 +76,7 @@ export const historyTable = createTable("history", {
 	isActive,
 });
 export type InsertHistory = typeof historyTable.$inferInsert;
+
+export function lower(email: AnySQLiteColumn): SQL {
+	return sql`lower(${email})`;
+}

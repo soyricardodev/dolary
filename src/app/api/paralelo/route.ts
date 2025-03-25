@@ -13,8 +13,8 @@ function getFormattedDate(dateString: string) {
 	return date.toISO(); // Return in ISO format
 }
 
-async function getParalelo() {
-	const response = await fetch(PROVIDERS.EnParaleloVzla.provider);
+export async function getParalelo() {
+	const response = await fetch(PROVIDERS.paralelo.provider);
 	const text = await response.text();
 	const $ = cheerio.load(text);
 
@@ -43,7 +43,7 @@ async function getParalelo() {
 			const price = extractPrice(result);
 			if (price !== null) {
 				const lastUpdate = getFormattedDate(getDateMessage(dataMessage));
-				const image = getUrlImage("EnParaleloVzla", "enparalelovzla");
+				const image = getUrlImage("paralelo", "enparalelovzla");
 
 				const data = {
 					key: "enparalelovzla",

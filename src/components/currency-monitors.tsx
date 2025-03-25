@@ -4,6 +4,7 @@ import { Loader2 } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { CurrencyCard } from "@/components/currency-card";
 import { useCurrencyData } from "@/hooks/use-currency-data";
+import { CustomCurrencyCard } from "./custom-currency-card";
 
 interface CurrencyMonitorsProps {
 	onCardClick: (currency: string) => void;
@@ -66,7 +67,6 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 					color={data.monitors.bcv.color}
 					lastUpdate={data.monitors.bcv.last_update}
 					onClick={() => onCardClick("bcv")}
-					gradient="from-blue-500 to-cyan-400"
 				/>
 
 				<CurrencyCard
@@ -78,7 +78,6 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 					color={data.monitors.enparalelovzla.color}
 					lastUpdate={data.monitors.enparalelovzla.last_update}
 					onClick={() => onCardClick("paralelo")}
-					gradient="from-purple-500 to-pink-500"
 				/>
 
 				<CurrencyCard
@@ -89,9 +88,9 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 					percent={promedioPercent}
 					color={promedioChange >= 0 ? "#28a745" : "#dc3545"}
 					onClick={() => onCardClick("promedio")}
-					gradient="from-amber-500 to-orange-500"
-					className="sm:col-span-2 lg:col-span-1"
 				/>
+
+				<CustomCurrencyCard onClick={() => onCardClick("custom")} />
 			</div>
 		</div>
 	);

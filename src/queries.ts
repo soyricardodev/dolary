@@ -3,6 +3,7 @@ import type { DolarApiResponse } from "./types";
 
 export const getDolarRates = unstable_cache(
 	async () => {
+		console.log("fetch");
 		const response = await fetch(
 			"https://pydolarve.org/api/v1/dollar?rounded_price=false",
 			{

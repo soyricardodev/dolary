@@ -11,14 +11,7 @@ webpush.setVapidDetails(
 let subscription: webpush.PushSubscription | null = null;
 
 export async function subscribeUser(sub: PushSubscription) {
-	subscription = {
-		endpoint: sub.endpoint,
-		expirationTime: sub.expirationTime,
-		keys: (sub.toJSON().keys as { p256dh: string; auth: string }) ?? {
-			p256dh: "",
-			auth: "",
-		},
-	};
+	subscription = sub;
 	// In a production environment, you would want to store the subscription in a database
 	// For example: await db.subscriptions.create({ data: sub })
 	return { success: true };
@@ -40,9 +33,10 @@ export async function sendNotification(message: string) {
 		await webpush.sendNotification(
 			subscription,
 			JSON.stringify({
-				title: "Test Notification",
+				title: "Dolary - Calculadora del Dolar Venezuela",
 				body: message,
 				icon: "/icon-48x48.png",
+				badge: "/icon-48x48.png",
 			}),
 		);
 		return { success: true };

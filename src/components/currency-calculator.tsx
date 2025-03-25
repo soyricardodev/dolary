@@ -9,6 +9,8 @@ import { useCurrencyData } from "@/hooks/use-currency-data";
 import { Label } from "./ui/label";
 import { ResponsiveDialog } from "./responsive-dialog";
 import { DialogTitle } from "./ui/dialog";
+import useLocalStorage from "@/hooks/use-local-storage";
+import { type CustomPromedio, CustomPromedioKey } from "@/types";
 
 interface CalculatorProps {
 	currency: string;
@@ -31,6 +33,8 @@ export function CurrencyCalculator({
 	const bsInputRef = useRef<HTMLInputElement>(null);
 
 	const { data } = useCurrencyData();
+
+	const [customPromedio] = useLocalStorage<CustomPromedio>(CustomPromedioKey);
 
 	useEffect(() => {
 		if (isOpen && usdInputRef.current) {
@@ -55,6 +59,10 @@ export function CurrencyCalculator({
 		}
 		if (currency === "paralelo") {
 			return data.monitors.enparalelovzla.price;
+		}
+
+		if (currency === "custom") {
+			return Number(customPromedio?.price);
 		}
 		// Promedio
 		return (data.monitors.bcv.price + data.monitors.enparalelovzla.price) / 2;

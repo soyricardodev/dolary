@@ -1,6 +1,6 @@
 import { BANK_DICT, CURRENCIES, PROVIDERS } from "../consts";
 import * as cheerio from "cheerio";
-import { getUrlImage } from "./utils";
+import { getUrlImage } from "../utils";
 import { getDateStringToDateTime } from "../date-utils";
 import { DateTime } from "luxon";
 import type { Rate } from "../types";

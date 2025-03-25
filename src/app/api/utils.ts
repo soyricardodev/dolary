@@ -1,4 +1,4 @@
-import { PROVIDERS, CURRENCIES, LIST_IMAGES_URL } from "../consts";
+import { PROVIDERS, CURRENCIES, LIST_IMAGES_URL } from "./consts";
 
 type ProviderKey = string; // Adjust this type based on your actual keys in PROVIDERS
 type CurrencyKey = string; // Adjust this type based on your actual keys in CURRENCIES

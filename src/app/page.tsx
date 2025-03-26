@@ -12,7 +12,7 @@ export default async function RootPage() {
 	const queryClient = new QueryClient();
 
 	await queryClient.prefetchQuery({
-		queryKey: ["dollarRates"],
+		queryKey: ["rates"],
 		queryFn: getDolarRates,
 	});
 

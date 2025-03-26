@@ -11,7 +11,7 @@ interface CurrencyMonitorsProps {
 }
 
 export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
-	const { data, isLoading, error, isRefetching } = useCurrencyData();
+	const { data, isLoading, error } = useCurrencyData();
 
 	if (isLoading) {
 		return (

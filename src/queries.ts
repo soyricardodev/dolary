@@ -27,6 +27,7 @@ export const getDolarRates = async () => {
 	const response = await fetch("/api/rates", {
 		next: {
 			revalidate: 30,
+			tags: ["rates"],
 		},
 	});
 

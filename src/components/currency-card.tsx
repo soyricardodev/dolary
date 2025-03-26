@@ -35,7 +35,7 @@ export function CurrencyCard({
 	};
 
 	return (
-		<Card className={`relative ${className}`} onClick={onClick}>
+		<Card className={`relative ${className}`} onClick={() => {}}>
 			<CardHeader className="pt-2 pb-0 flex flex-row w-full justify-between items-center">
 				<div className="flex gap-4">
 					<h2 className="text-xl font-bold">{title}</h2>
@@ -73,7 +73,7 @@ export function CurrencyCard({
 					{lastUpdate != null ? `Actualizado: ${lastUpdate}` : null}
 				</div>
 
-				<Button size="sm" variant="neutral">
+				<Button size="sm" variant="neutral" disabled>
 					Calcular
 				</Button>
 			</CardFooter>

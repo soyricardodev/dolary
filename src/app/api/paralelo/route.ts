@@ -39,7 +39,9 @@ export async function getParalelo() {
 		if (textMessage.length === 0) return;
 
 		const result = textMessage.text().trim().match(PATTERN);
+		console.log({ result });
 		if (result && isValidMessage(result)) {
+			console.log({ result });
 			const price = extractPrice(result);
 			if (price !== null) {
 				const lastUpdate = getFormattedDate(getDateMessage(dataMessage));
@@ -59,7 +61,7 @@ export async function getParalelo() {
 
 	return lastOccurrences.length > 0
 		? [lastOccurrences[lastOccurrences.length - 1]]
-		: null;
+		: [];
 }
 
 function isValidMessage(obj: string[]): boolean {

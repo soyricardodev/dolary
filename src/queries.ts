@@ -25,14 +25,11 @@ import type { DolarApiResponse } from "./types";
 // );
 
 export const getDolarRates = async () => {
-	const response = await fetch(
-		"https://pydolarve.org/api/v1/dollar?rounded_price=false",
-		{
-			next: {
-				revalidate: 30,
-			},
+	const response = await fetch("/api/rates", {
+		next: {
+			revalidate: 30,
 		},
-	);
+	});
 
 	if (!response.ok) {
 		throw new Error("Network response was not ok");

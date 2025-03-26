@@ -65,7 +65,12 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 					change={3.96}
 					percent={3.96}
 					color={"red"}
-					lastUpdate={new Date(bcv.last_update ?? new Date()).toLocaleString()}
+					lastUpdate={new Date(
+						new Date(bcv.last_update ?? new Date()).toLocaleString("en-US", {
+							timeZone: "America/Caracas",
+							hour12: true, // Enable AM/PM format
+						}),
+					).toLocaleString()}
 					onClick={() => onCardClick("bcv")}
 				/>
 
@@ -77,7 +82,13 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 					// percent={3.96}
 					color={"red"}
 					lastUpdate={new Date(
-						paralelo.last_update ?? new Date(),
+						new Date(paralelo.last_update ?? new Date()).toLocaleString(
+							"en-US",
+							{
+								timeZone: "America/Caracas",
+								hour12: true, // Enable AM/PM format
+							},
+						),
 					).toLocaleString()}
 					onClick={() => onCardClick("paralelo")}
 				/>

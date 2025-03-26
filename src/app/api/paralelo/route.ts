@@ -58,8 +58,8 @@ export async function getParalelo() {
 	});
 
 	return lastOccurrences.length > 0
-		? [lastOccurrences[lastOccurrences.length - 1]]
-		: [];
+		? lastOccurrences[lastOccurrences.length - 1]
+		: {};
 }
 
 function isValidMessage(obj: string[]): boolean {
@@ -99,7 +99,7 @@ function getDateMessage(dataMessage: cheerio.Cheerio<any>): string {
 export async function GET() {
 	try {
 		const data = await getParalelo();
-		return NextResponse.json({ data });
+		return NextResponse.json({ ...data });
 	} catch (error) {
 		return NextResponse.error();
 	}

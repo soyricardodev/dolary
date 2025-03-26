@@ -3,13 +3,13 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { shouldRefetch } from "@/lib/utils";
-import type { DolarApiResponse } from "@/types";
+import type { RatesResponse } from "@/types";
 import { getDolarRates } from "@/queries";
 
 const CURRENCY_CACHE_KEY = "currency_data_cache";
 const CACHE_TIMESTAMP_KEY = "currency_cache_timestamp";
 
-const saveToCache = (data: DolarApiResponse) => {
+const saveToCache = (data: RatesResponse) => {
 	try {
 		localStorage.setItem(CURRENCY_CACHE_KEY, JSON.stringify(data));
 		localStorage.setItem(CACHE_TIMESTAMP_KEY, Date.now().toString());
@@ -19,7 +19,7 @@ const saveToCache = (data: DolarApiResponse) => {
 };
 
 const getFromCache = (): {
-	data: DolarApiResponse | null;
+	data: RatesResponse | null;
 	timestamp: number;
 } => {
 	try {

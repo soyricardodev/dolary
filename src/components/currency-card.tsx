@@ -11,9 +11,20 @@ import {
 	CardHeader,
 } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/utils";
-import type { CurrencyCardProps } from "@/types";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
+
+export interface CurrencyCardProps {
+	title: string;
+	price: number;
+	symbol?: string;
+	change?: number;
+	percent?: number;
+	color?: string;
+	lastUpdate?: string;
+	onClick?: () => void;
+	className?: string;
+}
 
 export function CurrencyCard({
 	title,
@@ -35,11 +46,11 @@ export function CurrencyCard({
 	};
 
 	return (
-		<Card className={`relative ${className}`} onClick={() => {}}>
+		<Card className={`relative ${className}`} onClick={onClick}>
 			<CardHeader className="pt-2 pb-0 flex flex-row w-full justify-between items-center">
 				<div className="flex gap-4">
 					<h2 className="text-xl font-bold">{title}</h2>
-					<Badge className="w-max" variant={"neutral"}>
+					{/* <Badge className="w-max" variant={"neutral"}>
 						{change >= 0 ? (
 							<ArrowUp className="size-3 mr-1" />
 						) : (
@@ -50,7 +61,7 @@ export function CurrencyCard({
 							{change >= 0 ? "+" : ""}
 							{formatCurrency(change)} ({percent.toFixed(2)}%)
 						</span>
-					</Badge>
+					</Badge> */}
 				</div>
 				<Button onClick={handleCopy} title="Copiar valor" size="icon">
 					{copied ? (
@@ -64,7 +75,7 @@ export function CurrencyCard({
 				<div className="relative h-full flex flex-col">
 					<div className="flex items-baseline mb-1">
 						<span className="text-3xl font-bold">{formatCurrency(price)}</span>
-						<span className="ml-1 text-xs">{symbol}</span>
+						{symbol != null && <span className="ml-1 text-xs">{symbol}</span>}
 					</div>
 				</div>
 			</CardContent>
@@ -73,7 +84,7 @@ export function CurrencyCard({
 					{lastUpdate != null ? `Actualizado: ${lastUpdate}` : null}
 				</div>
 
-				<Button size="sm" variant="neutral" disabled>
+				<Button size="sm" variant="neutral">
 					Calcular
 				</Button>
 			</CardFooter>

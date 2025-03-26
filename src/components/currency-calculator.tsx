@@ -36,6 +36,11 @@ export function CurrencyCalculator({
 
 	const [customPromedio] = useLocalStorage<CustomPromedio>(CustomPromedioKey);
 
+	if (!data) return;
+
+	const bcv = data.data.bcv;
+	const paralelo = data.data.paralelo;
+
 	useEffect(() => {
 		if (isOpen && usdInputRef.current) {
 			setTimeout(() => {
@@ -55,17 +60,17 @@ export function CurrencyCalculator({
 		if (!data) return 0;
 
 		if (currency === "bcv") {
-			return data.monitors.bcv.price;
+			return bcv.price;
 		}
 		if (currency === "paralelo") {
-			return data.monitors.enparalelovzla.price;
+			return paralelo.price;
 		}
 
 		if (currency === "custom") {
 			return Number(customPromedio?.price);
 		}
 		// Promedio
-		return (data.monitors.bcv.price + data.monitors.enparalelovzla.price) / 2;
+		return (bcv.price + paralelo.price) / 2;
 	};
 
 	const updateValues = () => {
@@ -261,9 +266,6 @@ export function CurrencyCalculator({
 
 				<div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 text-sm rounded-lg">
 					<p>Tasa de cambio: 1 USD = {formatCurrency(getRate())} Bs.</p>
-					<p className="mt-1 text-xs text-gray-500">
-						Última actualización: {data?.datetime.date} {data?.datetime.time}
-					</p>
 				</div>
 			</div>
 		</ResponsiveDialog>

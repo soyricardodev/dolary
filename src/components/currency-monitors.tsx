@@ -11,35 +11,15 @@ interface CurrencyMonitorsProps {
 }
 
 export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
-	// const { data, isLoading, error, isRefetching } = useCurrencyData();
+	const { data, isLoading, error, isRefetching } = useCurrencyData();
 
-	// if (isLoading) {
-	// 	return (
-	// 		<div className="flex justify-center items-center h-32">
-	// 			<Loader2 className="h-6 w-6 animate-spin text-primary" />
-	// 			<span className="ml-2 text-gray-600 text-sm">Cargando datos...</span>
-	// 		</div>
-	// 	);
-	// }
-
-	// if (error) {
-	// 	return (
-	// 		<Alert variant="destructive" className="text-sm">
-	// 			<AlertTitle>Error</AlertTitle>
-	// 			<AlertDescription>
-	// 				No se pudieron cargar los datos. Por favor intente más tarde.
-	// 			</AlertDescription>
-	// 		</Alert>
-	// 	);
-	// }
-
-	// if (!data) {
-	// 	return null;
-	// }
+	if (!data) return null;
 
 	// Calculate promedio (average) from BCV and Paralelo
-	const bcvPrice = 68.7;
-	const paraleloPrice = 102.92;
+	const bcv = data.data.bcv;
+	const paralelo = data.data.paralelo;
+	const bcvPrice = bcv.price;
+	const paraleloPrice = paralelo.price;
 	const promedioPrice = (bcvPrice + paraleloPrice) / 2;
 
 	// // Calculate change and percent for promedio
@@ -65,18 +45,20 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 					change={3.96}
 					percent={3.96}
 					color={"red"}
-					lastUpdate={"2025-03-26T12:00:01.000-04:00"}
+					lastUpdate={new Date(bcv.last_update ?? new Date()).toLocaleString()}
 					onClick={() => onCardClick("bcv")}
 				/>
 
 				<CurrencyCard
 					title="Paralelo"
-					price={102.92}
+					price={paraleloPrice}
 					symbol={"▲"}
-					change={3.96}
-					percent={3.96}
+					// change={3.96}
+					// percent={3.96}
 					color={"red"}
-					lastUpdate={"2025-03-26T01:30:01.000-04:00"}
+					lastUpdate={new Date(
+						paralelo.last_update ?? new Date(),
+					).toLocaleString()}
 					onClick={() => onCardClick("paralelo")}
 				/>
 

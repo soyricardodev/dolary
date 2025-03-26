@@ -1,5 +1,4 @@
-import { unstable_cache } from "next/cache";
-import type { DolarApiResponse } from "./types";
+import type { RatesResponse } from "./types";
 
 // export const getDolarRates = unstable_cache(
 // 	async () => {
@@ -35,7 +34,7 @@ export const getDolarRates = async () => {
 		throw new Error("Network response was not ok");
 	}
 
-	const data = (await response.json()) as DolarApiResponse;
+	const data = (await response.json()) as RatesResponse;
 
 	return data;
 };

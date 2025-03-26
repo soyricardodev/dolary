@@ -82,6 +82,12 @@ export async function getBcv() {
 	return rates;
 }
 
+export async function getUsdBcv() {
+	const data = await getBcv();
+
+	return data.find((rate) => rate.key === "usd");
+}
+
 const redis = Redis.fromEnv();
 
 export async function GET() {

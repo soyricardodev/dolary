@@ -1,3 +1,5 @@
+import type { Rate } from "@/app/api/types";
+
 export interface DateTimeInfo {
 	date: string;
 	time: string;
@@ -26,16 +28,11 @@ export interface DolarApiResponse {
 	monitors: Monitors;
 }
 
-export interface CurrencyCardProps {
-	title: string;
-	price: number;
-	symbol: string;
-	change: number;
-	percent: number;
-	color: string;
-	lastUpdate?: string;
-	onClick: () => void;
-	className?: string;
+export interface RatesResponse {
+	data: {
+		bcv: Rate;
+		paralelo: Rate;
+	};
 }
 
 export interface CustomPromedio {

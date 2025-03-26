@@ -60,7 +60,7 @@ export function CustomCurrencyCard({ onClick }: { onClick: () => void }) {
 			<CardFooter className="flex items-center justify-between pb-3 -mt-5">
 				<div />
 
-				<Button size="sm" variant="neutral" disabled onClick={() => {}}>
+				<Button size="sm" variant="neutral" onClick={onClick}>
 					Calcular
 				</Button>
 			</CardFooter>

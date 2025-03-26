@@ -26,7 +26,7 @@ import type { RatesResponse } from "./types";
 export const getDolarRates = async () => {
 	const response = await fetch("/api/rates", {
 		next: {
-			revalidate: 30,
+			revalidate: 1800,
 			tags: ["rates"],
 		},
 	});

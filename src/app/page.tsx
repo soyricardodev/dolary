@@ -18,6 +18,14 @@ export default async function RootPage() {
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
+			<header className="w-full bg-main flex border-b-2 p-2">
+				<h2>
+					Estamos teniendo problemas para obtener la tasa Paralelo debido a
+					bajas del servicio de la API de pydolar, se ha deshabilitado la
+					calculadora mientras se resuelve por completo, pronto volvera el
+					servicio a la normalidad.
+				</h2>
+			</header>
 			<main className="min-h-screen p-3 flex flex-col font-sans mx-auto">
 				<AppHeader />
 

@@ -42,7 +42,7 @@ export function useCurrencyData() {
 	useEffect(() => {
 		const checkForUpdates = () => {
 			if (shouldRefetch()) {
-				queryClient.invalidateQueries({ queryKey: ["dollarRates"] });
+				queryClient.invalidateQueries({ queryKey: ["rates"] });
 			}
 		};
 
@@ -55,7 +55,7 @@ export function useCurrencyData() {
 	}, [queryClient]);
 
 	return useQuery({
-		queryKey: ["dollarRates"],
+		queryKey: ["rates"],
 		queryFn: async () => {
 			try {
 				const data = await getDolarRates();

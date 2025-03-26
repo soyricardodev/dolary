@@ -5,7 +5,7 @@ import { getUrlImage } from "../utils";
 import { PROVIDERS } from "../consts";
 import type { Rate } from "../types";
 
-const PATTERN = /(🗓|🕒|💵|🔺|🔻|🟰)|Bs\. (\d{2},\d{2})/g;
+const PATTERN = /(🗓|🕒|💵|🔺|🔻|🟰)|Bs\. (\d+,\d{+})/g;
 const validEmojis = ["🗓", "🕒", "💵", "🔺", "🔻", "🟰"];
 
 function getFormattedDate(dateString: string) {
@@ -39,9 +39,7 @@ export async function getParalelo() {
 		if (textMessage.length === 0) return;
 
 		const result = textMessage.text().trim().match(PATTERN);
-		console.log({ result });
 		if (result && isValidMessage(result)) {
-			console.log({ result });
 			const price = extractPrice(result);
 			if (price !== null) {
 				const lastUpdate = getFormattedDate(getDateMessage(dataMessage));

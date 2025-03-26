@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { updateAllData } from "../cron/route";
+import { updateAllData } from "../_cron/route";
 
 export async function GET() {
 	await updateAllData();

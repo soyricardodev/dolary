@@ -5,7 +5,7 @@ import { getUrlImage } from "../utils";
 import { PROVIDERS } from "../consts";
 import type { Rate } from "../types";
 
-const PATTERN = /(🗓|🕒|💵|🔺|🔻|🟰)|Bs\. (\d+,\d{+})/g;
+const PATTERN = /(🗓|🕒|💵|🔺|🔻|🟰)|Bs\. (\d+,\d+)/g;
 const validEmojis = ["🗓", "🕒", "💵", "🔺", "🔻", "🟰"];
 
 function getFormattedDate(dateString: string) {

@@ -24,44 +24,39 @@ import type { RatesResponse } from "./types";
 // 	{ revalidate: 900, tags: ["rates"] },
 // );
 
-// export const getDolarRates = async () => {
-// 	const response = await fetch("/api/rates", {
-// 		next: {
-// 			revalidate: 1800,
-// 			tags: ["rates"],
-// 		},
-// 	});
+export const getDolarRates = async () => {
+	const response = await fetch(`${url}/api/rates`);
 
-// 	if (!response.ok) {
-// 		throw new Error("Network response was not ok");
-// 	}
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
 
-// 	const data = (await response.json()) as RatesResponse;
+	const data = (await response.json()) as RatesResponse;
 
-// 	return data;
-// };
+	return data;
+};
 
 const url =
 	process.env.NODE_ENV === "production"
 		? "https://dolary.vercel.app"
 		: "http://localhost:3000";
 
-export const getDolarRates = unstable_cache(
-	async () => {
-		const response = await fetch(`${url}/api/rates`, {
-			next: {
-				revalidate: 1800,
-			},
-		});
+// export const getDolarRates = unstable_cache(
+// 	async () => {
+// 		const response = await fetch(`${url}/api/rates`, {
+// 			next: {
+// 				revalidate: 1800,
+// 			},
+// 		});
 
-		if (!response.ok) {
-			throw new Error("Network response was not ok");
-		}
+// 		if (!response.ok) {
+// 			throw new Error("Network response was not ok");
+// 		}
 
-		const data = (await response.json()) as RatesResponse;
+// 		const data = (await response.json()) as RatesResponse;
 
-		return data;
-	},
-	["rates"],
-	{ revalidate: 900, tags: ["rates"] },
-);
+// 		return data;
+// 	},
+// 	["rates"],
+// 	{ revalidate: 900, tags: ["rates"] },
+// );

@@ -72,9 +72,9 @@ export function useCurrencyData() {
 			}
 		},
 		staleTime: 30 * 60 * 1000, // 30 minutes
-		gcTime: 24 * 60 * 60 * 1000, // 24 hours
-		refetchOnWindowFocus: false,
-		refetchOnMount: false,
-		refetchOnReconnect: true,
+		gcTime: 1 * 60 * 60 * 1000, // 1 Hour temp test
+		//refetchOnWindowFocus: false,
+		//refetchOnMount: false,
+		//refetchOnReconnect: true,
 	});
 }

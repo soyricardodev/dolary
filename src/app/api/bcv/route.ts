@@ -82,10 +82,10 @@ export async function getBcv() {
 	return rates;
 }
 
-export async function getUsdBcv() {
+export async function getUsdBcv(): Promise<Rate | null> {
 	const data = await getBcv();
 
-	return data.find((rate) => rate.key === "usd");
+	return data.find((rate) => rate.key === "usd") ?? null;
 }
 
 const redis = Redis.fromEnv();

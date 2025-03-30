@@ -13,7 +13,7 @@ function getFormattedDate(dateString: string) {
 	return date.toISO(); // Return in ISO format
 }
 
-export async function getParalelo() {
+export async function getParalelo(): Promise<Rate | null> {
 	const response = await fetch(PROVIDERS.paralelo.provider);
 	const text = await response.text();
 	const $ = cheerio.load(text);
@@ -59,7 +59,7 @@ export async function getParalelo() {
 
 	return lastOccurrences.length > 0
 		? lastOccurrences[lastOccurrences.length - 1]
-		: {};
+		: null;
 }
 
 function isValidMessage(obj: string[]): boolean {

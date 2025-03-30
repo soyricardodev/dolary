@@ -1,4 +1,9 @@
-export const UPDATE_SCHEDULE = {
+export interface UpdateSchedule {
+	not: string[];
+	hours: string[][];
+}
+
+export const UPDATE_SCHEDULE: Record<string, UpdateSchedule> = {
 	paralelo: {
 		not: ["Sat", "Sun"],
 		hours: [

@@ -2,13 +2,13 @@ export const UPDATE_SCHEDULE = {
 	paralelo: {
 		not: ["Sat", "Sun"],
 		hours: [
-			["08:45", "10:00"],
+			["08:00", "10:00"],
 			["12:45", "14:00"],
 		],
 	},
 	bcv: {
 		not: ["Sat", "Sun"],
-		hours: [["16:00", "18:00"]],
+		hours: [["14:30", "18:00"]],
 	},
 };
 

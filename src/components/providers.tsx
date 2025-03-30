@@ -7,7 +7,7 @@ const queryClient = new QueryClient({
 		queries: {
 			staleTime: 30 * 60 * 1000, // 30 minutes
 			gcTime: 24 * 60 * 60 * 1000, // 24 hours
-			refetchOnWindowFocus: false,
+			refetchOnWindowFocus: true,
 			retry: 3,
 		},
 	},

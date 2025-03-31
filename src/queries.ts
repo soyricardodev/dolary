@@ -25,7 +25,11 @@ import type { RatesResponse } from "./types";
 // );
 
 export const getDolarRates = async () => {
-	const response = await fetch(`${url}/api/rates`);
+	const response = await fetch(`${url}/api/rates`, {
+		next: {
+			tags: ["rates"],
+		},
+	});
 
 	if (!response.ok) {
 		throw new Error("Network response was not ok");

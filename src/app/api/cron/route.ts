@@ -1,7 +1,7 @@
 import { UPDATE_SCHEDULE } from "../consts";
 import { toZonedTime, format } from "date-fns-tz";
-import { getUsdBcv } from "../bcv/route";
-import { getParalelo } from "../paralelo/route";
+import { getUsdBcv } from "../_bcv/route";
+import { getParalelo } from "../_paralelo/route";
 import { NextResponse, type NextRequest } from "next/server";
 import { db } from "@/db/db";
 import { historyTable, monitorTable } from "@/db/schema";

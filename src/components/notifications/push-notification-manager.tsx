@@ -2,13 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { subscribeUser, unsubscribeUser } from "./actions";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
 import { Button } from "../ui/button";
 import { BellIcon } from "lucide-react";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
+
 function urlBase64ToUint8Array(base64String: string) {
 	const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
 	const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
@@ -68,29 +72,40 @@ export function PushNotificationManager() {
 	}
 
 	return (
-		<Popover>
-			<PopoverTrigger asChild>
-				<Button size="icon">
-					<BellIcon className="size-5" />
+		<Dialog>
+			<DialogTrigger asChild>
+				<Button size="icon" aria-label="Manage Notifications">
+					<BellIcon className="h-5 w-5" />
 				</Button>
-			</PopoverTrigger>
-			<PopoverContent className="text-mtext">
-				{subscription ? (
-					<div className="flex justify-center gap-2 flex-col">
-						<p>Recibiras notificaciones de las tasas del dolar.</p>
-						<Button onClick={unsubscribeFromPush} variant="neutral">
-							Dejar de Recibir Notificaciones
-						</Button>
-					</div>
-				) : (
-					<div className="flex justify-center gap-2 flex-col">
-						<p>No estas suscrito a las notificaciones.</p>
-						<Button onClick={subscribeToPush} variant="neutral">
-							Recibir Notificaciones
-						</Button>
-					</div>
-				)}
-			</PopoverContent>
-		</Popover>
+			</DialogTrigger>
+			<DialogContent className="max-w-md">
+				<DialogHeader>
+					<DialogTitle className="text-lg font-semibold">
+						Notificaciones
+					</DialogTitle>
+				</DialogHeader>
+				<DialogDescription>
+					{subscription ? (
+						<div className="flex flex-col gap-4">
+							<p className="text-sm">
+								Actualmente estás suscrito para recibir notificaciones sobre las
+								tasas del dólar.
+							</p>
+							<Button onClick={unsubscribeFromPush}>
+								Dejar de Recibir Notificaciones
+							</Button>
+						</div>
+					) : (
+						<div className="flex flex-col gap-4 text-center">
+							<p className="text-sm">
+								No estás suscrito a las notificaciones. Suscríbete para recibir
+								actualizaciones.
+							</p>
+							<Button onClick={subscribeToPush}>Recibir Notificaciones</Button>
+						</div>
+					)}
+				</DialogDescription>
+			</DialogContent>
+		</Dialog>
 	);
 }

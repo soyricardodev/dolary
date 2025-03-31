@@ -1,14 +1,18 @@
 import { NextResponse } from "next/server";
-import { getUsdBcv } from "../bcv/route";
-import { getParalelo } from "../paralelo/route";
+import { Redis } from "@upstash/redis";
+import type { Monitor } from "../types";
 
 export const revalidate = 900;
 
+const redis = Redis.fromEnv();
+
 export async function GET() {
-	const bcvData = getUsdBcv();
-	const paraleloData = getParalelo();
+	const bcvData = redis.get<Monitor>("monitor:bcv");
+	const paraleloData = redis.get<Monitor>("monitor:paralelo");
 
 	const [bcv, paralelo] = await Promise.all([bcvData, paraleloData]);
+
+	console.log({ bcv, paralelo });
 
 	return NextResponse.json({
 		data: {

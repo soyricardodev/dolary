@@ -6,6 +6,7 @@ import { useCurrencyData } from "@/hooks/use-currency-data";
 import { Logo } from "./logo";
 import { PushNotificationManager } from "./notifications/push-notification-manager";
 import { revalidateRates } from "./actions";
+import PwaInstallPrompt from "./pwa-install-prompt";
 
 export function AppHeader() {
 	const { refetch, isRefetching } = useCurrencyData();
@@ -20,6 +21,7 @@ export function AppHeader() {
 			<Logo />
 
 			<div className="flex justify-center gap-4">
+				<PwaInstallPrompt />
 				<PushNotificationManager />
 				<Button
 					size="icon"

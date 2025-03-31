@@ -7,6 +7,10 @@ import { db } from "@/db/db";
 import { historyTable, monitorTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { differenceInDays } from "date-fns";
+import { Redis } from "@upstash/redis";
+import type { Monitor } from "../types";
+
+const redis = Redis.fromEnv();
 
 const TIME_ZONE = "America/Caracas";
 
@@ -14,9 +18,47 @@ const getVenezuelaTime = (): Date => {
 	return toZonedTime(new Date(), TIME_ZONE);
 };
 
+const DAY_FORMAT = "yyyy-MM-dd";
+const TIME_FORMAT = "HH:mm";
+
 async function updateRate(rate: "paralelo" | "bcv", force = false) {
 	console.log(`Updating ${rate}, force=${force}`);
+	const updateKey = `update:${rate}`;
+
 	try {
+		const lastUpdateRedis = await redis.get<Date>(updateKey);
+
+		if (!force && lastUpdateRedis) {
+			const lastUpdateRedisTime = toZonedTime(
+				new Date(lastUpdateRedis),
+				TIME_ZONE,
+			);
+			const lastUpdateRedisDay = format(lastUpdateRedisTime, DAY_FORMAT, {
+				timeZone: TIME_ZONE,
+			});
+			const currentDay = format(getVenezuelaTime(), DAY_FORMAT, {
+				timeZone: TIME_ZONE,
+			});
+
+			if (lastUpdateRedisDay === currentDay) {
+				if (rate === "bcv") {
+					console.log("Skipping bcv update as it was already updated today.");
+					return;
+				}
+
+				const hoursSinceLastUpdate =
+					(getVenezuelaTime().getTime() - lastUpdateRedisTime.getTime()) /
+					(1000 * 60 * 60);
+
+				if (hoursSinceLastUpdate < 2) {
+					console.log(
+						"Skipping paralelo update as it was already updated less than 2 hours ago.",
+					);
+					return;
+				}
+			}
+		}
+
 		const data = rate === "paralelo" ? await getParalelo() : await getUsdBcv();
 
 		if (!data) {
@@ -67,18 +109,14 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 				}
 			}
 
-			const change = Number.parseFloat(
-				(data.price - latestData.price).toFixed(2),
-			);
+			const price = data.price;
+			const priceOld = latestData.price;
+			const change = Number.parseFloat((price - priceOld).toFixed(2));
 			const percent = Number.parseFloat(
-				((change / data.price) * 100 || 0).toFixed(2).replace("-", ""),
+				((change / price) * 100 || 0).toFixed(2).replace("-", ""),
 			);
 			const color =
-				data.price < latestData.price
-					? "red"
-					: data.price > latestData.price
-						? "green"
-						: "neutral";
+				price < priceOld ? "red" : price > priceOld ? "green" : "neutral";
 			const symbol = color === "green" ? "▲" : color === "red" ? "▼" : "";
 			const lastUpdate = data.last_update
 				? new Date(data.last_update)
@@ -90,8 +128,8 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 			await tx
 				.update(monitorTable)
 				.set({
-					price: data.price,
-					priceOld: latestData.price,
+					price,
+					priceOld,
 					change: sanitizedChange,
 					symbol,
 					lastUpdate,
@@ -103,18 +141,63 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 			await tx.insert(historyTable).values({
 				idMonitor: latestData.id,
 				lastUpdate,
-				price: data.price,
+				price,
 			});
+
+			redis.pipeline().set(updateKey, lastUpdate).exec();
+
+			const dataToCache: Monitor = {
+				key: rate,
+				title: rate,
+				price,
+				price_old: priceOld,
+				change: sanitizedChange,
+				symbol,
+				last_update: lastUpdate,
+				color,
+				percent,
+			} satisfies Monitor;
+
+			await redis.set(`monitor:${rate}`, dataToCache);
 
 			console.log(`Successfully updated ${rate}.`);
 		});
 	} catch (error: unknown) {
-		if (error instanceof Error) {
-			console.error(`Failed to update ${rate}:`, error.message);
-		} else {
-			console.error(`Failed to update ${rate}:`, error);
+		const errorMessage = error instanceof Error ? error.message : String(error);
+		console.error(`Failed to update ${rate}:`, errorMessage);
+	}
+}
+
+async function runUpdateWithLock(
+	rate: "paralelo" | "bcv",
+	forceUpdate: boolean,
+) {
+	const updaterId = `updater:${Date.now()}`;
+	const lockKey = `update:rate:${rate}`;
+
+	const existingUpdater = await redis.get(lockKey);
+
+	if (existingUpdater) {
+		console.log(
+			`Another update process is already running for ${rate}. Skipping update.`,
+		);
+		return false;
+	}
+
+	try {
+		await redis
+			.pipeline()
+			.set(lockKey, updaterId)
+			.expire(lockKey, 60 * 5) // Set a 5-minute expiration
+			.exec();
+		await updateRate(rate, forceUpdate);
+		console.log(`Updated ${rate}.`);
+		return true;
+	} finally {
+		const currentUpdater = await redis.get(lockKey);
+		if (currentUpdater === updaterId) {
+			await redis.del(lockKey);
 		}
-		console.error(`Failed to update ${rate}:`, error);
 	}
 }
 
@@ -125,28 +208,25 @@ export async function GET(req: NextRequest) {
 
 		const venezuelaTime = getVenezuelaTime();
 		const day = format(venezuelaTime, "EEEE", { timeZone: TIME_ZONE });
+		const time = format(venezuelaTime, TIME_FORMAT, { timeZone: TIME_ZONE });
 
-		console.log(
-			`API Route called at ${format(venezuelaTime, "HH:mm", { timeZone: TIME_ZONE })} Venezuela time.`,
-		);
+		console.log(`API Route called at ${time} Venezuela time.`);
 
-		// Directly check if the current day is in the 'not' array for each currency
-		const shouldUpdateParalelo = !UPDATE_SCHEDULE.paralelo.not.includes(day);
-		const shouldUpdateBcv = !UPDATE_SCHEDULE.bcv.not.includes(day);
+		const updates = [];
 
-		if (shouldUpdateParalelo) {
-			await updateRate("paralelo", forceUpdate);
-			console.log("Updated paralelo.");
+		if (!UPDATE_SCHEDULE.paralelo.not.includes(day)) {
+			updates.push(runUpdateWithLock("paralelo", forceUpdate));
 		} else {
 			console.log("Skipping paralelo due to day restriction.");
 		}
 
-		if (shouldUpdateBcv) {
-			await updateRate("bcv", forceUpdate);
-			console.log("Updated bcv.");
+		if (!UPDATE_SCHEDULE.bcv.not.includes(day)) {
+			updates.push(runUpdateWithLock("bcv", forceUpdate));
 		} else {
 			console.log("Skipping bcv due to day restriction.");
 		}
+
+		await Promise.all(updates);
 
 		return NextResponse.json({ message: "success" });
 	} catch (error) {

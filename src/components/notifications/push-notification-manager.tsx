@@ -12,6 +12,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import { Checkbox } from "../ui/checkbox";
 
 function urlBase64ToUint8Array(base64String: string) {
 	const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -32,10 +33,27 @@ export function PushNotificationManager() {
 		null,
 	);
 
+	const [isOpen, setIsOpen] = useState(false);
+	const [dontRemind, setDontRemind] = useState(false);
+
 	useEffect(() => {
 		if ("serviceWorker" in navigator && "PushManager" in window) {
 			setIsSupported(true);
 			registerServiceWorker();
+		}
+
+		// Check localStorage for the "iWantNotifications" and "dontRemindNotifications" keys
+		const wantsNotifications = localStorage.getItem("iWantNotifications");
+		const dontRemindNotifications = localStorage.getItem(
+			"dontRemindNotifications",
+		);
+
+		if (dontRemindNotifications) {
+			setDontRemind(true);
+		}
+
+		if (!wantsNotifications && !dontRemindNotifications) {
+			setIsOpen(true); // Open the dialog if both keys are not present
 		}
 	}, []);
 
@@ -59,20 +77,31 @@ export function PushNotificationManager() {
 		setSubscription(sub);
 		const serializedSub = JSON.parse(JSON.stringify(sub));
 		await subscribeUser(serializedSub);
+		localStorage.setItem("iWantNotifications", "true");
 	}
 
 	async function unsubscribeFromPush() {
 		await subscription?.unsubscribe();
 		setSubscription(null);
 		await unsubscribeUser();
+		localStorage.removeItem("iWantNotifications");
 	}
+
+	const handleDontRemindChange = (checked: boolean) => {
+		setDontRemind(checked);
+		if (checked) {
+			localStorage.setItem("dontRemindNotifications", "true");
+		} else {
+			localStorage.removeItem("dontRemindNotifications");
+		}
+	};
 
 	if (!isSupported) {
 		return null;
 	}
 
 	return (
-		<Dialog>
+		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger asChild>
 				<Button size="icon" aria-label="Manage Notifications">
 					<BellIcon className="h-5 w-5" />
@@ -84,7 +113,7 @@ export function PushNotificationManager() {
 						Notificaciones
 					</DialogTitle>
 				</DialogHeader>
-				<DialogDescription>
+				<div>
 					{subscription ? (
 						<div className="flex flex-col gap-4">
 							<p className="text-sm">
@@ -92,19 +121,33 @@ export function PushNotificationManager() {
 								tasas del dólar.
 							</p>
 							<Button onClick={unsubscribeFromPush}>
-								Dejar de Recibir Notificaciones
+								Desuscribirme de las notificaciones
 							</Button>
 						</div>
 					) : (
-						<div className="flex flex-col gap-4 text-center">
+						<div className="flex flex-col gap-4">
 							<p className="text-sm">
-								No estás suscrito a las notificaciones. Suscríbete para recibir
-								actualizaciones.
+								¿Te gustaría recibir notificaciones sobre las tasas del dólar?
 							</p>
-							<Button onClick={subscribeToPush}>Recibir Notificaciones</Button>
+							<Button onClick={subscribeToPush}>
+								Subscribirme a las notificaciones
+							</Button>
+							<div className="flex items-center space-x-2">
+								<Checkbox
+									id="dont-remind"
+									checked={dontRemind}
+									onCheckedChange={handleDontRemindChange}
+								/>
+								<label
+									htmlFor="dont-remind"
+									className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+								>
+									No recordarme activar las notificaciones
+								</label>
+							</div>
 						</div>
 					)}
-				</DialogDescription>
+				</div>
 			</DialogContent>
 		</Dialog>
 	);

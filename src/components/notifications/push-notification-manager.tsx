@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { subscribeUser, unsubscribeUser } from "./actions";
+import { sendNotification, subscribeUser, unsubscribeUser } from "./actions";
 import { Button } from "../ui/button";
 import { BellIcon } from "lucide-react";
 import {
@@ -78,6 +78,9 @@ export function PushNotificationManager() {
 		const serializedSub = JSON.parse(JSON.stringify(sub));
 		await subscribeUser(serializedSub);
 		localStorage.setItem("iWantNotifications", "true");
+		await sendNotification(
+			"Excelente, ahora recibiras notificaciones de Dolary.",
+		);
 	}
 
 	async function unsubscribeFromPush() {

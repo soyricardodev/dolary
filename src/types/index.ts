@@ -1,4 +1,4 @@
-import type { Rate } from "@/app/api/types";
+import type { Monitor } from "@/app/api/types";
 
 export interface DateTimeInfo {
 	date: string;
@@ -30,8 +30,8 @@ export interface DolarApiResponse {
 
 export interface RatesResponse {
 	data: {
-		bcv: Rate;
-		paralelo: Rate;
+		bcv: Monitor;
+		paralelo: Monitor;
 	};
 }
 
@@ -41,3 +41,4 @@ export interface CustomPromedio {
 }
 
 export const CustomPromedioKey = "customPromedio";
+export const MonitorsKey = "monitors";

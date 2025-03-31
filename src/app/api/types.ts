@@ -17,7 +17,7 @@ export interface Monitor {
 	title: string;
 	price: number;
 	price_old?: number;
-	last_update?: string;
+	last_update?: string | Date;
 	image?: string;
 	percent?: number;
 	change?: number;

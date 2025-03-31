@@ -43,11 +43,15 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 	const promedioPrice = (bcvPrice + paraleloPrice) / 2;
 
 	// // Calculate change and percent for promedio
-	// const bcvOld = data.monitors.bcv.price_old;
-	// const paraleloOld = data.monitors.enparalelovzla.price_old;
-	// const promedioOld = (bcvOld + paraleloOld) / 2;
-	// const promedioChange = promedioPrice - promedioOld;
-	// const promedioPercent = (promedioChange / promedioOld) * 100;
+	const promedioOld = ((bcv.price_old ?? 0) + (paralelo.price_old ?? 0)) / 2;
+	const promedioChange = promedioPrice - promedioOld;
+	const promedioPercent = (promedioChange / promedioOld) * 100;
+	// Determine color for promedio based on its change
+	const promedioColor =
+		promedioChange > 0 ? "red" : promedioChange < 0 ? "green" : "neutral";
+	// Determine the symbol for promedio based on its change
+	const promedioSymbol =
+		promedioColor === "green" ? "▲" : promedioColor === "red" ? "▼" : "";
 
 	return (
 		<div className="relative">
@@ -61,10 +65,10 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 				<CurrencyCard
 					title="BCV"
 					price={bcvPrice}
-					symbol={"▲"}
-					change={3.96}
-					percent={3.96}
-					color={"red"}
+					symbol={bcv.symbol}
+					change={bcv.change}
+					percent={bcv.percent}
+					color={bcv.color}
 					lastUpdate={new Date(
 						new Date(bcv.last_update ?? new Date()).toLocaleString("en-US", {
 							timeZone: "America/Caracas",
@@ -77,10 +81,10 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 				<CurrencyCard
 					title="Paralelo"
 					price={paraleloPrice}
-					symbol={"▲"}
-					// change={3.96}
-					// percent={3.96}
-					color={"red"}
+					symbol={bcv.symbol}
+					change={bcv.change}
+					percent={bcv.percent}
+					color={bcv.color}
 					lastUpdate={new Date(
 						new Date(paralelo.last_update ?? new Date()).toLocaleString(
 							"en-US",
@@ -96,10 +100,10 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 				<CurrencyCard
 					title="Promedio"
 					price={promedioPrice}
-					symbol="Bs."
-					change={0}
-					percent={0}
-					color={"#28a745"}
+					symbol={promedioSymbol}
+					change={promedioChange}
+					percent={promedioPercent}
+					color={promedioColor}
 					onClick={() => onCardClick("promedio")}
 				/>
 

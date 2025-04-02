@@ -58,15 +58,28 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 			}
 
 			if (rate === "paralelo") {
-				const hoursSinceLastUpdate =
-					(getVenezuelaTime().getTime() - lastUpdateRedisTime.getTime()) /
-					(1000 * 60 * 60);
+				const currentHour = getVenezuelaTime().getHours();
+				const lastUpdateDay = format(lastUpdateRedisTime, DAY_FORMAT, {
+					timeZone: TIME_ZONE,
+				});
+				const today = format(getVenezuelaTime(), DAY_FORMAT, {
+					timeZone: TIME_ZONE,
+				});
 
-				if (hoursSinceLastUpdate < 2) {
-					console.log(
-						"Skipping paralelo update as it was already updated less than 2 hours ago.",
-					);
-					return;
+				if (lastUpdateDay === today) {
+					console.log("It has been updated today");
+					if (currentHour < 12) {
+						console.log(
+							"Skipping paralelo update as it was already updated today in the morning.",
+						);
+						return;
+					}
+					if (currentHour >= 12 && currentHour < 13) {
+						console.log(
+							"Skipping paralelo update as it is not yet time for the afternoon update.",
+						);
+						return;
+					}
 				}
 			}
 		}

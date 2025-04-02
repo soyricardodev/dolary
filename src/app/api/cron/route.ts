@@ -24,11 +24,15 @@ const TIME_FORMAT = "HH:mm";
 async function updateRate(rate: "paralelo" | "bcv", force = false) {
 	console.log(`Updating ${rate}, force=${force}`);
 	const updateKey = `update:${rate}`;
+	const monitorKey = `monitor:${rate}`;
+
+	const [lastUpdateRedis, redisData] = await redis
+		.pipeline()
+		.get<Date>(updateKey)
+		.get<Monitor>(monitorKey)
+		.exec();
 
 	try {
-		const lastUpdateRedis = await redis.get<Date>(updateKey);
-		console.log({ rate, lastUpdateRedis });
-
 		if (!force && lastUpdateRedis) {
 			const lastUpdateRedisTime = toZonedTime(
 				new Date(lastUpdateRedis),
@@ -78,8 +82,6 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 		}
 
 		const data = rate === "paralelo" ? await getParalelo() : await getUsdBcv();
-		const redisData = await redis.get<Monitor>(`monitor:${rate}`);
-
 		if (!data || !data.last_update) {
 			console.warn(`No data received for ${rate}.`);
 			return;

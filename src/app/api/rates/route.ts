@@ -12,8 +12,6 @@ export async function GET() {
 
 	const [bcv, paralelo] = await Promise.all([bcvData, paraleloData]);
 
-	console.log({ bcv, paralelo });
-
 	return NextResponse.json({
 		data: {
 			bcv,

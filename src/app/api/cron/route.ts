@@ -71,12 +71,6 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 						);
 						return;
 					}
-					if (currentHour >= 12 && currentHour < 13) {
-						console.log(
-							"Skipping paralelo update as it is not yet time for the afternoon update.",
-						);
-						return;
-					}
 				}
 			}
 		}

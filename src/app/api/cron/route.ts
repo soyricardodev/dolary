@@ -64,13 +64,15 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 				});
 
 				if (lastUpdateDay === today) {
-					console.log("It has been updated today");
+					console.log(rate, " has been updated today");
 					if (currentHour < 12) {
 						console.log(
 							"Skipping paralelo update as it was already updated today in the morning.",
 						);
 						return;
 					}
+
+					return;
 				}
 			}
 		}

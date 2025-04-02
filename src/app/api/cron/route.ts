@@ -1,7 +1,7 @@
 import { UPDATE_SCHEDULE } from "../consts";
 import { toZonedTime, format } from "date-fns-tz";
-import { getUsdBcv } from "../_bcv/route";
-import { getParalelo } from "../_paralelo/route";
+import { getUsdBcv } from "../bcv/route";
+import { getParalelo } from "../paralelo/route";
 import { NextResponse, type NextRequest } from "next/server";
 import { db } from "@/db/db";
 import { historyTable, monitorTable } from "@/db/schema";
@@ -27,6 +27,7 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 
 	try {
 		const lastUpdateRedis = await redis.get<Date>(updateKey);
+		console.log({ rate, lastUpdateRedis });
 
 		if (!force && lastUpdateRedis) {
 			const lastUpdateRedisTime = toZonedTime(
@@ -39,16 +40,35 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 			const currentDay = format(getVenezuelaTime(), DAY_FORMAT, {
 				timeZone: TIME_ZONE,
 			});
+			const tomorrow = format(
+				toZonedTime(
+					new Date(getVenezuelaTime().getTime() + 24 * 60 * 60 * 1000),
+					TIME_ZONE,
+				),
+				DAY_FORMAT,
+				{ timeZone: TIME_ZONE },
+			);
 
-			if (lastUpdateRedisDay === currentDay) {
-				if (rate === "bcv") {
-					console.log("Skipping bcv update as it was already updated today.");
+			console.log({
+				lastUpdateRedisTime,
+				lastUpdateRedisDay,
+				currentDay,
+			});
+
+			if (rate === "bcv") {
+				if (lastUpdateRedisDay === tomorrow) {
+					console.log("Skipping bcv update as it is updated.");
 					return;
 				}
+				console.log("We need to update BCV");
+			}
 
+			if (rate === "paralelo") {
 				const hoursSinceLastUpdate =
 					(getVenezuelaTime().getTime() - lastUpdateRedisTime.getTime()) /
 					(1000 * 60 * 60);
+
+				console.log({ hoursSinceLastUpdate });
 
 				if (hoursSinceLastUpdate < 2) {
 					console.log(

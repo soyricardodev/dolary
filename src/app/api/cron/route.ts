@@ -121,21 +121,18 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 				console.log(`Data for ${rate} is stale, forcing update.`);
 			}
 
-			if (!force) {
-				const lastUpdateVenezuelaTime = toZonedTime(
-					latestData.lastUpdate,
-					TIME_ZONE,
+			if (
+				!force &&
+				UPDATE_SCHEDULE[rate].not.includes(
+					format(toZonedTime(latestData.lastUpdate, TIME_ZONE), "EEEE", {
+						timeZone: TIME_ZONE,
+					}),
+				)
+			) {
+				console.log(
+					`Not updating ${rate} because last update was on a weekend.`,
 				);
-				const lastUpdateDay = format(lastUpdateVenezuelaTime, "EEEE", {
-					timeZone: TIME_ZONE,
-				});
-
-				if (UPDATE_SCHEDULE[rate].not.includes(lastUpdateDay)) {
-					console.log(
-						`Not updating ${rate} because last update was on a weekend.`,
-					);
-					return;
-				}
+				return;
 			}
 
 			const price = data.price;

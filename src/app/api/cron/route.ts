@@ -49,12 +49,6 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 				{ timeZone: TIME_ZONE },
 			);
 
-			console.log({
-				lastUpdateRedisTime,
-				lastUpdateRedisDay,
-				currentDay,
-			});
-
 			if (rate === "bcv") {
 				if (lastUpdateRedisDay === tomorrow) {
 					console.log("Skipping bcv update as it is updated.");
@@ -67,8 +61,6 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 				const hoursSinceLastUpdate =
 					(getVenezuelaTime().getTime() - lastUpdateRedisTime.getTime()) /
 					(1000 * 60 * 60);
-
-				console.log({ hoursSinceLastUpdate });
 
 				if (hoursSinceLastUpdate < 2) {
 					console.log(

@@ -88,12 +88,10 @@ export async function getUsdBcv(): Promise<Rate | null> {
 	return data.find((rate) => rate.key === "usd") ?? null;
 }
 
-const redis = Redis.fromEnv();
-
 export async function GET() {
-	const data = await redis.get("bcv");
+	const data = await getUsdBcv();
 
 	return Response.json({
-		data,
+		...data,
 	});
 }

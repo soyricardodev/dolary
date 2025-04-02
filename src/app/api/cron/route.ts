@@ -234,7 +234,7 @@ async function runUpdateWithLock(
 	}
 }
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
 	try {
 		const { searchParams } = req.nextUrl;
 		const forceUpdate = searchParams.get("force") === "true";

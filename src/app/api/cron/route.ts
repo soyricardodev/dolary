@@ -114,13 +114,11 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 			);
 			console.log(`Last updated ${lastUpdateDays} days ago`);
 
-			let shouldForceUpdate = force;
 			if (
-				lastUpdateDays > Number(process.env.STALE_DATA_THRESHOLD_DAYS || 1) &&
-				!shouldForceUpdate
+				force ||
+				lastUpdateDays > Number(process.env.STALE_DATA_THRESHOLD_DAYS ?? 1)
 			) {
 				console.log(`Data for ${rate} is stale, forcing update.`);
-				shouldForceUpdate = true;
 			}
 
 			if (!force) {
@@ -176,7 +174,7 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 			});
 
 			redis.pipeline().set(updateKey, lastUpdate).exec();
-
+			await redis.pipeline().set(updateKey, lastUpdate).exec();
 			const dataToCache: Monitor = {
 				key: rate,
 				title: rate,

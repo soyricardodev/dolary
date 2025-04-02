@@ -50,18 +50,20 @@ export function CurrencyCard({
 			<CardHeader className="pt-2 pb-0 flex flex-row w-full justify-between items-center">
 				<div className="flex gap-4">
 					<h2 className="text-xl font-bold">{title}</h2>
-					{/* <Badge className="w-max" variant={"neutral"}>
-						{change >= 0 ? (
-							<ArrowUp className="size-3 mr-1" />
-						) : (
-							<ArrowDown className="size-3 mr-1" />
-						)}
+					{
+						<Badge className="w-max" variant={"neutral"}>
+							{change != null && change >= 0 ? (
+								<ArrowUp className="size-3 mr-1" />
+							) : (
+								<ArrowDown className="size-3 mr-1" />
+							)}
 
-						<span className="font-medium">
-							{change >= 0 ? "+" : ""}
-							{formatCurrency(change)} ({percent.toFixed(2)}%)
-						</span>
-					</Badge> */}
+							<span className="font-medium">
+								{(change ?? 0) >= 0 ? "+" : ""}
+								{formatCurrency(change ?? 0)} ({(percent ?? 0).toFixed(2)}%)
+							</span>
+						</Badge>
+					}
 				</div>
 				<Button onClick={handleCopy} title="Copiar valor" size="icon">
 					{copied ? (

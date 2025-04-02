@@ -2,6 +2,7 @@ import { Providers } from "../components/providers";
 import type { Metadata, Viewport } from "next";
 import "./index.css";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const APP_NAME = "Dolary";
 const APP_DEFAULT_TITLE = "Calculadora Dolar Venezuela";
@@ -54,6 +55,7 @@ export default function RootLayout({
 		<html lang="es">
 			<body>
 				<Analytics />
+				<SpeedInsights />
 				<Providers>{children}</Providers>
 			</body>
 		</html>

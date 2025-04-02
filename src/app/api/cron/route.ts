@@ -37,9 +37,6 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 			const lastUpdateRedisDay = format(lastUpdateRedisTime, DAY_FORMAT, {
 				timeZone: TIME_ZONE,
 			});
-			const currentDay = format(getVenezuelaTime(), DAY_FORMAT, {
-				timeZone: TIME_ZONE,
-			});
 			const tomorrow = format(
 				toZonedTime(
 					new Date(getVenezuelaTime().getTime() + 24 * 60 * 60 * 1000),
@@ -85,9 +82,20 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 		}
 
 		const data = rate === "paralelo" ? await getParalelo() : await getUsdBcv();
+		const redisData = await redis.get<Monitor>(`monitor:${rate}`);
 
-		if (!data) {
+		if (!data || !data.last_update) {
 			console.warn(`No data received for ${rate}.`);
+			return;
+		}
+
+		const dateMatch = redisData?.last_update
+			? new Date(data.last_update).toISOString() ===
+				new Date(redisData.last_update).toISOString()
+			: false;
+
+		if (dateMatch && !force) {
+			console.log("We don't have updated data for:", rate);
 			return;
 		}
 

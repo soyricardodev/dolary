@@ -1,4 +1,3 @@
-import { DateTime } from "luxon";
 import { NextResponse } from "next/server";
 import * as cheerio from "cheerio";
 import { getUrlImage } from "../utils";
@@ -8,9 +7,9 @@ import type { Rate } from "../types";
 const PATTERN = /(🗓|🕒|💵|🔺|🔻|🟰)|Bs\. (\d+,\d+)/g;
 const validEmojis = ["🗓", "🕒", "💵", "🔺", "🔻", "🟰"];
 
-function getFormattedDate(dateString: string) {
-	const date = DateTime.fromISO(dateString, { zone: "America/Caracas" });
-	return date.toISO(); // Return in ISO format
+function getFormattedDate(dateString: string): string {
+	const date = new Date(dateString);
+	return date.toISOString(); // Return in ISO format
 }
 
 export async function getParalelo(): Promise<Rate | null> {
@@ -44,6 +43,7 @@ export async function getParalelo(): Promise<Rate | null> {
 			if (price !== null) {
 				const lastUpdate = getFormattedDate(getDateMessage(dataMessage));
 				const image = getUrlImage("paralelo", "enparalelovzla");
+				console.log({ lastUpdate, dateMsg: getDateMessage(dataMessage) });
 
 				const data = {
 					key: "enparalelovzla",

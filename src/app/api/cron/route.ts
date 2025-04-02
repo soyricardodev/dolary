@@ -170,8 +170,6 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 				price,
 			});
 
-			redis.pipeline().set(updateKey, lastUpdate).exec();
-			await redis.pipeline().set(updateKey, lastUpdate).exec();
 			const dataToCache: Monitor = {
 				key: rate,
 				title: rate,
@@ -184,7 +182,11 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 				percent,
 			} satisfies Monitor;
 
-			await redis.set(`monitor:${rate}`, dataToCache);
+			await redis
+				.pipeline()
+				.set(updateKey, lastUpdate, { ex: 60 * 60 * 24 }) // Set TTL for 24 hours
+				.set(monitorKey, dataToCache)
+				.exec();
 
 			console.log(`Successfully updated ${rate}.`);
 		});

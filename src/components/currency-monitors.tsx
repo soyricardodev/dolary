@@ -81,10 +81,10 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 				<CurrencyCard
 					title="Paralelo"
 					price={paraleloPrice}
-					symbol={bcv.symbol}
-					change={bcv.change}
-					percent={bcv.percent}
-					color={bcv.color}
+					symbol={paralelo.symbol}
+					change={paralelo.change}
+					percent={paralelo.percent}
+					color={paralelo.color}
 					lastUpdate={new Date(
 						new Date(paralelo.last_update ?? new Date()).toLocaleString(
 							"en-US",

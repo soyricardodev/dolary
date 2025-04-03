@@ -44,14 +44,21 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 
 	// // Calculate change and percent for promedio
 	const promedioOld = ((bcv.price_old ?? 0) + (paralelo.price_old ?? 0)) / 2;
-	const promedioChange = promedioPrice - promedioOld;
-	const promedioPercent = (promedioChange / promedioOld) * 100;
+	const promedioChange = Number.parseFloat(
+		(promedioPrice - promedioOld).toFixed(2),
+	);
+	const promedioPercent = Number.parseFloat(
+		((promedioChange / promedioOld) * 100 || 0).toFixed(2).replace("-", ""),
+	);
 	// Determine color for promedio based on its change
 	const promedioColor =
 		promedioChange > 0 ? "red" : promedioChange < 0 ? "green" : "neutral";
 	// Determine the symbol for promedio based on its change
 	const promedioSymbol =
 		promedioColor === "green" ? "▲" : promedioColor === "red" ? "▼" : "";
+	const sanitizedChange = Number.parseFloat(
+		promedioChange.toString().replace("-", ""),
+	);
 
 	return (
 		<div className="relative">
@@ -101,7 +108,7 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 					title="Promedio"
 					price={promedioPrice}
 					symbol={promedioSymbol}
-					change={promedioChange}
+					change={sanitizedChange}
 					percent={promedioPercent}
 					color={promedioColor}
 					onClick={() => onCardClick("promedio")}

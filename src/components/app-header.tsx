@@ -27,6 +27,7 @@ export function AppHeader() {
 					size="icon"
 					onClick={() => getFreshData()}
 					disabled={isRefetching}
+					aria-label="Refrescar Datos"
 				>
 					<RefreshCw
 						className={`h-3.5 w-3.5 mr-1 ${isRefetching ? "animate-spin" : ""}`}

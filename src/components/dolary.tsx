@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { CurrencyMonitors } from "./currency-monitors";
-import { CurrencyCalculator } from "./currency-calculator";
+import { ResponsiveCalculator } from "./calculator/responsive-calculator";
 
 export function Dolary() {
 	const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
@@ -22,10 +22,9 @@ export function Dolary() {
 			<CurrencyMonitors onCardClick={handleCardClick} />
 
 			{selectedCurrency && (
-				<CurrencyCalculator
-					currency={selectedCurrency}
+				<ResponsiveCalculator
 					isOpen={calculatorVisible}
-					onClose={closeCalculator}
+					onCloseAction={closeCalculator}
 				/>
 			)}
 		</>

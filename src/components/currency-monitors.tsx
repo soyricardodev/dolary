@@ -48,11 +48,15 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 		(promedioPrice - promedioOld).toFixed(2),
 	);
 	const promedioPercent = Number.parseFloat(
-		((promedioChange / promedioOld) * 100 || 0).toFixed(2).replace("-", ""),
+		((promedioChange / promedioPrice) * 100 || 0).toFixed(2).replace("-", ""),
 	);
 	// Determine color for promedio based on its change
 	const promedioColor =
-		promedioChange > 0 ? "red" : promedioChange < 0 ? "green" : "neutral";
+		promedioPrice < promedioOld
+			? "red"
+			: promedioPrice > promedioOld
+				? "green"
+				: "neutral";
 	// Determine the symbol for promedio based on its change
 	const promedioSymbol =
 		promedioColor === "green" ? "▲" : promedioColor === "red" ? "▼" : "";

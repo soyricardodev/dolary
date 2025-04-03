@@ -18,10 +18,17 @@ export default async function RootPage() {
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<main className="min-h-screen p-3 flex flex-col font-sans mx-auto">
+			<main className="min-h-screen p-3 flex flex-col gap-3 font-sans mx-auto">
 				<AppHeader />
 
-				<div className="flex-grow flex flex-col justify-center">
+				<div className="flex-grow flex flex-col gap-2 justify-evenly relative">
+					<div className="text-center mx-auto">
+						<h1 className="text-2xl font-extrabold">¡Bienvenido a Dolary!</h1>
+						<p className="text-sm md:text-lg text-balance max-w-md mx-auto">
+							La forma más sencilla de consultar las tasas del dólar en tiempo
+							real.
+						</p>
+					</div>
 					<Dolary />
 				</div>
 

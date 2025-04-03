@@ -65,7 +65,12 @@ export function CurrencyCard({
 						</Badge>
 					}
 				</div>
-				<Button onClick={handleCopy} title="Copiar valor" size="icon">
+				<Button
+					onClick={handleCopy}
+					title="Copiar valor"
+					size="icon"
+					aria-label="Copiar Tasa"
+				>
 					{copied ? (
 						<Check className="h-4 w-4" />
 					) : (

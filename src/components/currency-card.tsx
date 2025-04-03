@@ -35,6 +35,7 @@ export function CurrencyCard({
 	lastUpdate,
 	onClick,
 	className = "",
+	color,
 }: CurrencyCardProps) {
 	const [copied, setCopied] = useState(false);
 
@@ -45,6 +46,8 @@ export function CurrencyCard({
 		setTimeout(() => setCopied(false), 2000);
 	};
 
+	const isChangePositive = color != null && color === "green";
+
 	return (
 		<Card className={`relative ${className}`} onClick={onClick}>
 			<CardHeader className="pt-2 pb-0 flex flex-row w-full justify-between items-center">
@@ -52,14 +55,14 @@ export function CurrencyCard({
 					<h2 className="text-xl font-bold">{title}</h2>
 					{
 						<Badge className="w-max" variant={"neutral"}>
-							{change != null && change >= 0 ? (
+							{isChangePositive ? (
 								<ArrowUp className="size-3 mr-1" />
 							) : (
 								<ArrowDown className="size-3 mr-1" />
 							)}
 
 							<span className="font-medium">
-								{(change ?? 0) >= 0 ? "+" : ""}
+								{isChangePositive ? "+" : "-"}
 								{formatCurrency(change ?? 0)} ({(percent ?? 0).toFixed(2)}%)
 							</span>
 						</Badge>

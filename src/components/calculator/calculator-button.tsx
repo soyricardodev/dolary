@@ -27,7 +27,7 @@ export function CalculatorButton({
 
 		switch (variant) {
 			case "number":
-				return `${baseStyles} bg-yellow-200 hover:bg-yellow-100`;
+				return baseStyles;
 			case "function":
 				return `${baseStyles} bg-gray-500 hover:bg-gray-300 text-white`;
 			case "delete":

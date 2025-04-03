@@ -1,8 +1,16 @@
 import { Providers } from "../components/providers";
 import type { Metadata, Viewport } from "next";
 import "./index.css";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { lazy, Suspense } from "react";
+
+const LazyAnalytics = lazy(() =>
+	import("@vercel/analytics/next").then((mod) => ({ default: mod.Analytics })),
+);
+const LazySpeedInsights = lazy(() =>
+	import("@vercel/speed-insights/next").then((mod) => ({
+		default: mod.SpeedInsights,
+	})),
+);
 
 const APP_NAME = "Dolary";
 const APP_DEFAULT_TITLE =
@@ -55,8 +63,12 @@ export default function RootLayout({
 	return (
 		<html lang="es">
 			<body>
-				<Analytics />
-				<SpeedInsights />
+				<Suspense>
+					<LazyAnalytics />
+				</Suspense>
+				<Suspense>
+					<LazySpeedInsights />
+				</Suspense>
 				<Providers>{children}</Providers>
 			</body>
 		</html>

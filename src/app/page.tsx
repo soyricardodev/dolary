@@ -22,13 +22,9 @@ export default async function RootPage() {
 				<AppHeader />
 
 				<div className="flex-grow flex flex-col gap-2 justify-evenly relative">
-					<div className="text-center mx-auto">
-						<h1 className="text-2xl font-extrabold">¡Bienvenido a Dolary!</h1>
-						<p className="text-sm md:text-lg text-balance max-w-md mx-auto">
-							La forma más sencilla de consultar las tasas del dólar en tiempo
-							real.
-						</p>
-					</div>
+					<h1 className="text-2xl font-extrabold text-center ">
+						¡Bienvenido a Dolary!
+					</h1>
 					<Dolary />
 				</div>
 

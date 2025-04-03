@@ -5,10 +5,11 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const APP_NAME = "Dolary";
-const APP_DEFAULT_TITLE = "Calculadora Dolar Venezuela";
+const APP_DEFAULT_TITLE =
+	"Dolary: Calculadora de tasas del Dólar para Venezuela";
 const APP_TITLE_TEMPLATE = "%s - Dolary";
 const APP_DESCRIPTION =
-	"La mejor calculadora sin anuncios, gratis, rápida y sin acceso a internet para Venezuela!";
+	"La mejor calculadora gratis, sin anuncios y sin acceso a internet para Venezuela!";
 
 export const metadata: Metadata = {
 	applicationName: APP_NAME,

@@ -51,6 +51,10 @@ export const metadata: Metadata = {
 		},
 		description: APP_DESCRIPTION,
 	},
+	authors: {
+		name: "Ricardo Castro",
+		url: "https://github.com/soyricardodev",
+	},
 };
 
 export const viewport: Viewport = {

@@ -175,7 +175,12 @@ export function CurrencyCalculator({
 				<div className="mb-4">
 					<div className="flex items-center justify-between mb-2">
 						<Label>Dólares (USD)</Label>
-						<Button size="icon" onClick={handleCopyUsd} className="">
+						<Button
+							size="icon"
+							onClick={handleCopyUsd}
+							className=""
+							aria-label="Copiar Tasa"
+						>
 							{copiedUsd ? (
 								<Check className="h-4 w-4 mr-1" />
 							) : (
@@ -201,6 +206,7 @@ export function CurrencyCalculator({
 									type="button"
 									onClick={clearUsd}
 									className="text-gray-400 hover:text-gray-600 transition-colors"
+									aria-label="Limpiar Valores"
 								>
 									<XCircle className="h-5 w-5" />
 								</button>
@@ -220,6 +226,7 @@ export function CurrencyCalculator({
 						onClick={swapValues}
 						className="rounded-full"
 						title="Intercambiar valores"
+						aria-label="Intercambiar valores"
 					>
 						<ArrowDownUp className="h-5 w-5" />
 						<span className="sr-only">Intercambiar valores</span>
@@ -229,7 +236,12 @@ export function CurrencyCalculator({
 				<div className="mb-4">
 					<div className="flex items-center justify-between mb-2">
 						<Label>Bolívares (Bs.)</Label>
-						<Button size="icon" onClick={handleCopyBs} className="">
+						<Button
+							size="icon"
+							onClick={handleCopyBs}
+							className=""
+							aria-label="Copiar Tasa"
+						>
 							{copiedBs ? (
 								<Check className="h-4 w-4 mr-1" />
 							) : (
@@ -255,6 +267,7 @@ export function CurrencyCalculator({
 									type="button"
 									onClick={clearBs}
 									className="text-gray-400 hover:text-gray-600 transition-colors"
+									aria-label="Limpiar Valores"
 								>
 									<XCircle className="h-5 w-5" />
 								</button>

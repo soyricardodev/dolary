@@ -53,7 +53,9 @@ export function PushNotificationManager() {
 		}
 
 		if (!wantsNotifications && !dontRemindNotifications) {
-			setIsOpen(true); // Open the dialog if both keys are not present
+			setTimeout(() => {
+				setIsOpen(true); // Open the dialog if both keys are not present
+			}, 3000);
 		}
 	}, []);
 

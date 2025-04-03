@@ -67,15 +67,10 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 					timeZone: TIME_ZONE,
 				});
 
-				if (lastUpdateDay === today) {
-					console.log(rate, " has been updated today");
-					if (currentHour < 12) {
-						console.log(
-							"Skipping paralelo update as it was already updated today in the morning.",
-						);
-						return;
-					}
-
+				if (lastUpdateDay === today && currentHour < 12) {
+					console.log(
+						"Skipping paralelo update as it was already updated today in the morning.",
+					);
 					return;
 				}
 			}

@@ -55,6 +55,23 @@ export const metadata: Metadata = {
 		name: "Ricardo Castro",
 		url: "https://github.com/soyricardodev",
 	},
+	keywords: [
+		"dólar",
+		"calculadora",
+		"tasas",
+		"Venezuela",
+		"conversor",
+		"economía",
+		"sin internet",
+		"gratis",
+		"sin anuncios",
+		"dolar paralelo",
+		"bcv",
+		"tasa",
+		"dolar hoy",
+		"dolartoday",
+		"paralelo",
+	],
 };
 
 export const viewport: Viewport = {

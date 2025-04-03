@@ -29,7 +29,7 @@ export function CalculatorButton({
 			case "number":
 				return `${baseStyles} bg-yellow-200 hover:bg-yellow-100`;
 			case "function":
-				return `${baseStyles} bg-gray-400 hover:bg-gray-300 text-white`;
+				return `${baseStyles} bg-gray-500 hover:bg-gray-300 text-white`;
 			case "delete":
 				return `${baseStyles} bg-orange-300 hover:bg-orange-200 flex items-center justify-center`;
 			case "equals":

@@ -119,19 +119,19 @@ export function PushNotificationManager() {
 				<div>
 					{subscription ? (
 						<div className="flex flex-col gap-4">
-							<p className="text-sm">
+							<DialogDescription className="text-sm">
 								Actualmente estás suscrito para recibir notificaciones sobre las
 								tasas del dólar.
-							</p>
+							</DialogDescription>
 							<Button onClick={unsubscribeFromPush}>
 								Desuscribirme de las notificaciones
 							</Button>
 						</div>
 					) : (
 						<div className="flex flex-col gap-4">
-							<p className="text-sm">
-								¿Te gustaría recibir notificaciones sobre las tasas del dólar?
-							</p>
+							<DialogDescription className="text-sm">
+								¿Quieres recibir notificaciones?
+							</DialogDescription>
 							<Button onClick={subscribeToPush}>
 								Subscribirme a las notificaciones
 							</Button>

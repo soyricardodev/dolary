@@ -167,15 +167,12 @@ export function Calculator({ rates }: CalculatorProps) {
 	return (
 		<div className="flex flex-col gap-2">
 			{/* Currency Selector with Improved Toggle Button */}
-			<div className="bg-yellow-200 p-3 border-black border-2 rounded-md">
+			<div className="bg-main p-3 border-black border-2 rounded-md">
 				<div className="flex flex-col space-y-3">
 					{/* Currency Direction Toggle - Improved Position */}
 					<div className="flex items-center justify-between mb-2">
 						<span className="font-bold text-sm">Modo de conversión:</span>
-						<Button
-							onClick={toggleConversionMode}
-							className="h-9 border-black border-2 bg-white hover:bg-gray-100 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center gap-2 transition-transform active:scale-95"
-						>
+						<Button onClick={toggleConversionMode} variant={"neutral"}>
 							<ArrowRightLeft size={16} />
 							<span className="font-bold">
 								{conversionMode === "dollarToBs" ? "USD → Bs" : "Bs → USD"}
@@ -190,7 +187,7 @@ export function Calculator({ rates }: CalculatorProps) {
 						onValueChange={setSelectedRateType}
 						className="w-full"
 					>
-						<TabsList className="grid grid-cols-3 bg-yellow-100 border-black border-2">
+						<TabsList className="grid grid-cols-3">
 							<TabsTrigger value="bcv" className="data-[state=active]:bg-white">
 								BCV
 							</TabsTrigger>

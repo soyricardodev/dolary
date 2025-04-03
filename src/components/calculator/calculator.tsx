@@ -2,16 +2,14 @@
 
 import { useState, useEffect } from "react";
 import * as math from "mathjs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ArrowRightLeft, X } from "lucide-react";
+import { ArrowRightLeft } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { CalculatorButton } from "./calculator-button";
 import { ResultDisplay } from "./result-display";
 
 interface CalculatorProps {
-	onClose?: () => void;
 	rates: {
 		paralelo: number;
 		promedio: number;
@@ -19,7 +17,7 @@ interface CalculatorProps {
 	};
 }
 
-export function Calculator({ onClose, rates }: CalculatorProps) {
+export function Calculator({ rates }: CalculatorProps) {
 	const [input, setInput] = useState("");
 	const [previewResult, setPreviewResult] = useState("");
 	const [previewCurrencyResult, setPreviewCurrencyResult] = useState("");
@@ -160,240 +158,221 @@ export function Calculator({ onClose, rates }: CalculatorProps) {
 	};
 
 	return (
-		<Card className="w-full border-0 shadow-none bg-yellow-100">
-			<CardHeader className="flex flex-row items-center justify-between p-4 border-b-2 border-black bg-yellow-300">
-				<CardTitle className="text-xl font-bold">
-					Venezuelan Currency Calculator
-				</CardTitle>
-				{onClose && (
-					<Button
-						size="icon"
-						onClick={onClose}
-						className="h-8 w-8 rounded-full hover:bg-yellow-200 transition-colors"
-					>
-						<X className="h-5 w-5" />
-					</Button>
-				)}
-			</CardHeader>
-			<CardContent className="p-4 sm:p-6 space-y-4">
-				{/* Currency Selector with Improved Toggle Button */}
-				<div className="bg-yellow-200 p-3 border-black border-2 rounded-md">
-					<div className="flex flex-col space-y-3">
-						{/* Currency Direction Toggle - Improved Position */}
-						<div className="flex items-center justify-between mb-1">
-							<span className="font-bold text-sm">Conversion Mode:</span>
-							<Button
-								onClick={toggleConversionMode}
-								className="h-9 border-black border-2 bg-white hover:bg-gray-100 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center gap-2 transition-transform active:scale-95"
-							>
-								<ArrowRightLeft size={16} />
-								<span className="font-bold">
-									{conversionMode === "dollarToBs" ? "$ → Bs" : "Bs → $"}
-								</span>
-							</Button>
-						</div>
-
-						{/* Currency Type Tabs */}
-						<Tabs
-							defaultValue="paralelo"
-							value={selectedRateType}
-							onValueChange={setSelectedRateType}
-							className="w-full"
+		<div>
+			{/* Currency Selector with Improved Toggle Button */}
+			<div className="bg-yellow-200 p-3 border-black border-2 rounded-md">
+				<div className="flex flex-col space-y-3">
+					{/* Currency Direction Toggle - Improved Position */}
+					<div className="flex items-center justify-between mb-1">
+						<span className="font-bold text-sm">Conversion Mode:</span>
+						<Button
+							onClick={toggleConversionMode}
+							className="h-9 border-black border-2 bg-white hover:bg-gray-100 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center gap-2 transition-transform active:scale-95"
 						>
-							<TabsList className="grid grid-cols-3 bg-yellow-100 border-black border-2">
-								<TabsTrigger
-									value="bcv"
-									className="data-[state=active]:bg-white"
-								>
-									BCV
-								</TabsTrigger>
-								<TabsTrigger
-									value="paralelo"
-									className="data-[state=active]:bg-white"
-								>
-									Paralelo
-								</TabsTrigger>
-								<TabsTrigger
-									value="promedio"
-									className="data-[state=active]:bg-white"
-								>
-									Promedio
-								</TabsTrigger>
-							</TabsList>
-						</Tabs>
+							<ArrowRightLeft size={16} />
+							<span className="font-bold">
+								{conversionMode === "dollarToBs" ? "$ → Bs" : "Bs → $"}
+							</span>
+						</Button>
 					</div>
 
-					{/* Hidden inputs for rates */}
-					<input type="hidden" value={bcvRate} />
-					<input type="hidden" value={paraleloRate} />
-					<input type="hidden" value={promedioRate} />
+					{/* Currency Type Tabs */}
+					<Tabs
+						defaultValue="paralelo"
+						value={selectedRateType}
+						onValueChange={setSelectedRateType}
+						className="w-full"
+					>
+						<TabsList className="grid grid-cols-3 bg-yellow-100 border-black border-2">
+							<TabsTrigger value="bcv" className="data-[state=active]:bg-white">
+								BCV
+							</TabsTrigger>
+							<TabsTrigger
+								value="paralelo"
+								className="data-[state=active]:bg-white"
+							>
+								Paralelo
+							</TabsTrigger>
+							<TabsTrigger
+								value="promedio"
+								className="data-[state=active]:bg-white"
+							>
+								Promedio
+							</TabsTrigger>
+						</TabsList>
+					</Tabs>
 				</div>
 
-				{/* Calculator Display */}
-				<div className="space-y-3">
-					<Input
-						type="text"
-						value={input}
-						onChange={(e) => setInput(e.target.value)}
-						className="text-right text-xl font-mono border-black border-2 bg-white h-14 focus:ring-black focus:ring-offset-2"
-						placeholder={
-							conversionMode === "dollarToBs"
-								? "Enter USD amount..."
-								: "Enter Bs amount..."
+				{/* Hidden inputs for rates */}
+				<input type="hidden" value={bcvRate} />
+				<input type="hidden" value={paraleloRate} />
+				<input type="hidden" value={promedioRate} />
+			</div>
+
+			{/* Calculator Display */}
+			<div className="space-y-3">
+				<Input
+					type="text"
+					value={input}
+					onChange={(e) => setInput(e.target.value)}
+					className="text-right text-xl font-mono border-black border-2 bg-white h-14 focus:ring-black focus:ring-offset-2"
+					placeholder={
+						conversionMode === "dollarToBs"
+							? "Enter USD amount..."
+							: "Enter Bs amount..."
+					}
+				/>
+
+				{/* Results Display */}
+				<div className="grid grid-cols-2 gap-3">
+					<ResultDisplay
+						label={
+							conversionMode === "dollarToBs" ? "USD Amount:" : "Bs Amount:"
+						}
+						value={previewResult || "0"}
+					/>
+					<ResultDisplay
+						label={
+							conversionMode === "dollarToBs" ? "In Bolivares:" : "In USD:"
+						}
+						value={
+							previewCurrencyResult ||
+							(conversionMode === "dollarToBs" ? "0 Bs" : "$0")
 						}
 					/>
-
-					{/* Results Display */}
-					<div className="grid grid-cols-2 gap-3">
-						<ResultDisplay
-							label={
-								conversionMode === "dollarToBs" ? "USD Amount:" : "Bs Amount:"
-							}
-							value={previewResult || "0"}
-						/>
-						<ResultDisplay
-							label={
-								conversionMode === "dollarToBs" ? "In Bolivares:" : "In USD:"
-							}
-							value={
-								previewCurrencyResult ||
-								(conversionMode === "dollarToBs" ? "0 Bs" : "$0")
-							}
-						/>
-					</div>
 				</div>
+			</div>
 
-				{/* Calculator Buttons */}
-				<div className="grid grid-cols-4 gap-2 sm:gap-3">
-					{/* Row 1: AC, (), %, ÷ */}
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("AC")}
-						variant="function"
-					>
-						AC
-					</CalculatorButton>
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("()")}
-						variant="function"
-					>
-						( )
-					</CalculatorButton>
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("%")}
-						variant="function"
-						icon="percent"
-					/>
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("/")}
-						variant="function"
-					>
-						÷
-					</CalculatorButton>
+			{/* Calculator Buttons */}
+			<div className="grid grid-cols-4 gap-2 sm:gap-3">
+				{/* Row 1: AC, (), %, ÷ */}
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("AC")}
+					variant="function"
+				>
+					AC
+				</CalculatorButton>
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("()")}
+					variant="function"
+				>
+					( )
+				</CalculatorButton>
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("%")}
+					variant="function"
+					icon="percent"
+				/>
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("/")}
+					variant="function"
+				>
+					÷
+				</CalculatorButton>
 
-					{/* Row 2: 7-8-9-× */}
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("7")}
-						variant="number"
-					>
-						7
-					</CalculatorButton>
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("8")}
-						variant="number"
-					>
-						8
-					</CalculatorButton>
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("9")}
-						variant="number"
-					>
-						9
-					</CalculatorButton>
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("*")}
-						variant="function"
-					>
-						×
-					</CalculatorButton>
+				{/* Row 2: 7-8-9-× */}
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("7")}
+					variant="number"
+				>
+					7
+				</CalculatorButton>
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("8")}
+					variant="number"
+				>
+					8
+				</CalculatorButton>
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("9")}
+					variant="number"
+				>
+					9
+				</CalculatorButton>
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("*")}
+					variant="function"
+				>
+					×
+				</CalculatorButton>
 
-					{/* Row 3: 4-5-6-- */}
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("4")}
-						variant="number"
-					>
-						4
-					</CalculatorButton>
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("5")}
-						variant="number"
-					>
-						5
-					</CalculatorButton>
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("6")}
-						variant="number"
-					>
-						6
-					</CalculatorButton>
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("-")}
-						variant="function"
-					>
-						−
-					</CalculatorButton>
+				{/* Row 3: 4-5-6-- */}
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("4")}
+					variant="number"
+				>
+					4
+				</CalculatorButton>
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("5")}
+					variant="number"
+				>
+					5
+				</CalculatorButton>
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("6")}
+					variant="number"
+				>
+					6
+				</CalculatorButton>
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("-")}
+					variant="function"
+				>
+					−
+				</CalculatorButton>
 
-					{/* Row 4: 1-2-3-+ */}
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("1")}
-						variant="number"
-					>
-						1
-					</CalculatorButton>
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("2")}
-						variant="number"
-					>
-						2
-					</CalculatorButton>
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("3")}
-						variant="number"
-					>
-						3
-					</CalculatorButton>
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("+")}
-						variant="function"
-					>
-						+
-					</CalculatorButton>
+				{/* Row 4: 1-2-3-+ */}
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("1")}
+					variant="number"
+				>
+					1
+				</CalculatorButton>
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("2")}
+					variant="number"
+				>
+					2
+				</CalculatorButton>
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("3")}
+					variant="number"
+				>
+					3
+				</CalculatorButton>
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("+")}
+					variant="function"
+				>
+					+
+				</CalculatorButton>
 
-					{/* Row 5: 0-.-⌫-= */}
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("0")}
-						variant="number"
-					>
-						0
-					</CalculatorButton>
-					<CalculatorButton
-						onClickAction={() => handleButtonClick(".")}
-						variant="number"
-					>
-						.
-					</CalculatorButton>
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("⌫")}
-						variant="delete"
-						icon="delete"
-					/>
-					<CalculatorButton
-						onClickAction={() => handleButtonClick("=")}
-						variant="equals"
-					>
-						=
-					</CalculatorButton>
-				</div>
-			</CardContent>
-		</Card>
+				{/* Row 5: 0-.-⌫-= */}
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("0")}
+					variant="number"
+				>
+					0
+				</CalculatorButton>
+				<CalculatorButton
+					onClickAction={() => handleButtonClick(".")}
+					variant="number"
+				>
+					.
+				</CalculatorButton>
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("⌫")}
+					variant="delete"
+					icon="delete"
+				/>
+				<CalculatorButton
+					onClickAction={() => handleButtonClick("=")}
+					variant="equals"
+				>
+					=
+				</CalculatorButton>
+			</div>
+		</div>
 	);
 }

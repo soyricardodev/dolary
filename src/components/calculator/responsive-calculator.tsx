@@ -24,9 +24,7 @@ export function ResponsiveCalculator({
 
 	return (
 		<ResponsiveDialog open={isOpen} onOpenChange={onCloseAction}>
-			<DialogTitle className="my-4 text-center">
-				Agrega tu tasa personalizada
-			</DialogTitle>
+			<DialogTitle className="my-4 text-center">Calculadora</DialogTitle>
 
 			<Calculator rates={{ bcv, paralelo, promedio }} />
 		</ResponsiveDialog>

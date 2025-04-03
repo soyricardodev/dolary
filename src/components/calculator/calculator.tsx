@@ -85,7 +85,14 @@ export function Calculator({ rates }: CalculatorProps) {
 			setPreviewResult("");
 			setPreviewCurrencyResult("");
 		}
-	}, [input, conversionMode]);
+	}, [
+		input,
+		conversionMode,
+		selectedRateType,
+		bcvRate,
+		paraleloRate,
+		promedioRate,
+	]);
 
 	const handleButtonClick = (value: string) => {
 		if (value === "=") {

@@ -65,14 +65,14 @@ export function Calculator({ rates }: CalculatorProps) {
 						: bsValue.toFixed(2);
 
 					setPreviewResult(formattedResult);
-					setPreviewCurrencyResult(`${formattedBsValue} Bs`);
+					setPreviewCurrencyResult(formattedBsValue);
 				} else {
 					// Bs to $ conversion
 					const dollarValue = mathResult / currentRate;
 					const formattedDollarValue = dollarValue.toFixed(2);
 
 					setPreviewResult(formattedResult);
-					setPreviewCurrencyResult(`$${formattedDollarValue}`);
+					setPreviewCurrencyResult(formattedDollarValue);
 				}
 			} catch (error) {
 				// If expression is incomplete or invalid, don't update preview
@@ -158,20 +158,20 @@ export function Calculator({ rates }: CalculatorProps) {
 	};
 
 	return (
-		<div>
+		<div className="flex flex-col gap-2">
 			{/* Currency Selector with Improved Toggle Button */}
 			<div className="bg-yellow-200 p-3 border-black border-2 rounded-md">
 				<div className="flex flex-col space-y-3">
 					{/* Currency Direction Toggle - Improved Position */}
-					<div className="flex items-center justify-between mb-1">
-						<span className="font-bold text-sm">Conversion Mode:</span>
+					<div className="flex items-center justify-between mb-2">
+						<span className="font-bold text-sm">Modo de conversión:</span>
 						<Button
 							onClick={toggleConversionMode}
 							className="h-9 border-black border-2 bg-white hover:bg-gray-100 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center gap-2 transition-transform active:scale-95"
 						>
 							<ArrowRightLeft size={16} />
 							<span className="font-bold">
-								{conversionMode === "dollarToBs" ? "$ → Bs" : "Bs → $"}
+								{conversionMode === "dollarToBs" ? "USD → Bs" : "Bs → USD"}
 							</span>
 						</Button>
 					</div>
@@ -218,8 +218,8 @@ export function Calculator({ rates }: CalculatorProps) {
 					className="text-right text-xl font-mono border-black border-2 bg-white h-14 focus:ring-black focus:ring-offset-2"
 					placeholder={
 						conversionMode === "dollarToBs"
-							? "Enter USD amount..."
-							: "Enter Bs amount..."
+							? "Monto en USD..."
+							: "Monto en Bs..."
 					}
 				/>
 
@@ -227,18 +227,15 @@ export function Calculator({ rates }: CalculatorProps) {
 				<div className="grid grid-cols-2 gap-3">
 					<ResultDisplay
 						label={
-							conversionMode === "dollarToBs" ? "USD Amount:" : "Bs Amount:"
+							conversionMode === "dollarToBs" ? "Total en USD:" : "Total en Bs:"
 						}
 						value={previewResult || "0"}
 					/>
 					<ResultDisplay
 						label={
-							conversionMode === "dollarToBs" ? "In Bolivares:" : "In USD:"
+							conversionMode === "dollarToBs" ? "En Bolivares:" : "En USD:"
 						}
-						value={
-							previewCurrencyResult ||
-							(conversionMode === "dollarToBs" ? "0 Bs" : "$0")
-						}
+						value={previewCurrencyResult || "0"}
 					/>
 				</div>
 			</div>

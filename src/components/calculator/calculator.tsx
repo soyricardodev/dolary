@@ -8,12 +8,14 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { CalculatorButton } from "./calculator-button";
 import { ResultDisplay } from "./result-display";
+import { cn } from "@/lib/utils";
 
 interface CalculatorProps {
 	rates: {
 		paralelo: number;
 		promedio: number;
 		bcv: number;
+		custom?: number;
 	};
 }
 
@@ -30,6 +32,7 @@ export function Calculator({ rates }: CalculatorProps) {
 	const bcvRate = rates.bcv;
 	const paraleloRate = rates.paralelo;
 	const promedioRate = rates.promedio;
+	const customRate = rates.custom;
 
 	// Get current rate based on selection
 	const getCurrentRate = (): number => {
@@ -40,13 +43,15 @@ export function Calculator({ rates }: CalculatorProps) {
 				return paraleloRate;
 			case "promedio":
 				return promedioRate;
+			case "custom":
+				return customRate || 0;
 			default:
 				return paraleloRate;
 		}
 	};
 
 	// Calculate preview results in real-time
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: We need selectedRateType so we can recalculate when the tab change
 	useEffect(() => {
 		if (input) {
 			try {
@@ -92,6 +97,7 @@ export function Calculator({ rates }: CalculatorProps) {
 		bcvRate,
 		paraleloRate,
 		promedioRate,
+		customRate,
 	]);
 
 	const handleButtonClick = (value: string) => {
@@ -187,7 +193,12 @@ export function Calculator({ rates }: CalculatorProps) {
 						onValueChange={setSelectedRateType}
 						className="w-full"
 					>
-						<TabsList className="grid grid-cols-3">
+						<TabsList
+							className={cn(
+								"grid",
+								rates.custom != null ? "grid-cols-4" : "grid-cols-3",
+							)}
+						>
 							<TabsTrigger value="bcv" className="data-[state=active]:bg-white">
 								BCV
 							</TabsTrigger>
@@ -203,6 +214,14 @@ export function Calculator({ rates }: CalculatorProps) {
 							>
 								Promedio
 							</TabsTrigger>
+							{rates.custom != null ? (
+								<TabsTrigger
+									value="custom"
+									className="data-[state=active]:bg-white"
+								>
+									Personalizado
+								</TabsTrigger>
+							) : null}
 						</TabsList>
 					</Tabs>
 				</div>
@@ -211,6 +230,7 @@ export function Calculator({ rates }: CalculatorProps) {
 				<input type="hidden" value={bcvRate} />
 				<input type="hidden" value={paraleloRate} />
 				<input type="hidden" value={promedioRate} />
+				<input type="hidden" value={customRate} />
 			</div>
 
 			{/* Calculator Display */}

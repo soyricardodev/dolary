@@ -97,7 +97,6 @@ export function Calculator({ rates }: CalculatorProps) {
 		bcvRate,
 		paraleloRate,
 		promedioRate,
-		customRate,
 	]);
 
 	const handleButtonClick = (value: string) => {

@@ -218,7 +218,7 @@ export function Calculator({ rates }: CalculatorProps) {
 									value="custom"
 									className="data-[state=active]:bg-white"
 								>
-									Personalizado
+									Personal
 								</TabsTrigger>
 							) : null}
 						</TabsList>

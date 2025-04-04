@@ -68,6 +68,15 @@ export function PushNotificationManager() {
 		});
 		const sub = await registration.pushManager.getSubscription();
 		setSubscription(sub);
+		const isStoredInDb = localStorage.getItem(NotificationStoredInDbKey);
+
+		if (!isStoredInDb) {
+			if (sub) {
+				const serializedSub = JSON.parse(JSON.stringify(sub));
+				await subscribeUser(serializedSub);
+				localStorage.setItem(NotificationStoredInDbKey, "true");
+			}
+		}
 	}
 
 	async function subscribeToPush() {

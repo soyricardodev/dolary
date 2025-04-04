@@ -4,15 +4,12 @@ import { eq } from "drizzle-orm";
 
 export async function createNotificationSubscription(input: PushSubscription) {
 	const { endpoint, expirationTime } = input;
-	const authKey = input.getKey("auth");
-	const p256dhKey = input.getKey("p256dh");
 
-	const authKeyString = authKey
-		? Buffer.from(authKey).toString("base64")
-		: null;
-	const p256dhKeyString = p256dhKey
-		? Buffer.from(p256dhKey).toString("base64")
-		: null;
+	const subscriptionKeys = input as PushSubscription & {
+		keys: { auth: string; p256dh: string };
+	};
+	const authKeyString = subscriptionKeys.keys.auth;
+	const p256dhKeyString = subscriptionKeys.keys.p256dh;
 
 	if (!authKeyString || !p256dhKeyString) {
 		console.log("Missing keys in subscription");

@@ -9,6 +9,7 @@ import { eq } from "drizzle-orm";
 import { differenceInDays } from "date-fns";
 import { Redis } from "@upstash/redis";
 import type { Monitor } from "../types";
+import { sendNotificationToAllUsers } from "@/components/notifications/actions";
 
 const redis = Redis.fromEnv();
 
@@ -182,6 +183,11 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 				.set(updateKey, lastUpdate, { ex: 60 * 60 * 24 }) // Set TTL for 24 hours
 				.set(monitorKey, dataToCache)
 				.exec();
+
+			const direction =
+				change > 0 ? "subió" : change < 0 ? "bajó" : "se mantuvo igual";
+			const notificationMessage = `La tasa ${rate.charAt(0).toUpperCase() + rate.slice(1)} ${direction} a ${price.toFixed(2)}. Cambio: ${symbol} ${sanitizedChange} (${percent}%).`;
+			await sendNotificationToAllUsers(notificationMessage);
 
 			console.log(`Successfully updated ${rate}.`);
 		});

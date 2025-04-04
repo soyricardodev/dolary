@@ -16,17 +16,44 @@ export async function createNotificationSubscription(input: PushSubscription) {
 		return;
 	}
 
-	const [subscription] = await db
-		.insert(notificationTable)
-		.values({
-			endpoint,
-			expirationTime,
-			auth: authKeyString,
-			p256dh: p256dhKeyString,
-		})
-		.returning();
+	const result = await db.transaction(async (trx) => {
+		// Check if the endpoint already exists
+		const existingSubscription = await trx
+			.select()
+			.from(notificationTable)
+			.where(eq(notificationTable.endpoint, endpoint))
+			.limit(1);
 
-	return subscription;
+		if (existingSubscription.length > 0) {
+			console.log("Endpoint already exists, updating subscription");
+			const [updatedSubscription] = await trx
+				.update(notificationTable)
+				.set({
+					expirationTime,
+					auth: authKeyString,
+					p256dh: p256dhKeyString,
+					isActive: true,
+				})
+				.where(eq(notificationTable.endpoint, endpoint))
+				.returning();
+			return updatedSubscription;
+		}
+
+		// Insert the new subscription
+		const [subscription] = await trx
+			.insert(notificationTable)
+			.values({
+				endpoint,
+				expirationTime,
+				auth: authKeyString,
+				p256dh: p256dhKeyString,
+			})
+			.returning();
+
+		return subscription;
+	});
+
+	return result;
 }
 
 export async function unsubscribeNotification(endpoint: string) {

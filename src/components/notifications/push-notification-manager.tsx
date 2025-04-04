@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/dialog";
 import { Checkbox } from "../ui/checkbox";
 
+const NotificationStoredInDbKey = "notificationStoredInDb";
+
 function urlBase64ToUint8Array(base64String: string) {
 	const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
 	const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
@@ -80,16 +82,22 @@ export function PushNotificationManager() {
 		const serializedSub = JSON.parse(JSON.stringify(sub));
 		await subscribeUser(serializedSub);
 		localStorage.setItem("iWantNotifications", "true");
+		localStorage.removeItem("dontRemindNotifications");
+		localStorage.setItem(NotificationStoredInDbKey, "true");
 		await sendNotification(
 			"Excelente, ahora recibiras notificaciones de Dolary.",
 		);
 	}
 
 	async function unsubscribeFromPush() {
-		await subscription?.unsubscribe();
-		setSubscription(null);
-		await unsubscribeUser();
-		localStorage.removeItem("iWantNotifications");
+		if (subscription) {
+			const serializedSub = JSON.parse(JSON.stringify(subscription));
+			await subscription.unsubscribe();
+			setSubscription(null);
+			await unsubscribeUser(serializedSub);
+			localStorage.removeItem("iWantNotifications");
+			localStorage.removeItem(NotificationStoredInDbKey);
+		}
 	}
 
 	const handleDontRemindChange = (checked: boolean) => {

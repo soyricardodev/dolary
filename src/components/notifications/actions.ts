@@ -12,21 +12,6 @@ webpush.setVapidDetails(
 let subscription: webpush.PushSubscription | null = null;
 
 export async function subscribeUser(sub: PushSubscription) {
-	const authKey = sub.getKey("auth");
-	const p256dhKey = sub.getKey("p256dh");
-
-	const authKeyString = authKey
-		? Buffer.from(authKey).toString("base64")
-		: null;
-	const p256dhKeyString = p256dhKey
-		? Buffer.from(p256dhKey).toString("base64")
-		: null;
-
-	if (!authKeyString || !p256dhKeyString) {
-		console.log("Missing keys in subscription");
-		return;
-	}
-
 	const newSubscription = await createNotificationSubscription(sub);
 
 	if (!newSubscription) {

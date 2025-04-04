@@ -1,7 +1,11 @@
 "use server";
 
 import webpush from "web-push";
-import { createNotificationSubscription, getSubscriptions } from "./queries";
+import {
+	createNotificationSubscription,
+	getSubscriptions,
+	unsubscribeNotification,
+} from "./queries";
 
 webpush.setVapidDetails(
 	"mailto:soyricardodev@proton.me",
@@ -30,7 +34,9 @@ export async function subscribeUser(sub: PushSubscription) {
 	return { success: true };
 }
 
-export async function unsubscribeUser() {
+export async function unsubscribeUser(sub: PushSubscription) {
+	await unsubscribeNotification(sub.endpoint);
+
 	subscription = null;
 	// In a production environment, you would want to remove the subscription from the database
 	// For example: await db.subscriptions.delete({ where: { ... } })

@@ -23,8 +23,8 @@ export function AppHeader() {
 
 			<div className="flex justify-center gap-4">
 				<PwaInstallPrompt />
-				<ShareOnWhatsapp text="Mira las tasas del Dólar" />
 				<PushNotificationManager />
+				<ShareOnWhatsapp text="Mira las tasas del Dólar" />
 				<Button
 					size="icon"
 					onClick={() => getFreshData()}

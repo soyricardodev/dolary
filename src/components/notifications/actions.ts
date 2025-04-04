@@ -1,6 +1,7 @@
 "use server";
 
 import webpush from "web-push";
+import { createNotificationSubscription, getSubscriptions } from "./queries";
 
 webpush.setVapidDetails(
 	"mailto:soyricardodev@proton.me",
@@ -11,9 +12,36 @@ webpush.setVapidDetails(
 let subscription: webpush.PushSubscription | null = null;
 
 export async function subscribeUser(sub: PushSubscription) {
-	subscription = sub;
-	// In a production environment, you would want to store the subscription in a database
-	// For example: await db.subscriptions.create({ data: sub })
+	const authKey = sub.getKey("auth");
+	const p256dhKey = sub.getKey("p256dh");
+
+	const authKeyString = authKey
+		? Buffer.from(authKey).toString("base64")
+		: null;
+	const p256dhKeyString = p256dhKey
+		? Buffer.from(p256dhKey).toString("base64")
+		: null;
+
+	if (!authKeyString || !p256dhKeyString) {
+		console.log("Missing keys in subscription");
+		return;
+	}
+
+	const newSubscription = await createNotificationSubscription(sub);
+
+	if (!newSubscription) {
+		console.log("Failed to create subscription in the database");
+		return;
+	}
+
+	subscription = {
+		...newSubscription,
+		keys: {
+			auth: newSubscription?.auth,
+			p256dh: newSubscription?.p256dh,
+		},
+	};
+
 	return { success: true };
 }
 
@@ -44,4 +72,29 @@ export async function sendNotification(message: string) {
 		console.error("Error sending push notification:", error);
 		return { success: false, error: "Failed to send notification" };
 	}
+}
+
+export async function sendNotificationToAllUsers(message: string) {
+	const subscriptions = await getSubscriptions();
+
+	const notificationPromises = subscriptions.map(async (sub) => {
+		try {
+			console.log("Sending notification to:", sub.endpoint);
+			await webpush.sendNotification(
+				sub,
+				JSON.stringify({
+					title: "Dolary - Calculadora del Dolar Venezuela",
+					body: message,
+					icon: "/icon-48x48.png",
+					badge: "/icon-48x48.png",
+				}),
+			);
+		} catch (error) {
+			console.error(`Error sending notification to ${sub.endpoint}:`, error);
+		}
+	});
+
+	await Promise.all(notificationPromises);
+
+	return { success: true };
 }

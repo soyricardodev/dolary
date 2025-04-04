@@ -7,6 +7,7 @@ import { Logo } from "./logo";
 import { PushNotificationManager } from "./notifications/push-notification-manager";
 import { revalidateRates } from "./actions";
 import PwaInstallPrompt from "./pwa-install-prompt";
+import { ShareOnWhatsapp } from "./share-on-whatsapp";
 
 export function AppHeader() {
 	const { refetch, isRefetching } = useCurrencyData();
@@ -22,6 +23,7 @@ export function AppHeader() {
 
 			<div className="flex justify-center gap-4">
 				<PwaInstallPrompt />
+				<ShareOnWhatsapp text="Mira las tasas del Dólar" />
 				<PushNotificationManager />
 				<Button
 					size="icon"

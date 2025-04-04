@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { useState } from "react";
 import { Loader2Icon } from "lucide-react";
 import { WhatsappIcon } from "./icons";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 
 interface ShareOnWhatsappProps {
 	text: string;
@@ -11,15 +12,18 @@ interface ShareOnWhatsappProps {
 
 export const ShareOnWhatsapp: React.FC<ShareOnWhatsappProps> = ({ text }) => {
 	const [isLoading, setIsLoading] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
+	const [image, setImage] = useState<File | null>(null);
+
 	const captureAndShare = async () => {
+		setIsLoading(true);
+
 		try {
 			// 1. Get the current page URL
 			const pageUrl = window.location.href;
 
 			// 2. Construct the API endpoint URL
 			const apiUrl = "/api/screenshot";
-
-			setIsLoading(true);
 
 			// 3. Fetch the screenshot from the API
 			const response = await fetch(apiUrl);
@@ -41,11 +45,16 @@ export const ShareOnWhatsapp: React.FC<ShareOnWhatsappProps> = ({ text }) => {
 				navigator.canShare &&
 				navigator.canShare({ files: [file] })
 			) {
-				await navigator.share({
-					title: "Check out this awesome content!",
-					text: text,
-					files: [file],
-				});
+				try {
+					await navigator.share({
+						title: "Mira las tasas del Dólar!",
+						text: text,
+						files: [file],
+					});
+				} catch (error) {
+					setImage(file);
+					setIsOpen(true);
+				}
 			} else {
 				// Fallback: WhatsApp URL scheme (text only)
 				const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${text} ${pageUrl}`)}`;
@@ -58,21 +67,46 @@ export const ShareOnWhatsapp: React.FC<ShareOnWhatsappProps> = ({ text }) => {
 		}
 	};
 
+	async function fallBackShare() {
+		if (image) {
+			if (
+				navigator.share &&
+				navigator.canShare &&
+				navigator.canShare({ files: [image] })
+			) {
+				await navigator.share({
+					title: "Mira las tasa del Dólar!",
+					text: text,
+					files: [image],
+				});
+			}
+		}
+	}
+
 	return (
-		<Button
-			onClick={captureAndShare}
-			aria-label="Share on WhatsApp"
-			size="icon"
-			disabled={isLoading}
-		>
-			{isLoading ? (
-				<span className="loader" aria-label="Loading...">
-					<Loader2Icon className="size-4 animate-spin" />
-				</span>
-			) : (
-				<WhatsappIcon className="!size-5" />
-			)}
-		</Button>
+		<>
+			<Button
+				onClick={isLoading ? () => {} : captureAndShare}
+				aria-label="Share on WhatsApp"
+				size="icon"
+			>
+				{isLoading ? (
+					<span className="loader" aria-label="Loading...">
+						<Loader2Icon className="size-4 animate-spin" />
+					</span>
+				) : (
+					<WhatsappIcon className="!size-5" />
+				)}
+			</Button>
+			<Dialog open={isOpen}>
+				<DialogContent className="max-w-sm">
+					<DialogHeader>
+						<DialogTitle>Haz Click para compartir</DialogTitle>
+					</DialogHeader>
+					<Button onClick={fallBackShare}>Compartir</Button>
+				</DialogContent>
+			</Dialog>
+		</>
 	);
 };
 

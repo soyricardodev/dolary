@@ -77,6 +77,19 @@ export const historyTable = createTable("history", {
 });
 export type InsertHistory = typeof historyTable.$inferInsert;
 
+export const notificationTable = createTable("notification", {
+	id,
+	endpoint: text("endpoint").notNull(),
+	expirationTime: integer("expiration_time"),
+	p256dh: text("pd256dh").notNull(),
+	auth: text("auth").notNull(),
+	createdAt,
+	updatedAt,
+	isActive,
+});
+
+export type InsertNotification = typeof notificationTable.$inferInsert;
+
 export function lower(email: AnySQLiteColumn): SQL {
 	return sql`lower(${email})`;
 }

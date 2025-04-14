@@ -187,7 +187,7 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 			const direction =
 				change > 0 ? "subió" : change < 0 ? "bajó" : "se mantuvo igual";
 			const notificationMessage = `La tasa ${rate.charAt(0).toUpperCase() + rate.slice(1)} ${direction} a ${price.toFixed(2)}. Cambio: ${symbol} ${sanitizedChange} (${percent}%).`;
-			await sendNotificationToAllUsers(notificationMessage);
+			//await sendNotificationToAllUsers(notificationMessage);
 
 			console.log(`Successfully updated ${rate}.`);
 		});

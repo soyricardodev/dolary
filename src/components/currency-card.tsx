@@ -56,7 +56,6 @@ export function CurrencyCard({
 				<div className="flex gap-4">
 					<div className="flex flex-col">
 						<h2 className="text-xl font-bold">{title}</h2>
-						
 					</div>
 					{
 						<Badge className="w-max" variant={"neutral"}>
@@ -94,14 +93,14 @@ export function CurrencyCard({
 					</div>
 				</div>
 			</CardContent>
-			<CardFooter className="flex items-center justify-between pb-3 -mt-5">
+			<CardFooter className="flex items-center gap-1 justify-between pb-3">
 				<div className="mt-auto text-xs">
 					{lastUpdate != null ? lastUpdate : null}
 					{subtitle && (
-							<p className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
-								{subtitle}
-							</p>
-						)}
+						<p className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
+							{subtitle}
+						</p>
+					)}
 				</div>
 
 				<Button size="sm" variant="neutral">

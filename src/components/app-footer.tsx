@@ -14,7 +14,7 @@ export function AppFooter() {
 						className="flex items-center gap-1 hover:underline font-semibold"
 					>
 						Ricardo Castro
-						<GithubIcon className="size-4 stroke-foreground" />
+						<GithubIcon className="size-4 fill-foreground" />
 					</a>
 				</p>
 			</div>

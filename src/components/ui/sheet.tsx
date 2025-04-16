@@ -1,71 +1,142 @@
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+"use client";
 
-export default function TabsDemo() {
-  return (
-    <Tabs defaultValue="account" className="max-w-[400px]">
-      <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="account">Account</TabsTrigger>
-        <TabsTrigger value="password">Password</TabsTrigger>
-      </TabsList>
-      <TabsContent value="account">
-        <Card>
-          <CardHeader>
-            <CardTitle>Account</CardTitle>
-            <CardDescription>
-              Make changes to your account here. Click save when you&apos;re
-              done.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-6">
-            <div className="grid gap-3">
-              <Label htmlFor="tabs-demo-name">Name</Label>
-              <Input id="tabs-demo-name" defaultValue="Pedro Duarte" />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="tabs-demo-username">Username</Label>
-              <Input id="tabs-demo-username" defaultValue="@peduarte" />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button className="w-full">Save changes</Button>
-          </CardFooter>
-        </Card>
-      </TabsContent>
-      <TabsContent value="password">
-        <Card>
-          <CardHeader>
-            <CardTitle>Password</CardTitle>
-            <CardDescription>
-              Change your password here. After saving, you&apos;ll be logged
-              out.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-6">
-            <div className="grid gap-3">
-              <Label htmlFor="tabs-demo-current">Current password</Label>
-              <Input id="tabs-demo-current" type="password" />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="tabs-demo-new">New password</Label>
-              <Input id="tabs-demo-new" type="password" />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button className="w-full">Save password</Button>
-          </CardFooter>
-        </Card>
-      </TabsContent>
-    </Tabs>
-  )
+import * as SheetPrimitive from "@radix-ui/react-dialog";
+import { XIcon } from "lucide-react";
+
+import type * as React from "react";
+
+import { cn } from "@/lib/utils";
+
+function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
+	return <SheetPrimitive.Root data-slot="sheet" {...props} />;
 }
+
+function SheetTrigger({
+	...props
+}: React.ComponentProps<typeof SheetPrimitive.Trigger>) {
+	return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props} />;
+}
+
+function SheetClose({
+	...props
+}: React.ComponentProps<typeof SheetPrimitive.Close>) {
+	return <SheetPrimitive.Close data-slot="sheet-close" {...props} />;
+}
+
+function SheetPortal({
+	...props
+}: React.ComponentProps<typeof SheetPrimitive.Portal>) {
+	return <SheetPrimitive.Portal data-slot="sheet-portal" {...props} />;
+}
+
+function SheetOverlay({
+	className,
+	...props
+}: React.ComponentProps<typeof SheetPrimitive.Overlay>) {
+	return (
+		<SheetPrimitive.Overlay
+			data-slot="sheet-overlay"
+			className={cn(
+				"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-overlay",
+				className,
+			)}
+			{...props}
+		/>
+	);
+}
+
+function SheetContent({
+	className,
+	children,
+	side = "right",
+	...props
+}: React.ComponentProps<typeof SheetPrimitive.Content> & {
+	side?: "top" | "bottom" | "left" | "right";
+}) {
+	return (
+		<SheetPortal>
+			<SheetOverlay />
+			<SheetPrimitive.Content
+				data-slot="sheet-content"
+				className={cn(
+					"bg-background data-[state=open]:animate-in data-[state=closed]:animate-out fixed z-50 flex flex-col gap-4 border-2 border-border transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
+					side === "right" &&
+						"data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
+					side === "left" &&
+						"data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm",
+					side === "top" &&
+						"data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top inset-x-0 top-0 h-auto border-b",
+					side === "bottom" &&
+						"data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom inset-x-0 bottom-0 h-auto border-t",
+					className,
+				)}
+				{...props}
+			>
+				{children}
+				<SheetPrimitive.Close className="absolute right-4 top-4 rounded-base ring-offset-white focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
+					<XIcon className="h-4 w-4" />
+					<span className="sr-only">Close</span>
+				</SheetPrimitive.Close>
+			</SheetPrimitive.Content>
+		</SheetPortal>
+	);
+}
+
+function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
+	return (
+		<div
+			data-slot="sheet-header"
+			className={cn("flex flex-col gap-1.5 p-4", className)}
+			{...props}
+		/>
+	);
+}
+
+function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
+	return (
+		<div
+			data-slot="sheet-footer"
+			className={cn("mt-auto flex flex-col gap-3 p-4", className)}
+			{...props}
+		/>
+	);
+}
+
+function SheetTitle({
+	className,
+	...props
+}: React.ComponentProps<typeof SheetPrimitive.Title>) {
+	return (
+		<SheetPrimitive.Title
+			data-slot="sheet-title"
+			className={cn("text-foreground font-heading", className)}
+			{...props}
+		/>
+	);
+}
+
+function SheetDescription({
+	className,
+	...props
+}: React.ComponentProps<typeof SheetPrimitive.Description>) {
+	return (
+		<SheetPrimitive.Description
+			data-slot="sheet-description"
+			className={cn("text-sm text-foreground font-base", className)}
+			{...props}
+		/>
+	);
+}
+
+export {
+	Sheet,
+	SheetPortal,
+	SheetOverlay,
+	SheetTrigger,
+	SheetClose,
+	SheetContent,
+	SheetHeader,
+	SheetFooter,
+	SheetTitle,
+	SheetDescription,
+};

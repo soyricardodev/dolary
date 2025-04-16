@@ -19,7 +19,7 @@ export function Dolary() {
 
 	return (
 		<>
-			<CurrencyMonitors onCardClick={handleCardClick} />
+			<CurrencyMonitors onCardClickAction={handleCardClick} />
 
 			{selectedCurrency && (
 				<ResponsiveCalculator

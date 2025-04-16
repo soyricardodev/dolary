@@ -1,22 +1,23 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
+import { Loader2Icon } from "lucide-react";
+import { InfoIcon } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { CurrencyCard } from "@/components/currency-card";
 import { useCurrencyData } from "@/hooks/use-currency-data";
 import { CustomCurrencyCard } from "./custom-currency-card";
 
 interface CurrencyMonitorsProps {
-	onCardClick: (currency: string) => void;
+	onCardClickAction: (currency: string) => void;
 }
 
-export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
+export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 	const { data, isLoading, error } = useCurrencyData();
 
 	if (isLoading) {
 		return (
 			<div className="flex justify-center items-center h-32">
-				<Loader2 className="h-6 w-6 animate-spin text-primary" />
+				<Loader2Icon className="h-6 w-6 animate-spin text-primary" />
 				<span className="ml-2 text-gray-600 text-sm">Cargando datos...</span>
 			</div>
 		);
@@ -80,13 +81,22 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 					change={bcv.change}
 					percent={bcv.percent}
 					color={bcv.color}
-					lastUpdate={new Date(
-						new Date(bcv.last_update ?? new Date()).toLocaleString("en-US", {
-							timeZone: "America/Caracas",
-							hour12: true, // Enable AM/PM format
-						}),
-					).toLocaleString()}
-					onClick={() => onCardClick("bcv")}
+					lastUpdate={`Vigente para: ${(() => {
+						const date = new Date(bcv.last_update ?? new Date());
+						const options: Intl.DateTimeFormatOptions = {
+							weekday: "long",
+							day: "2-digit",
+							month: "2-digit",
+							year: "numeric",
+						};
+						// Format: Martes 15/04/2025
+						const formatted = date
+							.toLocaleDateString("es-VE", options)
+							.replace(/(\d{2})\/(\d{2})\/(\d{4})/, (match, d, m, y) => `${d}/${m}/${y}`);
+						// Capitalize first letter of weekday
+						return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+					})()}`}
+					onClick={() => onCardClickAction("bcv")}
 				/>
 
 				<CurrencyCard
@@ -96,16 +106,32 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 					change={paralelo.change}
 					percent={paralelo.percent}
 					color={paralelo.color}
-					lastUpdate={new Date(
-						new Date(paralelo.last_update ?? new Date()).toLocaleString(
-							"en-US",
-							{
-								timeZone: "America/Caracas",
-								hour12: true, // Enable AM/PM format
-							},
-						),
-					).toLocaleString()}
-					onClick={() => onCardClick("paralelo")}
+					lastUpdate={`Actualizado: ${(() => {
+						const date = new Date(paralelo.last_update ?? new Date());
+						const dateOptions: Intl.DateTimeFormatOptions = {
+							weekday: "long",
+							day: "2-digit",
+							month: "2-digit",
+							year: "numeric",
+						};
+						const timeOptions: Intl.DateTimeFormatOptions = {
+							hour: "2-digit",
+							minute: "2-digit",
+							hour12: true,
+						};
+						// Format: Martes 15/04/2025
+						const formattedDate = date
+							.toLocaleDateString("es-VE", dateOptions)
+							.replace(/(\d{2})\/(\d{2})\/(\d{4})/, (match, d, m, y) => `${d}/${m}/${y}`);
+						// Capitalize first letter of weekday
+						const capitalizedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+						const formattedTime = date
+							.toLocaleTimeString("es-VE", timeOptions)
+							.replace(".", ":")
+							.replace(/(\d{2}):(\d{2}) (a\. m\.|p\. m\.)/, (match, h, min, ampm) => `${h}:${min} ${ampm.toUpperCase()}`);
+						return `${capitalizedDate} ${formattedTime}`;
+					})()}`}
+					onClick={() => onCardClickAction("paralelo")}
 				/>
 
 				<CurrencyCard
@@ -115,10 +141,16 @@ export function CurrencyMonitors({ onCardClick }: CurrencyMonitorsProps) {
 					change={sanitizedChange}
 					percent={promedioPercent}
 					color={promedioColor}
-					onClick={() => onCardClick("promedio")}
+					subtitle={
+						<span className="flex items-center gap-1">
+							<InfoIcon size={14} className="text-muted-foreground" />
+							Promedio calculado usando la tasa BCV vigente y Paralelo
+						</span>
+					}
+					onClick={() => onCardClickAction("promedio")}
 				/>
 
-				<CustomCurrencyCard onClick={() => onCardClick("custom")} />
+				<CustomCurrencyCard onClick={() => onCardClickAction("custom")} />
 			</div>
 		</div>
 	);

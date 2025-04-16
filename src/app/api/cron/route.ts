@@ -140,9 +140,17 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 			const color =
 				price < priceOld ? "red" : price > priceOld ? "green" : "neutral";
 			const symbol = color === "green" ? "▲" : color === "red" ? "▼" : "";
-			const lastUpdate = data.last_update
-				? new Date(data.last_update)
-				: new Date();
+			let lastUpdate: Date;
+			if (rate === "bcv") {
+				const venezuelaDate = toZonedTime(data.last_update ?? new Date(), TIME_ZONE);
+				venezuelaDate.setHours(0, 0, 0, 0);
+				// Manual conversion: subtract 4 hours to get UTC midnight
+				lastUpdate = new Date(venezuelaDate.getTime() - 4 * 60 * 60 * 1000);
+			} else {
+				lastUpdate = data.last_update
+					? new Date(data.last_update)
+					: new Date();
+			}
 			const sanitizedChange = Number.parseFloat(
 				change.toString().replace("-", ""),
 			);

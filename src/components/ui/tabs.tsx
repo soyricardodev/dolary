@@ -15,7 +15,7 @@ function TabsList({
 	return (
 		<TabsPrimitive.List
 			className={cn(
-				"inline-flex h-12 items-center justify-center rounded-base border-2 border-border bg-main p-1 text-mtext",
+				"inline-flex h-12 items-center justify-center rounded-base border-2 border-border bg-main p-1 text-main-foreground",
 				className,
 			)}
 			{...props}

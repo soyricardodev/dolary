@@ -6,6 +6,7 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { CurrencyCard } from "@/components/currency-card";
 import { useCurrencyData } from "@/hooks/use-currency-data";
 import { CustomCurrencyCard } from "./custom-currency-card";
+import { formatVenezuelaDate } from "@/lib/utils";
 
 interface CurrencyMonitorsProps {
 	onCardClickAction: (currency: string) => void;
@@ -81,21 +82,7 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 					change={bcv.change}
 					percent={bcv.percent}
 					color={bcv.color}
-					lastUpdate={`Vigente para: ${(() => {
-						const date = new Date(bcv.last_update ?? new Date());
-						const options: Intl.DateTimeFormatOptions = {
-							weekday: "long",
-							day: "2-digit",
-							month: "2-digit",
-							year: "numeric",
-						};
-						// Format: Martes 15/04/2025
-						const formatted = date
-							.toLocaleDateString("es-VE", options)
-							.replace(/(\d{2})\/(\d{2})\/(\d{4})/, (match, d, m, y) => `${d}/${m}/${y}`);
-						// Capitalize first letter of weekday
-						return formatted.charAt(0).toUpperCase() + formatted.slice(1);
-					})()}`}
+					lastUpdate={formatVenezuelaDate(bcv.last_update ?? new Date(), { prefix: "Vigente para: " })}
 					onClick={() => onCardClickAction("bcv")}
 				/>
 
@@ -106,31 +93,7 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 					change={paralelo.change}
 					percent={paralelo.percent}
 					color={paralelo.color}
-					lastUpdate={`Actualizado: ${(() => {
-						const date = new Date(paralelo.last_update ?? new Date());
-						const dateOptions: Intl.DateTimeFormatOptions = {
-							weekday: "long",
-							day: "2-digit",
-							month: "2-digit",
-							year: "numeric",
-						};
-						const timeOptions: Intl.DateTimeFormatOptions = {
-							hour: "2-digit",
-							minute: "2-digit",
-							hour12: true,
-						};
-						// Format: Martes 15/04/2025
-						const formattedDate = date
-							.toLocaleDateString("es-VE", dateOptions)
-							.replace(/(\d{2})\/(\d{2})\/(\d{4})/, (match, d, m, y) => `${d}/${m}/${y}`);
-						// Capitalize first letter of weekday
-						const capitalizedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
-						const formattedTime = date
-							.toLocaleTimeString("es-VE", timeOptions)
-							.replace(".", ":")
-							.replace(/(\d{2}):(\d{2}) (a\. m\.|p\. m\.)/, (match, h, min, ampm) => `${h}:${min} ${ampm.toUpperCase()}`);
-						return `${capitalizedDate} ${formattedTime}`;
-					})()}`}
+					lastUpdate={formatVenezuelaDate(paralelo.last_update ?? new Date(), { withTime: true, prefix: "Actualizado: " })}
 					onClick={() => onCardClickAction("paralelo")}
 				/>
 
@@ -144,7 +107,7 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 					subtitle={
 						<span className="flex items-center gap-1">
 							<InfoIcon size={14} className="text-muted-foreground" />
-							Promedio calculado usando la tasa BCV vigente y Paralelo
+							Promedio calculado con BCV y Paralelo
 						</span>
 					}
 					onClick={() => onCardClickAction("promedio")}

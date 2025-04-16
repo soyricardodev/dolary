@@ -106,7 +106,7 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 					subtitle={
 						<span className="flex items-center gap-1">
 							<InfoIcon size={14} className="text-muted-foreground" />
-							Promedio calculado con BCV y Paralelo
+							Promedio entre BCV y Paralelo
 						</span>
 					}
 					onClick={() => onCardClickAction("promedio")}

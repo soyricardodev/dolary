@@ -23,17 +23,17 @@ export function CalculatorButton({
 	// Define styles based on variant
 	const getButtonStyles = (): string => {
 		const baseStyles =
-			"h-14 w-full text-lg font-bold transition-transform active:scale-95";
+			"h-14 w-full text-lg font-bold transition-transform active:scale-95 border-2 border-border";
 
 		switch (variant) {
 			case "number":
-				return baseStyles;
+				return `${baseStyles} bg-secondary-background text-foreground`;
 			case "function":
-				return `${baseStyles} bg-gray-500 text-white`;
+				return `${baseStyles} bg-main text-main-foreground`;
 			case "delete":
-				return `${baseStyles} bg-orange-300 flex items-center justify-center`;
+				return `${baseStyles} bg-main text-main-foreground flex items-center justify-center`;
 			case "equals":
-				return `${baseStyles} bg-yellow-400 text-black hover:scale-105`;
+				return `${baseStyles} bg-main text-main-foreground hover:scale-105`;
 			default:
 				return baseStyles;
 		}

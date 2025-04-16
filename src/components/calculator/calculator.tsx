@@ -176,7 +176,9 @@ export function Calculator({ rates }: CalculatorProps) {
 				<div className="flex flex-col space-y-3">
 					{/* Currency Direction Toggle - Improved Position */}
 					<div className="flex items-center justify-between mb-2">
-						<span className="font-bold text-sm">Modo de conversión:</span>
+						<span className="font-bold text-sm text-main-foreground">
+							Modo de conversión:
+						</span>
 						<Button onClick={toggleConversionMode} variant={"neutral"}>
 							<ArrowRightLeftIcon size={16} />
 							<span className="font-bold">
@@ -238,7 +240,7 @@ export function Calculator({ rates }: CalculatorProps) {
 					type="text"
 					value={input}
 					onChange={(e) => setInput(e.target.value)}
-					className="text-right text-xl font-mono border-black border-2 bg-white h-14 focus:ring-black focus:ring-offset-2"
+					className="text-right text-xl font-mono border-black border-2 bg-white text-main-foreground h-14 focus:ring-black focus:ring-offset-2"
 					placeholder={
 						conversionMode === "dollarToBs"
 							? "Monto en USD..."

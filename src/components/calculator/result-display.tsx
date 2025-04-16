@@ -18,12 +18,12 @@ export function ResultDisplay({ label, value }: ResultDisplayProps) {
 	};
 
 	return (
-		<div className="bg-white p-3 rounded-md border-black border-2 text-right relative">
-			<div className="text-sm font-bold text-black">{label}</div>
-			<div className="font-mono text-lg">{value}</div>
+		<div className="bg-secondary-background p-3 rounded-md border-border border-2 text-right relative">
+			<div className="text-sm font-bold text-foreground">{label}</div>
+			<div className="font-mono text-lg text-foreground">{value}</div>
 			<button
 				type="button"
-				className="absolute left-2 bottom-2 text-gray-500 hover:text-black transition-transform active:scale-90"
+				className="absolute left-2 bottom-2 text-foreground/60 hover:text-foreground transition-transform active:scale-90"
 				onClick={copyToClipboard}
 				aria-label="Copy result"
 			>

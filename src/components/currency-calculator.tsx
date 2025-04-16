@@ -210,19 +210,19 @@ export function CurrencyCalculator({
 								<button
 									type="button"
 									onClick={clearUsd}
-									className="text-gray-400 hover:text-gray-600 transition-colors"
+									className="text-foreground/60 hover:text-foreground transition-colors"
 									aria-label="Limpiar Valores"
 								>
 									<XCircleIcon className="h-5 w-5" />
 								</button>
 							)}
-							<span className="text-gray-400 ml-1">$</span>
+							<span className="text-foreground/60 ml-1">$</span>
 						</div>
 					</div>
 				</div>
 
 				<div className="flex justify-center my-3 relative">
-					<div className="absolute left-0 top-1/2 -translate-y-1/2 text-xs text-gray-500">
+					<div className="absolute left-0 top-1/2 -translate-y-1/2 text-xs text-foreground/60">
 						{lastEdited === "usd" ? "USD → Bs" : "Bs → USD"}
 					</div>
 
@@ -271,13 +271,13 @@ export function CurrencyCalculator({
 								<button
 									type="button"
 									onClick={clearBs}
-									className="text-gray-400 hover:text-gray-600 transition-colors"
+									className="text-foreground/60 hover:text-foreground transition-colors"
 									aria-label="Limpiar Valores"
 								>
 									<XCircleIcon className="h-5 w-5" />
 								</button>
 							)}
-							<span className="text-gray-400 ml-1">Bs.</span>
+							<span className="text-foreground/60 ml-1">Bs.</span>
 						</div>
 					</div>
 				</div>

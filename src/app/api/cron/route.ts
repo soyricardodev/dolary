@@ -1,4 +1,4 @@
-import { UPDATE_SCHEDULE } from "../consts";
+import { UPDATE_SCHEDULE, VENEZUELAN_BANK_HOLIDAYS_2025 } from "../consts";
 import { toZonedTime, format } from "date-fns-tz";
 import { getUsdBcv } from "../bcv/route";
 import { getParalelo } from "../paralelo/route";
@@ -238,6 +238,7 @@ export async function POST(req: NextRequest) {
 		const venezuelaTime = getVenezuelaTime();
 		const day = format(venezuelaTime, "EEEE", { timeZone: TIME_ZONE });
 		const time = format(venezuelaTime, TIME_FORMAT, { timeZone: TIME_ZONE });
+		const todayDate = format(venezuelaTime, DAY_FORMAT, { timeZone: TIME_ZONE });
 
 		console.log(`API Route called at ${time} Venezuela time.`);
 
@@ -249,10 +250,14 @@ export async function POST(req: NextRequest) {
 			console.log("Skipping paralelo due to day restriction.");
 		}
 
-		if (!UPDATE_SCHEDULE.bcv.not.includes(day)) {
+		if (!UPDATE_SCHEDULE.bcv.not.includes(day) && !VENEZUELAN_BANK_HOLIDAYS_2025.includes(todayDate)) {
 			updates.push(runUpdateWithLock("bcv", forceUpdate));
 		} else {
-			console.log("Skipping bcv due to day restriction.");
+			if (VENEZUELAN_BANK_HOLIDAYS_2025.includes(todayDate)) {
+				console.log("Skipping bcv due to Venezuelan bank holiday.");
+			} else {
+				console.log("Skipping bcv due to day restriction.");
+			}
 		}
 
 		await Promise.all(updates);

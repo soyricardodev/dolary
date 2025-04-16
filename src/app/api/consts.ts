@@ -17,6 +17,36 @@ export const UPDATE_SCHEDULE: Record<string, UpdateSchedule> = {
 	},
 };
 
+export const VENEZUELAN_BANK_HOLIDAYS_2025 = [
+	"2025-01-06", // Día de Reyes
+	"2025-01-13", // Día de la Divina Pastora (martes 14 de enero)
+	"2025-03-19", // Día de San José
+	"2025-06-02", // Ascensión del Señor (jueves 29 de mayo)
+	"2025-06-16", // Día de San Antonio (jueves 13 de junio)
+	"2025-06-23", // Corpus Christi (jueves 19 de junio)
+	"2025-06-29", // Día de San Pedro y San Pablo
+	"2025-08-18", // Asunción de Nuestra Señora (viernes 15 de agosto)
+	"2025-09-15", // Día de la Virgen de Coromoto (jueves 11 de septiembre)
+	"2025-10-26", // Día de José Gregorio Hernández
+	"2025-11-01", // Día de todos los Santos
+	"2025-11-24", // Día de la Virgen del Rosario de Chiquinquirá (martes 18 de noviembre)
+	"2025-12-08", // Día de la Inmaculada Concepción
+	"2025-01-01", // Año Nuevo
+	"2025-03-03", // Carnaval
+	"2025-03-04", // Carnaval
+	"2025-04-17", // Semana Santa
+	"2025-04-18", // Semana Santa
+	"2025-04-19", // Movimiento Precursor de la Independencia
+	"2025-05-01", // Día del Trabajador
+	"2025-06-24", // Batalla de Carabobo
+	"2025-07-05", // Día de la Independencia
+	"2025-07-24", // Natalicio del Libertador
+	"2025-10-12", // Día de la Resistencia Indígena
+	"2025-12-24", // Nochebuena
+	"2025-12-25", // Natividad de Nuestro Señor
+	"2025-12-31", // Fin de Año
+];
+
 export const PROVIDERS = {
 	"Al Cambio": {
 		id: "alcambio",
@@ -88,7 +118,6 @@ export const BANK_DICT = {
 	Bancamiga: "bancamiga",
 	"Banco Internacional de Desarrollo": "b.i.d",
 	Banplus: "banplus",
-	"Banco Bicentenario": "bicentenario",
 	"Banco de la Fuerza Armada Nacional Bolivariana": "banfanb",
 	"N58 Banco Digital": "n58",
 	Citibank: "citi",

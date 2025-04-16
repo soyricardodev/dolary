@@ -94,6 +94,7 @@ export function PushNotificationManager() {
 		await sendNotification(
 			"Excelente, ahora recibiras notificaciones de Dolary.",
 		);
+		setIsOpen(false);
 	}
 
 	async function unsubscribeFromPush() {
@@ -123,8 +124,11 @@ export function PushNotificationManager() {
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger asChild>
-				<Button size="icon" aria-label="Manage Notifications">
-					<BellIcon className="h-5 w-5" />
+				<Button
+					aria-label="Manage Notifications"
+					className="size-9 p-0 [&_svg]:size-5 hover:translate-x-[4px]! hover:translate-y-[4px]! hover:shadow-none bg-secondary-background"
+				>
+					<BellIcon className="h-5 w-5 stroke-foreground" />
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="max-w-md">

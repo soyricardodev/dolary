@@ -7,6 +7,7 @@ import { CurrencyCard } from "@/components/currency-card";
 import { useCurrencyData } from "@/hooks/use-currency-data";
 import { CustomCurrencyCard } from "./custom-currency-card";
 import { formatVenezuelaDate } from "@/lib/utils";
+import { Suspense } from "react";
 
 interface CurrencyMonitorsProps {
 	onCardClickAction: (currency: string) => void;
@@ -82,7 +83,9 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 					change={bcv.change}
 					percent={bcv.percent}
 					color={bcv.color}
-					lastUpdate={formatVenezuelaDate(bcv.last_update ?? new Date(), { prefix: "Vigente para: " })}
+					lastUpdate={formatVenezuelaDate(bcv.last_update ?? new Date(), {
+						prefix: "Vigente para: ",
+					})}
 					onClick={() => onCardClickAction("bcv")}
 				/>
 
@@ -93,7 +96,10 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 					change={paralelo.change}
 					percent={paralelo.percent}
 					color={paralelo.color}
-					lastUpdate={formatVenezuelaDate(paralelo.last_update ?? new Date(), { withTime: true, prefix: "Actualizado: " })}
+					lastUpdate={formatVenezuelaDate(paralelo.last_update ?? new Date(), {
+						withTime: true,
+						prefix: "Actualizado: ",
+					})}
 					onClick={() => onCardClickAction("paralelo")}
 				/>
 
@@ -113,7 +119,9 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 					onClick={() => onCardClickAction("promedio")}
 				/>
 
-				<CustomCurrencyCard onClick={() => onCardClickAction("custom")} />
+				<Suspense>
+					<CustomCurrencyCard onClick={() => onCardClickAction("custom")} />
+				</Suspense>
 			</div>
 		</div>
 	);

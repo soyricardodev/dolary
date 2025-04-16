@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CopyIcon, CheckIcon } from "lucide-react";
 import {
 	Card,
@@ -17,9 +17,18 @@ import useLocalStorage from "@/hooks/use-local-storage";
 import { AddCustomPromedio } from "./add-custom-promedio";
 import { ModifyCustomPromedio } from "./modify-custom-promedio";
 
-export function CustomCurrencyCard({ onClick }: { onClick: () => void }) {
+export function CustomCurrencyCard({
+	onClickAction,
+}: { onClickAction: () => void }) {
 	const [customPromedio] = useLocalStorage<CustomPromedio>(CustomPromedioKey);
 	const [copied, setCopied] = useState(false);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		setLoading(false);
+	}, []);
+
+	if (loading) return null;
 
 	if (!customPromedio) return <AddCustomPromedio />;
 
@@ -60,7 +69,7 @@ export function CustomCurrencyCard({ onClick }: { onClick: () => void }) {
 			<CardFooter className="flex items-center justify-between pb-3 -mt-5">
 				<div />
 
-				<Button size="sm" variant="neutral" onClick={onClick}>
+				<Button size="sm" variant="neutral" onClick={onClickAction}>
 					Calcular
 				</Button>
 			</CardFooter>

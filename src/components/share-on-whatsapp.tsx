@@ -89,13 +89,14 @@ export const ShareOnWhatsapp: React.FC<ShareOnWhatsappProps> = ({ text }) => {
 				onClick={isLoading ? () => {} : captureAndShare}
 				aria-label="Share on WhatsApp"
 				size="icon"
+				className="size-9 p-0 [&_svg]:size-5 hover:translate-x-[4px]! hover:translate-y-[4px]! hover:shadow-none bg-secondary-background"
 			>
 				{isLoading ? (
 					<span className="loader" aria-label="Loading...">
-						<Loader2Icon className="size-4 animate-spin" />
+						<Loader2Icon className="size-5 animate-spin stroke-foreground" />
 					</span>
 				) : (
-					<WhatsappIcon className="!size-5" />
+					<WhatsappIcon className="stroke-foreground fill-foreground" />
 				)}
 			</Button>
 			<Dialog open={isOpen}>

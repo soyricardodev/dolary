@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import * as math from "mathjs";
 import { Input } from "@/components/ui/input";
-import { ArrowRightLeft } from "lucide-react";
+import { ArrowRightLeftIcon } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { CalculatorButton } from "./calculator-button";
@@ -178,7 +178,7 @@ export function Calculator({ rates }: CalculatorProps) {
 					<div className="flex items-center justify-between mb-2">
 						<span className="font-bold text-sm">Modo de conversión:</span>
 						<Button onClick={toggleConversionMode} variant={"neutral"}>
-							<ArrowRightLeft size={16} />
+							<ArrowRightLeftIcon size={16} />
 							<span className="font-bold">
 								{conversionMode === "dollarToBs" ? "USD → Bs" : "Bs → USD"}
 							</span>

@@ -1,6 +1,6 @@
 "use client";
 
-import { RefreshCw } from "lucide-react";
+import { RefreshCwIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCurrencyData } from "@/hooks/use-currency-data";
 import { Logo } from "./logo";
@@ -31,7 +31,7 @@ export function AppHeader() {
 					disabled={isRefetching}
 					aria-label="Refrescar Datos"
 				>
-					<RefreshCw
+					<RefreshCwIcon
 						className={`h-3.5 w-3.5 mr-1 ${isRefetching ? "animate-spin" : ""}`}
 					/>
 				</Button>

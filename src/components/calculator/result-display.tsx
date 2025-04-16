@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Check } from "lucide-react";
+import { CopyIcon, CheckIcon } from "lucide-react";
 
 interface ResultDisplayProps {
 	label: string;
@@ -28,12 +28,12 @@ export function ResultDisplay({ label, value }: ResultDisplayProps) {
 				aria-label="Copy result"
 			>
 				{copied ? (
-					<Check
+					<CheckIcon
 						size={18}
 						className="text-green-500 transition-all duration-200"
 					/>
 				) : (
-					<Copy size={18} className="transition-all duration-200" />
+					<CopyIcon size={18} className="transition-all duration-200" />
 				)}
 			</button>
 		</div>

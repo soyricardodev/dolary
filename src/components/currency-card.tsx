@@ -3,7 +3,7 @@
 import type React from "react";
 
 import { useState } from "react";
-import { ArrowDown, ArrowUp, Copy, Check } from "lucide-react";
+import { ArrowDownIcon, ArrowUpIcon, CopyIcon, CheckIcon } from "lucide-react";
 import {
 	Card,
 	CardContent,
@@ -24,6 +24,7 @@ export interface CurrencyCardProps {
 	lastUpdate?: string;
 	onClick?: () => void;
 	className?: string;
+	subtitle?: React.ReactNode;
 }
 
 export function CurrencyCard({
@@ -36,6 +37,7 @@ export function CurrencyCard({
 	onClick,
 	className = "",
 	color,
+	subtitle,
 }: CurrencyCardProps) {
 	const [copied, setCopied] = useState(false);
 
@@ -52,13 +54,16 @@ export function CurrencyCard({
 		<Card className={`relative ${className}`} onClick={onClick}>
 			<CardHeader className="pt-2 pb-0 flex flex-row w-full justify-between items-center">
 				<div className="flex gap-4">
-					<h2 className="text-xl font-bold">{title}</h2>
+					<div className="flex flex-col">
+						<h2 className="text-xl font-bold">{title}</h2>
+						
+					</div>
 					{
 						<Badge className="w-max" variant={"neutral"}>
 							{isChangePositive ? (
-								<ArrowUp className="size-3 mr-1" />
+								<ArrowUpIcon className="size-3 mr-1" />
 							) : (
-								<ArrowDown className="size-3 mr-1" />
+								<ArrowDownIcon className="size-3 mr-1" />
 							)}
 
 							<span className="font-medium">
@@ -75,9 +80,9 @@ export function CurrencyCard({
 					aria-label="Copiar Tasa"
 				>
 					{copied ? (
-						<Check className="h-4 w-4" />
+						<CheckIcon className="h-4 w-4" />
 					) : (
-						<Copy className="h-4 w-4" />
+						<CopyIcon className="h-4 w-4" />
 					)}
 				</Button>
 			</CardHeader>
@@ -91,7 +96,12 @@ export function CurrencyCard({
 			</CardContent>
 			<CardFooter className="flex items-center justify-between pb-3 -mt-5">
 				<div className="mt-auto text-xs">
-					{lastUpdate != null ? `Actualizado: ${lastUpdate}` : null}
+					{lastUpdate != null ? lastUpdate : null}
+					{subtitle && (
+							<p className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
+								{subtitle}
+							</p>
+						)}
 				</div>
 
 				<Button size="sm" variant="neutral">

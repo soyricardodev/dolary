@@ -3,7 +3,7 @@
 import type React from "react";
 
 import { useState } from "react";
-import { Copy, Check } from "lucide-react";
+import { CopyIcon, CheckIcon } from "lucide-react";
 import {
 	Card,
 	CardContent,
@@ -41,9 +41,9 @@ export function CustomCurrencyCard({ onClick }: { onClick: () => void }) {
 
 					<Button onClick={handleCopy} title="Copiar valor" size="icon">
 						{copied ? (
-							<Check className="h-4 w-4" />
+							<CheckIcon className="h-4 w-4" />
 						) : (
-							<Copy className="h-4 w-4" />
+							<CopyIcon className="h-4 w-4" />
 						)}
 					</Button>
 				</div>

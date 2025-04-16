@@ -7,7 +7,6 @@ import { CurrencyCard } from "@/components/currency-card";
 import { useCurrencyData } from "@/hooks/use-currency-data";
 import { CustomCurrencyCard } from "./custom-currency-card";
 import { formatVenezuelaDate } from "@/lib/utils";
-import { Suspense } from "react";
 
 interface CurrencyMonitorsProps {
 	onCardClickAction: (currency: string) => void;
@@ -16,7 +15,7 @@ interface CurrencyMonitorsProps {
 export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 	const { data, isLoading, error } = useCurrencyData();
 
-	if (isLoading) {
+	if (isLoading && !data) {
 		return (
 			<div className="flex justify-center items-center h-32">
 				<Loader2Icon className="h-6 w-6 animate-spin text-primary" />
@@ -69,12 +68,6 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 
 	return (
 		<div className="relative">
-			{/* {isRefetching && (
-				<div className="absolute top-0 right-0 text-black px-2 py-1 rounded-md text-xs animate-pulse z-10">
-					Actualizando...
-				</div>
-			)} */}
-
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
 				<CurrencyCard
 					title="BCV"
@@ -119,9 +112,7 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 					onClick={() => onCardClickAction("promedio")}
 				/>
 
-				<Suspense>
-					<CustomCurrencyCard onClick={() => onCardClickAction("custom")} />
-				</Suspense>
+				<CustomCurrencyCard onClickAction={() => onCardClickAction("custom")} />
 			</div>
 		</div>
 	);

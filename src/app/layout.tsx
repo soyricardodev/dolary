@@ -78,12 +78,14 @@ export const viewport: Viewport = {
 	themeColor: "#FFFFFF",
 };
 
+export const experimental_ppr = true;
+
 export default function RootLayout({
 	children,
 }: { children: React.ReactNode }) {
 	return (
 		<html lang="es">
-			<body>
+			<body className="bg-background text-foreground">
 				<Suspense>
 					<LazyAnalytics />
 				</Suspense>

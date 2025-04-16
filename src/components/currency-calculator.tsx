@@ -1,7 +1,12 @@
 import type React from "react";
 
 import { useState, useEffect, useRef } from "react";
-import { ArrowDownUp, Copy, Check, XCircle } from "lucide-react";
+import {
+	ArrowDownUpIcon,
+	CopyIcon,
+	CheckIcon,
+	XCircleIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { formatCurrency } from "@/lib/utils";
@@ -182,9 +187,9 @@ export function CurrencyCalculator({
 							aria-label="Copiar Tasa"
 						>
 							{copiedUsd ? (
-								<Check className="h-4 w-4 mr-1" />
+								<CheckIcon className="h-4 w-4 mr-1" />
 							) : (
-								<Copy className="h-4 w-4 mr-1" />
+								<CopyIcon className="h-4 w-4 mr-1" />
 							)}
 						</Button>
 					</div>
@@ -208,7 +213,7 @@ export function CurrencyCalculator({
 									className="text-gray-400 hover:text-gray-600 transition-colors"
 									aria-label="Limpiar Valores"
 								>
-									<XCircle className="h-5 w-5" />
+									<XCircleIcon className="h-5 w-5" />
 								</button>
 							)}
 							<span className="text-gray-400 ml-1">$</span>
@@ -228,7 +233,7 @@ export function CurrencyCalculator({
 						title="Intercambiar valores"
 						aria-label="Intercambiar valores"
 					>
-						<ArrowDownUp className="h-5 w-5" />
+						<ArrowDownUpIcon className="h-5 w-5" />
 						<span className="sr-only">Intercambiar valores</span>
 					</Button>
 				</div>
@@ -243,9 +248,9 @@ export function CurrencyCalculator({
 							aria-label="Copiar Tasa"
 						>
 							{copiedBs ? (
-								<Check className="h-4 w-4 mr-1" />
+								<CheckIcon className="h-4 w-4 mr-1" />
 							) : (
-								<Copy className="h-4 w-4 mr-1" />
+								<CopyIcon className="h-4 w-4 mr-1" />
 							)}
 						</Button>
 					</div>
@@ -269,7 +274,7 @@ export function CurrencyCalculator({
 									className="text-gray-400 hover:text-gray-600 transition-colors"
 									aria-label="Limpiar Valores"
 								>
-									<XCircle className="h-5 w-5" />
+									<XCircleIcon className="h-5 w-5" />
 								</button>
 							)}
 							<span className="text-gray-400 ml-1">Bs.</span>

@@ -37,6 +37,7 @@
     "date-fns-tz": "^3.2.0",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.41.0",
+    "framer-motion": "^12.7.3",
     "lucide-react": "^0.483.0",
     "luxon": "^3.5.0",
     "mathjs": "^14.4.0",

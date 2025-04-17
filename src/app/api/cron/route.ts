@@ -100,7 +100,7 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 				.where(eq(monitorTable.key, rate));
 
 			if (!latestData) {
-				console.warn(`No latest data found for ${rate}, skipping update.`);
+				console.warn(`No latest data found for ${rate}, using mockup data.`);
 				return;
 			}
 
@@ -109,13 +109,6 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 				latestData.lastUpdate,
 			);
 			console.log(`Last updated ${lastUpdateDays} days ago`);
-
-			if (
-				force ||
-				lastUpdateDays > Number(process.env.STALE_DATA_THRESHOLD_DAYS ?? 1)
-			) {
-				console.log(`Data for ${rate} is stale, forcing update.`);
-			}
 
 			if (
 				!force &&
@@ -142,14 +135,9 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 			const symbol = color === "green" ? "▲" : color === "red" ? "▼" : "";
 			let lastUpdate: Date;
 			if (rate === "bcv") {
-				const venezuelaDate = toZonedTime(data.last_update ?? new Date(), TIME_ZONE);
-				venezuelaDate.setHours(0, 0, 0, 0);
-				// Manual conversion: subtract 4 hours to get UTC midnight
-				lastUpdate = new Date(venezuelaDate.getTime() - 4 * 60 * 60 * 1000);
+				lastUpdate = data.last_update ? new Date(data.last_update) : new Date();
 			} else {
-				lastUpdate = data.last_update
-					? new Date(data.last_update)
-					: new Date();
+				lastUpdate = data.last_update ? new Date(data.last_update) : new Date();
 			}
 			const sanitizedChange = Number.parseFloat(
 				change.toString().replace("-", ""),
@@ -195,7 +183,7 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 			const direction =
 				change > 0 ? "subió" : change < 0 ? "bajó" : "se mantuvo igual";
 			const notificationMessage = `La tasa ${rate.charAt(0).toUpperCase() + rate.slice(1)} ${direction} a ${price.toFixed(2)}. Cambio: ${symbol} ${sanitizedChange} (${percent}%).`;
-			await sendNotificationToAllUsers(notificationMessage);
+			//await sendNotificationToAllUsers(notificationMessage);
 
 			console.log(`Successfully updated ${rate}.`);
 		});
@@ -246,19 +234,25 @@ export async function POST(req: NextRequest) {
 		const venezuelaTime = getVenezuelaTime();
 		const day = format(venezuelaTime, "EEEE", { timeZone: TIME_ZONE });
 		const time = format(venezuelaTime, TIME_FORMAT, { timeZone: TIME_ZONE });
-		const todayDate = format(venezuelaTime, DAY_FORMAT, { timeZone: TIME_ZONE });
+		const todayDate = format(venezuelaTime, DAY_FORMAT, {
+			timeZone: TIME_ZONE,
+		});
 
 		console.log(`API Route called at ${time} Venezuela time.`);
 
 		const updates = [];
 
-		if (!UPDATE_SCHEDULE.paralelo.not.includes(day)) {
+		if (forceUpdate || !UPDATE_SCHEDULE.paralelo.not.includes(day)) {
 			updates.push(runUpdateWithLock("paralelo", forceUpdate));
 		} else {
 			console.log("Skipping paralelo due to day restriction.");
 		}
 
-		if (!UPDATE_SCHEDULE.bcv.not.includes(day) && !VENEZUELAN_BANK_HOLIDAYS_2025.includes(todayDate)) {
+		if (
+			forceUpdate ||
+			(!UPDATE_SCHEDULE.bcv.not.includes(day) &&
+				!VENEZUELAN_BANK_HOLIDAYS_2025.includes(todayDate))
+		) {
 			updates.push(runUpdateWithLock("bcv", forceUpdate));
 		} else {
 			if (VENEZUELAN_BANK_HOLIDAYS_2025.includes(todayDate)) {

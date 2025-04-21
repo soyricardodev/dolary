@@ -83,31 +83,22 @@ export function CurrencyCard({
 					)}
 				</Button>
 			</CardHeader>
-			<CardContent className="py-0">
+			<CardContent className="pb-2 flex items-end justify-between">
 				<div className="h-full flex flex-col">
 					<div className="flex items-baseline mb-1">
 						<span className="text-3xl font-bold">{formatCurrency(price)}</span>
 						{symbol != null && <span className="ml-1 text-xs">{symbol}</span>}
 					</div>
+					{lastUpdate != null ? <p className="text-xs">{lastUpdate}</p> : null}
+					{subtitle != null ? (
+						<span className="text-xs">{subtitle}</span>
+					) : null}
 				</div>
 
-				<div className="flex justify-between items-center w-full">
-					<div className="mt-auto text-xs">
-						{lastUpdate != null ? lastUpdate : null}
-						{subtitle && (
-							<p className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
-								{subtitle}
-							</p>
-						)}
-					</div>
-
-					<Button size="sm" variant="neutral">
-						Calcular
-					</Button>
-				</div>
+				<Button size="sm" variant="neutral" type="button" className="h-8 px-2">
+					Calcular
+				</Button>
 			</CardContent>
-			{/*<CardFooter className="flex items-center gap-1 justify-between pb-3">
-			</CardFooter>*/}
 		</Card>
 	);
 }

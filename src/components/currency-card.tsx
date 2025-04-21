@@ -4,12 +4,7 @@ import type React from "react";
 
 import { useState } from "react";
 import { ArrowDownIcon, ArrowUpIcon, CopyIcon, CheckIcon } from "lucide-react";
-import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn, formatCurrency } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";

@@ -77,7 +77,7 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 					percent={bcv.percent}
 					color={bcv.color}
 					lastUpdate={formatVenezuelaDate(bcv.last_update ?? new Date(), {
-						prefix: "Vigente para: ",
+						prefix: "Vigente hasta: ",
 					})}
 					onClick={() => onCardClickAction("bcv")}
 				/>

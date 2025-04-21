@@ -83,7 +83,7 @@ export function CurrencyCard({
 					)}
 				</Button>
 			</CardHeader>
-			<CardContent className="pb-2 flex items-end justify-between">
+			<CardContent className="pb-3 flex items-end justify-between">
 				<div className="h-full flex flex-col">
 					<div className="flex items-baseline mb-1">
 						<span className="text-3xl font-bold">{formatCurrency(price)}</span>

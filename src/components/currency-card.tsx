@@ -10,7 +10,7 @@ import {
 	CardFooter,
 	CardHeader,
 } from "@/components/ui/card";
-import { formatCurrency } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 
@@ -51,7 +51,7 @@ export function CurrencyCard({
 	const isChangePositive = color != null && color === "green";
 
 	return (
-		<Card className={`relative ${className}`} onClick={onClick}>
+		<Card className={cn("relative", className)} onClick={onClick}>
 			<CardHeader className="pt-2 pb-0 flex flex-row w-full justify-between items-center">
 				<div className="flex gap-4">
 					<div className="flex flex-col">

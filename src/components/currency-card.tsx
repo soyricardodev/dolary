@@ -51,7 +51,9 @@ export function CurrencyCard({
 		<Card className={cn("relative", className)}>
 			<CardHeader className="pt-2 pb-0 flex flex-row w-full justify-between space-y-0">
 				<div className="flex gap-4 space-y-0">
-					<h2 className="text-xl font-bold">{title}</h2>
+					<h2 className="text-xl font-bold" onMouseDown={onClick}>
+						{title}
+					</h2>
 					{change != null && (
 						<Badge className="w-fit h-fit px-1" variant={"neutral"}>
 							{isChangePositive ? (
@@ -89,7 +91,9 @@ export function CurrencyCard({
 			<CardContent className="pb-3 flex items-end justify-between">
 				<div className="h-full flex flex-col">
 					<div className="flex items-baseline mb-1">
-						<span className="text-3xl font-bold">{formatCurrency(price)}</span>
+						<span className="text-3xl font-bold" onMouseDown={handleCopy}>
+							{formatCurrency(price)}
+						</span>
 						{symbol != null && <span className="ml-1 text-xs">{symbol}</span>}
 					</div>
 					{lastUpdate != null ? <p className="text-xs">{lastUpdate}</p> : null}

@@ -1,6 +1,6 @@
+import { Suspense, lazy } from "react";
 import { AppFooter } from "@/components/app-footer";
 import { AppHeader } from "@/components/app-header";
-import { Dolary } from "@/components/dolary";
 import { getDolarRates } from "@/queries";
 import {
 	dehydrate,
@@ -8,6 +8,10 @@ import {
 	QueryClient,
 } from "@tanstack/react-query";
 import { CurrencyProvider } from "@/context/currency-context";
+
+const Dolary = lazy(() =>
+	import("@/components/dolary").then((mod) => ({ default: mod.Dolary })),
+);
 
 export default async function RootPage() {
 	const queryClient = new QueryClient();
@@ -27,7 +31,13 @@ export default async function RootPage() {
 						¡Bienvenido a Dolary!
 					</h1>
 					<CurrencyProvider>
-						<Dolary />
+						<Suspense
+							fallback={
+								<div className="animate-pulse h-32 bg-secondary-background rounded-lg" />
+							}
+						>
+							<Dolary />
+						</Suspense>
 					</CurrencyProvider>
 				</div>
 

@@ -10,6 +10,7 @@ import { differenceInDays } from "date-fns";
 import { Redis } from "@upstash/redis";
 import type { Monitor } from "../types";
 import { sendNotificationToAllUsers } from "@/components/notifications/actions";
+import { generateScreenshot } from "../screenshot/route";
 
 const redis = Redis.fromEnv();
 
@@ -184,6 +185,9 @@ async function updateRate(rate: "paralelo" | "bcv", force = false) {
 				change > 0 ? "subió" : change < 0 ? "bajó" : "se mantuvo igual";
 			const notificationMessage = `La tasa ${rate.charAt(0).toUpperCase() + rate.slice(1)} ${direction} a ${price.toFixed(2)}. Cambio: ${symbol} ${sanitizedChange} (${percent}%).`;
 			await sendNotificationToAllUsers(notificationMessage);
+
+			// Generate screenshot only when a rate change occurs
+			generateScreenshot();
 
 			console.log(`Successfully updated ${rate}.`);
 		});

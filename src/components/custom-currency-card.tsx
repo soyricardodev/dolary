@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-import { Button } from "./ui/button";
 import { AddCustomPromedio } from "./add-custom-promedio";
 import { ModifyCustomPromedio } from "./modify-custom-promedio";
 import { useCurrencyContext } from "@/context/currency-context";

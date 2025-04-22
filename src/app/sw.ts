@@ -1,6 +1,6 @@
 import { defaultCache } from "@serwist/next/worker";
 import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
-import { Serwist } from "serwist";
+import { Serwist, CacheFirst, NetworkFirst, ExpirationPlugin } from "serwist";
 
 // This declares the value of `injectionPoint` to TypeScript.
 // `injectionPoint` is the string that will be replaced by the
@@ -19,7 +19,37 @@ const serwist = new Serwist({
 	skipWaiting: true,
 	clientsClaim: true,
 	navigationPreload: true,
-	runtimeCaching: defaultCache,
+	runtimeCaching: [
+		{
+			matcher: ({ url }) => url.origin === "https://dolary.vercel.app",
+			handler: new NetworkFirst({
+				cacheName: "pages-cache",
+				plugins: [
+					new ExpirationPlugin({
+						maxEntries: 50,
+						maxAgeSeconds: 24 * 60 * 60, // 24 hours
+					}),
+				],
+				networkTimeoutSeconds: 10,
+			}),
+		},
+		{
+			matcher: ({ request }) => {
+				const url = new URL(request.url);
+				return /\.(?:js|css|png|jpg|jpeg|svg|gif|ico)$/.test(url.pathname);
+			},
+			handler: new CacheFirst({
+				cacheName: "static-resources",
+				plugins: [
+					new ExpirationPlugin({
+						maxEntries: 100,
+						maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
+					}),
+				],
+			}),
+		},
+		...defaultCache,
+	],
 });
 
 self.addEventListener("push", (event) => {

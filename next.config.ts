@@ -53,6 +53,5 @@ export default withSerwist({
 	},
 	experimental: {
 		ppr: "incremental",
-		optimizeCss: true,
 	},
 });

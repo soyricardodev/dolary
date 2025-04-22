@@ -23,7 +23,7 @@ export function AppHeader() {
 		<header className="flex w-full justify-between items-center">
 			<Logo />
 
-			<div className="flex justify-center gap-4">
+			<div className="flex justify-center gap-2">
 				<PwaInstallPrompt />
 				<IOSInstallPrompt />
 				<PushNotificationManager />

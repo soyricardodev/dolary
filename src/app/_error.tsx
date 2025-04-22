@@ -2,8 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 
+export const dynamic = "force-static";
+
 export default function ErrorBoundary({
-	error,
 	reset,
 }: {
 	error: Error & { digest?: string };

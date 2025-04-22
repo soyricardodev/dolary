@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+
+export const dynamic = "force-static";
 
 export default function NotFound() {
 	return (

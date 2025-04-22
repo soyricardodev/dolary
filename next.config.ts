@@ -54,6 +54,5 @@ export default withSerwist({
 	experimental: {
 		ppr: "incremental",
 		optimizeCss: true,
-		optimizePackageImports: ["@tanstack/react-query", "lucide-react"],
 	},
 });

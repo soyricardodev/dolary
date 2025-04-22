@@ -23,7 +23,7 @@ export function CalculatorButton({
 	// Define styles based on variant
 	const getButtonStyles = (): string => {
 		const baseStyles =
-			"h-14 w-full text-lg font-bold transition-transform active:scale-95 border-2 border-border";
+			"h-10 sm:h-12 w-full text-sm sm:text-base font-bold transition-transform active:scale-95 border-2 border-border";
 
 		switch (variant) {
 			case "number":
@@ -41,8 +41,11 @@ export function CalculatorButton({
 
 	// Render icon if specified
 	const renderContent = () => {
-		if (icon === "delete") return <DeleteIcon size={20} />;
-		if (icon === "percent") return <PercentIcon size={20} />;
+		// Reduce icon size slightly for smaller screens
+		const iconSize =
+			typeof window !== "undefined" && window.innerWidth < 640 ? 18 : 20;
+		if (icon === "delete") return <DeleteIcon size={iconSize} />;
+		if (icon === "percent") return <PercentIcon size={iconSize} />;
 		return children;
 	};
 

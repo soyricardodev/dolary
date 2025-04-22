@@ -174,16 +174,20 @@ export function Calculator({ rates, selectedCurrency }: CalculatorProps) {
 	return (
 		<div className="flex flex-col gap-2">
 			{/* Currency Selector with Improved Toggle Button */}
-			<div className="bg-main p-3 border-black border-2 rounded-md">
-				<div className="flex flex-col space-y-3">
+			<div className="bg-main p-2 sm:p-3 border-black border-2 rounded-md">
+				<div className="flex flex-col space-y-2 sm:space-y-3">
 					{/* Currency Direction Toggle - Improved Position */}
-					<div className="flex items-center justify-between mb-2">
-						<span className="font-bold text-sm text-main-foreground">
+					<div className="flex items-center justify-between mb-1 sm:mb-1.5">
+						<span className="font-bold text-[0.8rem] sm:text-sm text-main-foreground mr-2">
 							Modo de conversión:
 						</span>
-						<Button onClick={toggleConversionMode} variant={"neutral"}>
-							<ArrowRightLeftIcon size={16} />
-							<span className="font-bold">
+						<Button
+							onClick={toggleConversionMode}
+							variant={"neutral"}
+							className="px-2 h-8 sm:h-9"
+						>
+							<ArrowRightLeftIcon size={14} />
+							<span className="font-medium sm:font-bold text-[0.7rem] sm:text-sm ml-1 sm:ml-1.5 text-center">
 								{conversionMode === "dollarToBs" ? "USD → Bs" : "Bs → USD"}
 							</span>
 						</Button>
@@ -202,25 +206,28 @@ export function Calculator({ rates, selectedCurrency }: CalculatorProps) {
 								rates.custom != null ? "grid-cols-4" : "grid-cols-3",
 							)}
 						>
-							<TabsTrigger value="bcv" className="data-[state=active]:bg-white">
+							<TabsTrigger
+								value="bcv"
+								className="data-[state=active]:bg-white text-xs sm:text-sm"
+							>
 								BCV
 							</TabsTrigger>
 							<TabsTrigger
 								value="paralelo"
-								className="data-[state=active]:bg-white"
+								className="data-[state=active]:bg-white text-xs sm:text-sm h-full"
 							>
 								Paralelo
 							</TabsTrigger>
 							<TabsTrigger
 								value="promedio"
-								className="data-[state=active]:bg-white"
+								className="data-[state=active]:bg-white text-xs sm:text-sm h-full"
 							>
 								Promedio
 							</TabsTrigger>
 							{rates.custom != null ? (
 								<TabsTrigger
 									value="custom"
-									className="data-[state=active]:bg-white"
+									className="data-[state=active]:bg-white text-xs sm:text-sm h-full"
 								>
 									Personal
 								</TabsTrigger>
@@ -244,7 +251,7 @@ export function Calculator({ rates, selectedCurrency }: CalculatorProps) {
 					type="text"
 					value={input}
 					onChange={(e) => setInput(e.target.value)}
-					className="pointer-events-none text-right text-xl font-mono border-black border-2 bg-white text-main-foreground h-14 focus:ring-black focus:ring-offset-2"
+					className="pointer-events-none text-right text-lg sm:text-xl font-mono border-black border-2 bg-white text-main-foreground h-14 focus:ring-black focus:ring-offset-2"
 					placeholder={
 						conversionMode === "dollarToBs"
 							? "Monto en USD..."
@@ -270,7 +277,7 @@ export function Calculator({ rates, selectedCurrency }: CalculatorProps) {
 			</div>
 
 			{/* Calculator Buttons */}
-			<div className="grid grid-cols-4 gap-2 sm:gap-3">
+			<div className="grid grid-cols-4 gap-1.5 sm:gap-2">
 				{/* Row 1: AC, (), %, ÷ */}
 				<CalculatorButton
 					onClickAction={() => handleButtonClick("AC")}

@@ -6,10 +6,12 @@ import { ThemeProvider } from "./theme-provider";
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
-			staleTime: 30 * 60 * 1000, // 30 minutes
-			gcTime: 24 * 60 * 60 * 1000, // 24 hours
-			refetchOnWindowFocus: true,
-			retry: 3,
+			staleTime: 5 * 60 * 1000, // 5 minutes
+			gcTime: 10 * 60 * 1000, // 10 minutes
+			refetchOnWindowFocus: false,
+			retry: 1,
+			refetchOnMount: false,
+			refetchOnReconnect: false,
 		},
 	},
 });
@@ -25,7 +27,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
 			>
 				{children}
 			</ThemeProvider>
-			<ReactQueryDevtools initialIsOpen={false} />
+			{process.env.NODE_ENV === "development" && (
+				<ReactQueryDevtools initialIsOpen={false} />
+			)}
 		</QueryClientProvider>
 	);
 }

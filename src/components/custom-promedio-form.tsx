@@ -110,7 +110,7 @@ export function CustomPromedioForm({
 								<Input
 									type="number"
 									step="0.01"
-									placeholder="Ej: 39.50"
+									placeholder="Ej: 95"
 									{...field}
 								/>
 							</FormControl>

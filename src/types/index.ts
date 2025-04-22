@@ -42,3 +42,5 @@ export interface CustomPromedio {
 
 export const CustomPromedioKey = "customPromedio";
 export const MonitorsKey = "monitors";
+export const CalculatorModeKey = "calculatorMode";
+export type CalculatorMode = "simple" | "advanced";

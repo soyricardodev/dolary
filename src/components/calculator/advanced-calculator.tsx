@@ -254,7 +254,7 @@ export function AdvancedCalculator({
 					type="text"
 					value={input}
 					onChange={(e) => setInput(e.target.value)}
-					className="pointer-events-none text-right text-lg sm:text-xl font-mono border-black border-2 bg-white text-black h-14 focus:ring-black focus:ring-offset-2"
+					className="pointer-events-none text-right text-lg sm:text-xl font-mono border-black border-2 h-14 focus:ring-black focus:ring-offset-2"
 					placeholder={
 						conversionMode === "dollarToBs"
 							? "Monto en USD..."

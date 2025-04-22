@@ -183,7 +183,7 @@ export function Calculator({ rates, selectedCurrency }: CalculatorProps) {
 						</span>
 						<Button
 							onClick={toggleConversionMode}
-							variant={"neutral"}
+							variant={"noShadow"}
 							className="px-2 h-8 sm:h-9"
 						>
 							<ArrowRightLeftIcon size={14} />
@@ -251,7 +251,7 @@ export function Calculator({ rates, selectedCurrency }: CalculatorProps) {
 					type="text"
 					value={input}
 					onChange={(e) => setInput(e.target.value)}
-					className="pointer-events-none text-right text-lg sm:text-xl font-mono border-black border-2 bg-white text-main-foreground h-14 focus:ring-black focus:ring-offset-2"
+					className="pointer-events-none text-right text-lg sm:text-xl font-mono border-black border-2 bg-white text-black h-14 focus:ring-black focus:ring-offset-2"
 					placeholder={
 						conversionMode === "dollarToBs"
 							? "Monto en USD..."

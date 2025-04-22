@@ -4,7 +4,7 @@ import { Loader2Icon } from "lucide-react";
 import { InfoIcon } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { CurrencyCard } from "@/components/currency-card";
-import { useCurrencyData } from "@/hooks/use-currency-data";
+import { useCurrencyContext } from "@/context/currency-context";
 import { CustomCurrencyCard } from "./custom-currency-card";
 import { formatVenezuelaDate } from "@/lib/utils";
 
@@ -13,7 +13,7 @@ interface CurrencyMonitorsProps {
 }
 
 export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
-	const { data, isLoading, error } = useCurrencyData();
+	const { data, promedio, isLoading, error } = useCurrencyContext();
 
 	if (isLoading && !data) {
 		return (
@@ -35,43 +35,18 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 		);
 	}
 
-	if (!data) return null;
+	if (!data || !data.data || !promedio) return null;
 
-	// Calculate promedio (average) from BCV and Paralelo
+	// Data is now sourced from context
 	const bcv = data.data.bcv;
 	const paralelo = data.data.paralelo;
-	const bcvPrice = bcv.price;
-	const paraleloPrice = paralelo.price;
-	const promedioPrice = (bcvPrice + paraleloPrice) / 2;
-
-	// // Calculate change and percent for promedio
-	const promedioOld = ((bcv.price_old ?? 0) + (paralelo.price_old ?? 0)) / 2;
-	const promedioChange = Number.parseFloat(
-		(promedioPrice - promedioOld).toFixed(2),
-	);
-	const promedioPercent = Number.parseFloat(
-		((promedioChange / promedioPrice) * 100 || 0).toFixed(2).replace("-", ""),
-	);
-	// Determine color for promedio based on its change
-	const promedioColor =
-		promedioPrice < promedioOld
-			? "red"
-			: promedioPrice > promedioOld
-				? "green"
-				: "neutral";
-	// Determine the symbol for promedio based on its change
-	const promedioSymbol =
-		promedioColor === "green" ? "▲" : promedioColor === "red" ? "▼" : "";
-	const sanitizedChange = Number.parseFloat(
-		promedioChange.toString().replace("-", ""),
-	);
 
 	return (
 		<div className="relative">
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
 				<CurrencyCard
 					title="BCV"
-					price={bcvPrice}
+					price={bcv.price}
 					symbol={bcv.symbol}
 					change={bcv.change}
 					percent={bcv.percent}
@@ -84,7 +59,7 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 
 				<CurrencyCard
 					title="Paralelo"
-					price={paraleloPrice}
+					price={paralelo.price}
 					symbol={paralelo.symbol}
 					change={paralelo.change}
 					percent={paralelo.percent}
@@ -98,11 +73,11 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 
 				<CurrencyCard
 					title="Promedio"
-					price={promedioPrice}
-					symbol={promedioSymbol}
-					change={sanitizedChange}
-					percent={promedioPercent}
-					color={promedioColor}
+					price={promedio.price}
+					symbol={promedio.symbol}
+					change={promedio.change}
+					percent={promedio.percent}
+					color={promedio.color}
 					subtitle={
 						<span className="flex items-center gap-1">
 							<InfoIcon size={14} className="text-muted-foreground" />

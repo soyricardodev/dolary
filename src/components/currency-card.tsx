@@ -20,6 +20,7 @@ export interface CurrencyCardProps {
 	onClick?: () => void;
 	className?: string;
 	subtitle?: React.ReactNode;
+	headerActions?: React.ReactNode;
 }
 
 export function CurrencyCard({
@@ -33,6 +34,7 @@ export function CurrencyCard({
 	className = "",
 	color,
 	subtitle,
+	headerActions,
 }: CurrencyCardProps) {
 	const [copied, setCopied] = useState(false);
 
@@ -46,37 +48,43 @@ export function CurrencyCard({
 	const isChangePositive = color != null && color === "green";
 
 	return (
-		<Card className={cn("relative", className)} onClick={onClick}>
+		<Card className={cn("relative", className)}>
 			<CardHeader className="pt-2 pb-0 flex flex-row w-full justify-between space-y-0">
 				<div className="flex gap-4 space-y-0">
 					<h2 className="text-xl font-bold">{title}</h2>
-					<Badge className="w-fit h-fit px-1" variant={"neutral"}>
-						{isChangePositive ? (
-							<ArrowUpIcon className="size-3 mr-1" />
-						) : (
-							<ArrowDownIcon className="size-3 mr-1" />
-						)}
+					{change != null && (
+						<Badge className="w-fit h-fit px-1" variant={"neutral"}>
+							{isChangePositive ? (
+								<ArrowUpIcon className="size-3 mr-1" />
+							) : (
+								<ArrowDownIcon className="size-3 mr-1" />
+							)}
 
-						<span className="font-medium">
-							{isChangePositive ? "+" : "-"}
-							{formatCurrency(change ?? 0)} ({(percent ?? 0).toFixed(2)}%)
-						</span>
-					</Badge>
-				</div>
-				<Button
-					onClick={handleCopy}
-					title="Copiar valor"
-					size="icon"
-					aria-label="Copiar Tasa"
-					className="size-8 p-0 [&_svg]:size-4 hover:translate-x-[4px]! hover:translate-y-[4px]! hover:shadow-none"
-					type="button"
-				>
-					{copied ? (
-						<CheckIcon className="h-4 w-4" />
-					) : (
-						<CopyIcon className="h-4 w-4" />
+							<span className="font-medium">
+								{isChangePositive ? "+" : "-"}
+								{formatCurrency(change ?? 0)} ({(percent ?? 0).toFixed(2)}%)
+							</span>
+						</Badge>
 					)}
-				</Button>
+				</div>
+				<div className="flex items-center gap-1">
+					{headerActions}
+
+					<Button
+						onClick={handleCopy}
+						title="Copiar valor"
+						size="icon"
+						aria-label="Copiar Tasa"
+						className="size-8 p-0 [&_svg]:size-4 hover:translate-x-[4px]! hover:translate-y-[4px]! hover:shadow-none"
+						type="button"
+					>
+						{copied ? (
+							<CheckIcon className="h-4 w-4" />
+						) : (
+							<CopyIcon className="h-4 w-4" />
+						)}
+					</Button>
+				</div>
 			</CardHeader>
 			<CardContent className="pb-3 flex items-end justify-between">
 				<div className="h-full flex flex-col">
@@ -90,7 +98,13 @@ export function CurrencyCard({
 					) : null}
 				</div>
 
-				<Button size="sm" variant="neutral" type="button" className="h-8 px-2">
+				<Button
+					size="sm"
+					variant="neutral"
+					type="button"
+					className="h-8 px-2"
+					onClick={onClick}
+				>
 					Calcular
 				</Button>
 			</CardContent>

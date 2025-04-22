@@ -7,6 +7,7 @@ import {
 	HydrationBoundary,
 	QueryClient,
 } from "@tanstack/react-query";
+import { CurrencyProvider } from "@/context/currency-context";
 
 export default async function RootPage() {
 	const queryClient = new QueryClient();
@@ -25,7 +26,9 @@ export default async function RootPage() {
 					<h1 className="text-2xl font-extrabold text-center ">
 						¡Bienvenido a Dolary!
 					</h1>
-					<Dolary />
+					<CurrencyProvider>
+						<Dolary />
+					</CurrencyProvider>
 				</div>
 
 				<AppFooter />

@@ -12,21 +12,23 @@ import { cn } from "@/lib/utils";
 
 interface CalculatorProps {
 	rates: {
+		bcv: number;
 		paralelo: number;
 		promedio: number;
-		bcv: number;
 		custom?: number;
 	};
+	selectedCurrency: string;
 }
 
-export function Calculator({ rates }: CalculatorProps) {
+export function Calculator({ rates, selectedCurrency }: CalculatorProps) {
 	const [input, setInput] = useState("");
 	const [previewResult, setPreviewResult] = useState("");
 	const [previewCurrencyResult, setPreviewCurrencyResult] = useState("");
 	const [conversionMode, setConversionMode] = useState<
 		"dollarToBs" | "bsToDollar"
 	>("dollarToBs");
-	const [selectedRateType, setSelectedRateType] = useState<string>("paralelo");
+	const [selectedRateType, setSelectedRateType] =
+		useState<string>(selectedCurrency);
 
 	// Currency rates ($ to Bs)
 	const bcvRate = rates.bcv;

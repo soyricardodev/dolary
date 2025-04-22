@@ -15,6 +15,7 @@ export function Dolary() {
 
 	const closeCalculator = () => {
 		setCalculatorVisible(false);
+		setSelectedCurrency(null);
 	};
 
 	return (
@@ -25,6 +26,7 @@ export function Dolary() {
 				<ResponsiveCalculator
 					isOpen={calculatorVisible}
 					onCloseAction={closeCalculator}
+					selectedCurrency={selectedCurrency}
 				/>
 			)}
 		</>

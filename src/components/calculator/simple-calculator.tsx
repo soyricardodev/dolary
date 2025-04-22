@@ -16,7 +16,7 @@ interface SimpleCalculatorProps {
 }
 
 export function SimpleCalculator({ rates }: SimpleCalculatorProps) {
-	const [input, setInput] = useState("");
+	const [input, setInput] = useState("1");
 	const [conversionMode, setConversionMode] = useState<
 		"dollarToBs" | "bsToDollar"
 	>("dollarToBs");

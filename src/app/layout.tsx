@@ -86,12 +86,8 @@ export default function RootLayout({
 	return (
 		<html lang="es" suppressHydrationWarning>
 			<body className="bg-background text-foreground">
-				<Suspense>
-					<LazyAnalytics />
-				</Suspense>
-				<Suspense>
-					<LazySpeedInsights />
-				</Suspense>
+				<LazyAnalytics />
+				<LazySpeedInsights />
 				<Providers>{children}</Providers>
 			</body>
 		</html>

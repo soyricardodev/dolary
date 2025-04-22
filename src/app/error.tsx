@@ -6,10 +6,13 @@ export const dynamic = "force-static";
 
 export default function ErrorBoundary({
 	reset,
+	error,
 }: {
 	error: Error & { digest?: string };
 	reset: () => void;
 }) {
+	console.log(error);
+
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-center p-3">
 			<div className="text-center max-w-md">

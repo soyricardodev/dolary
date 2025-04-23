@@ -11,6 +11,8 @@ import { Redis } from "@upstash/redis";
 import type { Monitor } from "../types";
 import { sendNotificationToAllUsers } from "@/components/notifications/actions";
 import { generateScreenshot } from "../screenshot/route";
+import { revalidateTag } from "next/cache";
+import { QueryClient } from "@tanstack/react-query";
 
 const redis = Redis.fromEnv();
 
@@ -201,6 +203,7 @@ async function runUpdateWithLock(
 	rate: "paralelo" | "bcv",
 	forceUpdate: boolean,
 ) {
+	const queryClient = new QueryClient();
 	const updaterId = `updater:${Date.now()}`;
 	const lockKey = `update:rate:${rate}`;
 
@@ -220,6 +223,9 @@ async function runUpdateWithLock(
 			.expire(lockKey, 60 * 5) // Set a 5-minute expiration
 			.exec();
 		await updateRate(rate, forceUpdate);
+		revalidateTag("rates");
+		queryClient.invalidateQueries({ queryKey: ["rates"] });
+
 		console.log(`Updated ${rate}.`);
 		return true;
 	} finally {

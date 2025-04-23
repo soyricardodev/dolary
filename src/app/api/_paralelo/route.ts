@@ -72,8 +72,8 @@ function isValidMessage(obj: string[]): boolean {
 			}
 		}
 	}
-	// Allow for 4 required emojis plus up to 1 extra emoji
-	return emojiCount >= 4 && emojiCount <= 5;
+	// Allow for min 4 emojis
+	return emojiCount >= 4;
 }
 
 function extractPrice(obj: string[]): number | null {

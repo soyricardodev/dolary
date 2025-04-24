@@ -15,6 +15,7 @@ interface CalculatorProps {
 		bcv: number;
 		paralelo: number;
 		promedio: number;
+		eur: number;
 		custom?: number;
 	};
 	selectedCurrency: string;
@@ -28,8 +29,14 @@ export function AdvancedCalculator({
 	const [previewResult, setPreviewResult] = useState("");
 	const [previewCurrencyResult, setPreviewCurrencyResult] = useState("");
 	const [conversionMode, setConversionMode] = useState<
-		"dollarToBs" | "bsToDollar"
-	>("dollarToBs");
+		"dollarToBs" | "bsToDollar" | "eurToBs" | "bsToEur"
+	>(() => {
+		// Initialize conversion mode based on selected currency
+		if (selectedCurrency === "eur") {
+			return "eurToBs";
+		}
+		return "dollarToBs";
+	});
 	const [selectedRateType, setSelectedRateType] =
 		useState<string>(selectedCurrency);
 
@@ -37,7 +44,17 @@ export function AdvancedCalculator({
 	const bcvRate = rates.bcv;
 	const paraleloRate = rates.paralelo;
 	const promedioRate = rates.promedio;
+	const eurRate = rates.eur;
 	const customRate = rates.custom;
+
+	// Update conversion mode when selected currency changes
+	useEffect(() => {
+		if (selectedCurrency === "eur") {
+			setConversionMode("eurToBs");
+		} else if (selectedCurrency === "usd") {
+			setConversionMode("dollarToBs");
+		}
+	}, [selectedCurrency]);
 
 	// Get current rate based on selection
 	const getCurrentRate = (): number => {
@@ -48,6 +65,8 @@ export function AdvancedCalculator({
 				return paraleloRate;
 			case "promedio":
 				return promedioRate;
+			case "eur":
+				return eurRate;
 			case "custom":
 				return customRate || 0;
 			default:
@@ -67,8 +86,8 @@ export function AdvancedCalculator({
 
 				const currentRate = getCurrentRate();
 
-				if (conversionMode === "dollarToBs") {
-					// $ to Bs conversion
+				if (conversionMode === "dollarToBs" || conversionMode === "eurToBs") {
+					// $ or € to Bs conversion
 					const bsValue = mathResult * currentRate;
 					const formattedBsValue = Number.isInteger(bsValue)
 						? bsValue.toString()
@@ -77,12 +96,12 @@ export function AdvancedCalculator({
 					setPreviewResult(formattedResult);
 					setPreviewCurrencyResult(formattedBsValue);
 				} else {
-					// Bs to $ conversion
-					const dollarValue = mathResult / currentRate;
-					const formattedDollarValue = dollarValue.toFixed(2);
+					// Bs to $ or € conversion
+					const currencyValue = mathResult / currentRate;
+					const formattedCurrencyValue = currencyValue.toFixed(2);
 
 					setPreviewResult(formattedResult);
-					setPreviewCurrencyResult(formattedDollarValue);
+					setPreviewCurrencyResult(formattedCurrencyValue);
 				}
 			} catch (error) {
 				// If expression is incomplete or invalid, don't update preview
@@ -169,9 +188,33 @@ export function AdvancedCalculator({
 	};
 
 	const toggleConversionMode = () => {
-		setConversionMode((prev) =>
-			prev === "dollarToBs" ? "bsToDollar" : "dollarToBs",
-		);
+		setConversionMode((prev) => {
+			if (prev === "dollarToBs") return "bsToDollar";
+			if (prev === "bsToDollar") return "eurToBs";
+			if (prev === "eurToBs") return "bsToEur";
+			return "dollarToBs";
+		});
+	};
+
+	const getConversionText = () => {
+		// Simplified conversion text that doesn't depend on the specific currency
+		return conversionMode === "dollarToBs" || conversionMode === "eurToBs"
+			? "Monitor → Bs"
+			: "Bs → Monitor";
+	};
+
+	const getResultLabel = () => {
+		// Simplified result label that doesn't depend on the specific currency
+		return conversionMode === "dollarToBs" || conversionMode === "eurToBs"
+			? "Total en Monitor:"
+			: "Total en Bs:";
+	};
+
+	const getCurrencyResultLabel = () => {
+		// Simplified currency result label that doesn't depend on the specific currency
+		return conversionMode === "dollarToBs" || conversionMode === "eurToBs"
+			? "En Bolivares:"
+			: "En Monitor:";
 	};
 
 	return (
@@ -191,7 +234,7 @@ export function AdvancedCalculator({
 						>
 							<ArrowRightLeftIcon size={14} />
 							<span className="font-medium sm:font-bold text-[0.7rem] sm:text-sm ml-1 sm:ml-1.5 text-center">
-								{conversionMode === "dollarToBs" ? "USD → Bs" : "Bs → USD"}
+								{getConversionText()}
 							</span>
 						</Button>
 					</div>
@@ -206,7 +249,7 @@ export function AdvancedCalculator({
 						<TabsList
 							className={cn(
 								"grid",
-								rates.custom != null ? "grid-cols-4" : "grid-cols-3",
+								rates.custom != null ? "grid-cols-5" : "grid-cols-4",
 							)}
 						>
 							<TabsTrigger
@@ -226,6 +269,12 @@ export function AdvancedCalculator({
 								className="data-[state=active]:bg-white text-xs sm:text-sm h-full"
 							>
 								Promedio
+							</TabsTrigger>
+							<TabsTrigger
+								value="eur"
+								className="data-[state=active]:bg-white text-xs sm:text-sm h-full"
+							>
+								EUR
 							</TabsTrigger>
 							{rates.custom != null ? (
 								<TabsTrigger
@@ -255,25 +304,17 @@ export function AdvancedCalculator({
 					value={input}
 					onChange={(e) => setInput(e.target.value)}
 					className="pointer-events-none text-right text-lg sm:text-xl font-mono border-black border-2 h-14 focus:ring-black focus:ring-offset-2"
-					placeholder={
-						conversionMode === "dollarToBs"
-							? "Monto en USD..."
-							: "Monto en Bs..."
-					}
+					placeholder={"Ingrese monto..."}
 				/>
 
 				{/* Results Display */}
 				<div className="grid grid-cols-2 gap-3">
 					<ResultDisplay
-						label={
-							conversionMode === "dollarToBs" ? "Total en USD:" : "Total en Bs:"
-						}
+						label={getResultLabel()}
 						value={previewResult || "0"}
 					/>
 					<ResultDisplay
-						label={
-							conversionMode === "dollarToBs" ? "En Bolivares:" : "En USD:"
-						}
+						label={getCurrencyResultLabel()}
 						value={previewCurrencyResult || "0"}
 					/>
 				</div>

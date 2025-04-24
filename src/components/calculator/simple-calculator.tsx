@@ -5,12 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowRightLeftIcon, CopyIcon, CheckIcon } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
-
 interface SimpleCalculatorProps {
 	rates: {
 		bcv: number;
 		paralelo: number;
 		promedio: number;
+		eur: number;
 		custom?: number;
 	};
 }
@@ -36,9 +36,32 @@ export function SimpleCalculator({ rates }: SimpleCalculatorProps) {
 	};
 
 	const toggleConversionMode = () => {
-		setConversionMode((prev) =>
-			prev === "dollarToBs" ? "bsToDollar" : "dollarToBs",
-		);
+		setConversionMode((prev) => {
+			if (prev === "dollarToBs") return "bsToDollar";
+			return "dollarToBs";
+		});
+	};
+
+	const getConversionText = () => {
+		switch (conversionMode) {
+			case "dollarToBs":
+				return "Monitor → Bs";
+			case "bsToDollar":
+				return "Bs → Monitor";
+			default:
+				return "Monitor → Bs";
+		}
+	};
+
+	const getResultLabel = () => {
+		switch (conversionMode) {
+			case "dollarToBs":
+				return "En Bolivares:";
+			case "bsToDollar":
+				return "En Monitor:";
+			default:
+				return "En Bolivares:";
+		}
 	};
 
 	return (
@@ -55,7 +78,7 @@ export function SimpleCalculator({ rates }: SimpleCalculatorProps) {
 				>
 					<ArrowRightLeftIcon size={14} />
 					<span className="font-medium sm:font-bold text-[0.7rem] sm:text-sm ml-1 sm:ml-1.5 text-center text-main-foreground">
-						{conversionMode === "dollarToBs" ? "USD → Bs" : "Bs → USD"}
+						{getConversionText()}
 					</span>
 				</Button>
 			</div>
@@ -66,11 +89,7 @@ export function SimpleCalculator({ rates }: SimpleCalculatorProps) {
 					type="number"
 					value={input}
 					onChange={(e) => setInput(e.target.value)}
-					placeholder={
-						conversionMode === "dollarToBs"
-							? "Ingrese monto en USD..."
-							: "Ingrese monto en Bs..."
-					}
+					placeholder={"Ingrese monto..."}
 					className="text-right text-lg sm:text-xl font-mono text-foreground h-14"
 					autoFocus
 				/>
@@ -78,7 +97,7 @@ export function SimpleCalculator({ rates }: SimpleCalculatorProps) {
 				{/* All Rates Results */}
 				<div className="space-y-2">
 					<h3 className="text-sm font-bold px-1 text-main-foreground">
-						{conversionMode === "dollarToBs" ? "En Bolivares:" : "En USD:"}
+						{getResultLabel()}
 					</h3>
 
 					<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -170,6 +189,35 @@ export function SimpleCalculator({ rates }: SimpleCalculatorProps) {
 							</div>
 							<div className="text-xs mt-1">
 								Tasa: {formatCurrency(rates.promedio)} Bs
+							</div>
+						</div>
+
+						{/* EUR Result */}
+						<div className="bg-secondary-background p-3 rounded-md border-2 border-black transition-colors">
+							<div className="flex justify-between items-center">
+								<span className="text-sm font-medium text-foreground">EUR</span>
+								<div className="flex items-center gap-2">
+									<span className="text-lg font-bold text-foreground">
+										{calculateResult(rates.eur)}
+									</span>
+									<Button
+										onClick={() =>
+											handleCopy(calculateResult(rates.eur), "eur")
+										}
+										size="icon"
+										variant="noShadow"
+										className="size-8 p-0 [&_svg]:size-4"
+									>
+										{copiedRate === "eur" ? (
+											<CheckIcon className="size-4" />
+										) : (
+											<CopyIcon className="size-4" />
+										)}
+									</Button>
+								</div>
+							</div>
+							<div className="text-xs mt-1">
+								Tasa: {formatCurrency(rates.eur)} Bs
 							</div>
 						</div>
 

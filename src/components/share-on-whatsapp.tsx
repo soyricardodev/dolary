@@ -5,6 +5,8 @@ import { useState } from "react";
 import { Loader2Icon } from "lucide-react";
 import { WhatsappIcon } from "./icons";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+import { useTheme } from "next-themes";
+import html2canvas from "html2canvas-pro";
 
 interface ShareOnWhatsappProps {
 	text: string;
@@ -14,6 +16,7 @@ export const ShareOnWhatsapp: React.FC<ShareOnWhatsappProps> = ({ text }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 	const [image, setImage] = useState<File | null>(null);
+	const { theme } = useTheme();
 
 	const captureAndShare = async () => {
 		setIsLoading(true);
@@ -22,20 +25,29 @@ export const ShareOnWhatsapp: React.FC<ShareOnWhatsappProps> = ({ text }) => {
 			// 1. Get the current page URL
 			const pageUrl = window.location.href;
 
-			// 2. Construct the API endpoint URL
-			const apiUrl = "/api/screenshot";
+			// 2. Capture the screenshot using html2canvas
+			const canvas = await html2canvas(document.body, {
+				backgroundColor: theme === "dark" ? "#3a3636" : "#FEF2E8",
+				scale: 2,
+				allowTaint: true,
+				foreignObjectRendering: true,
+				removeContainer: true,
+				logging: true,
+			});
 
-			// 3. Fetch the screenshot from the API
-			const response = await fetch(apiUrl);
-
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
-			}
-
-			const blob = await response.blob();
+			// 3. Convert canvas to blob
+			const blob = await new Promise<Blob>((resolve, reject) => {
+				canvas.toBlob((blob) => {
+					if (blob) {
+						resolve(blob);
+					} else {
+						reject(new Error("Failed to create blob from canvas"));
+					}
+				}, "image/png");
+			});
 
 			// 4. Create a File object from the Blob
-			const file = new File([blob], "dolary.png", {
+			const file = new File([blob], `dolary-${theme}.png`, {
 				type: "image/png",
 			});
 
@@ -86,7 +98,7 @@ export const ShareOnWhatsapp: React.FC<ShareOnWhatsappProps> = ({ text }) => {
 	return (
 		<>
 			<Button
-				onClick={isLoading ? () => {} : captureAndShare}
+				onMouseDown={isLoading ? () => {} : captureAndShare}
 				aria-label="Share on WhatsApp"
 				size="icon"
 				className="size-9 p-0 [&_svg]:size-5 hover:translate-x-[4px]! hover:translate-y-[4px]! hover:shadow-none bg-secondary-background"
@@ -104,7 +116,7 @@ export const ShareOnWhatsapp: React.FC<ShareOnWhatsappProps> = ({ text }) => {
 					<DialogHeader>
 						<DialogTitle>Haz Click para compartir</DialogTitle>
 					</DialogHeader>
-					<Button onClick={fallBackShare}>Compartir</Button>
+					<Button onMouseDown={fallBackShare}>Compartir</Button>
 				</DialogContent>
 			</Dialog>
 		</>

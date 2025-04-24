@@ -100,160 +100,109 @@ export function SimpleCalculator({ rates }: SimpleCalculatorProps) {
 						{getResultLabel()}
 					</h3>
 
-					<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+					<div className="grid grid-cols-2 gap-2">
 						{/* BCV Result */}
-						<div className="bg-secondary-background p-3 rounded-md border-2 border-black transition-colors">
-							<div className="flex justify-between items-center">
-								<span className="text-sm font-medium text-foreground">BCV</span>
-								<div className="flex items-center gap-2">
-									<span className="text-lg font-bold text-foreground">
-										{calculateResult(rates.bcv)}
-									</span>
-									<Button
-										onClick={() =>
-											handleCopy(calculateResult(rates.bcv), "bcv")
-										}
-										size="icon"
-										variant="noShadow"
-										className="size-8 p-0 [&_svg]:size-4"
-									>
-										{copiedRate === "bcv" ? (
-											<CheckIcon className="size-4" />
-										) : (
-											<CopyIcon className="size-4" />
-										)}
-									</Button>
-								</div>
-							</div>
-							<div className="text-xs mt-1">
-								Tasa: {formatCurrency(rates.bcv)} Bs
-							</div>
-						</div>
+						<RateCard
+							rate={rates.bcv}
+							label="BCV"
+							rateType="bcv"
+							copiedRate={copiedRate}
+							onCopy={handleCopy}
+							calculateResult={calculateResult}
+							formatCurrency={formatCurrency}
+						/>
 
-						{/* Paralelo Result */}
-						<div className="bg-secondary-background p-3 rounded-md border-2 border-black transition-colors">
-							<div className="flex justify-between items-center">
-								<span className="text-sm font-medium text-foreground">
-									Paralelo
-								</span>
-								<div className="flex items-center gap-2">
-									<span className="text-lg font-bold text-foreground">
-										{calculateResult(rates.paralelo)}
-									</span>
-									<Button
-										onClick={() =>
-											handleCopy(calculateResult(rates.paralelo), "paralelo")
-										}
-										size="icon"
-										variant="noShadow"
-										className="size-8 p-0 [&_svg]:size-4"
-									>
-										{copiedRate === "paralelo" ? (
-											<CheckIcon className="size-4" />
-										) : (
-											<CopyIcon className="size-4" />
-										)}
-									</Button>
-								</div>
-							</div>
-							<div className="text-xs mt-1">
-								Tasa: {formatCurrency(rates.paralelo)} Bs
-							</div>
-						</div>
+						<RateCard
+							rate={rates.paralelo}
+							label="Paralelo"
+							rateType="paralelo"
+							copiedRate={copiedRate}
+							onCopy={handleCopy}
+							calculateResult={calculateResult}
+							formatCurrency={formatCurrency}
+						/>
 
-						{/* Promedio Result */}
-						<div className="bg-secondary-background p-3 rounded-md border-2 border-black transition-colors">
-							<div className="flex justify-between items-center">
-								<span className="text-sm font-medium text-foreground">
-									Promedio
-								</span>
-								<div className="flex items-center gap-2">
-									<span className="text-lg font-bold text-foreground">
-										{calculateResult(rates.promedio)}
-									</span>
-									<Button
-										onClick={() =>
-											handleCopy(calculateResult(rates.promedio), "promedio")
-										}
-										size="icon"
-										variant="noShadow"
-										className="size-8 p-0 [&_svg]:size-4"
-									>
-										{copiedRate === "promedio" ? (
-											<CheckIcon className="size-4" />
-										) : (
-											<CopyIcon className="size-4" />
-										)}
-									</Button>
-								</div>
-							</div>
-							<div className="text-xs mt-1">
-								Tasa: {formatCurrency(rates.promedio)} Bs
-							</div>
-						</div>
+						<RateCard
+							rate={rates.promedio}
+							label="Promedio"
+							rateType="promedio"
+							copiedRate={copiedRate}
+							onCopy={handleCopy}
+							calculateResult={calculateResult}
+							formatCurrency={formatCurrency}
+						/>
 
-						{/* EUR Result */}
-						<div className="flex flex-col gap-1">
-							<div className="flex items-center justify-between">
-								<span className="text-sm font-medium text-foreground">EUR</span>
-								<div className="flex items-center gap-2">
-									<span className="text-sm font-medium text-foreground">
-										{rates.eur ? calculateResult(rates.eur) : "N/A"}
-									</span>
-									<button
-										type="button"
-										onClick={() =>
-											rates.eur && handleCopy(calculateResult(rates.eur), "eur")
-										}
-										className="text-muted-foreground hover:text-foreground"
-									>
-										{copiedRate === "eur" ? (
-											<CheckIcon className="h-4 w-4" />
-										) : (
-											<CopyIcon className="h-4 w-4" />
-										)}
-									</button>
-								</div>
-							</div>
-							<div className="text-xs text-muted-foreground">
-								Tasa: {rates.eur ? formatCurrency(rates.eur) : "N/A"} Bs
-							</div>
-						</div>
+						<RateCard
+							rate={rates.eur}
+							label="EUR"
+							rateType="eur"
+							copiedRate={copiedRate}
+							onCopy={handleCopy}
+							calculateResult={calculateResult}
+							formatCurrency={formatCurrency}
+						/>
 
-						{/* Custom Result (if available) */}
 						{rates.custom != null && (
-							<div className="bg-secondary-background p-3 rounded-md border-2 border-black transition-colors">
-								<div className="flex justify-between items-center">
-									<span className="text-sm font-medium text-foreground">
-										Personal
-									</span>
-									<div className="flex items-center gap-2">
-										<span className="text-lg font-bold text-foreground">
-											{calculateResult(rates.custom)}
-										</span>
-										<Button
-											onClick={() =>
-												handleCopy(calculateResult(rates.custom ?? 0), "custom")
-											}
-											size="icon"
-											variant="noShadow"
-											className="size-8 p-0 [&_svg]:size-4"
-										>
-											{copiedRate === "custom" ? (
-												<CheckIcon className="size-4" />
-											) : (
-												<CopyIcon className="size-4" />
-											)}
-										</Button>
-									</div>
-								</div>
-								<div className="text-xs mt-1">
-									Tasa: {formatCurrency(rates.custom)} Bs
-								</div>
-							</div>
+							<RateCard
+								rate={rates.custom}
+								label="Personal"
+								rateType="custom"
+								copiedRate={copiedRate}
+								onCopy={handleCopy}
+								calculateResult={calculateResult}
+								formatCurrency={formatCurrency}
+							/>
 						)}
 					</div>
 				</div>
+			</div>
+		</div>
+	);
+}
+
+interface RateCardProps {
+	rate: number | null;
+	label: string;
+	rateType: "bcv" | "paralelo" | "custom" | "eur" | "promedio";
+	copiedRate: string | null;
+	onCopy: (value: string, type: string) => void;
+	calculateResult: (rate: number) => string;
+	formatCurrency: (rate: number) => string;
+}
+
+function RateCard({
+	rate,
+	label,
+	rateType,
+	copiedRate,
+	onCopy,
+	calculateResult,
+	formatCurrency,
+}: RateCardProps) {
+	return (
+		<div className="bg-secondary-background p-2 rounded-md border-2 border-black flex flex-col items-center text-center">
+			<div className="flex items-center justify-between w-full">
+				<span className="text-base font-medium text-foreground">{label}</span>
+				<Button
+					onClick={() => rate && onCopy(calculateResult(rate), rateType)}
+					size="icon"
+					variant="noShadow"
+					className="size-7 p-0 [&_svg]:size-4"
+				>
+					{copiedRate === rateType ? (
+						<CheckIcon className="size-4" />
+					) : (
+						<CopyIcon className="size-4" />
+					)}
+				</Button>
+			</div>
+
+			<span className="w-full text-xl sm:text-2xl font-bold text-foreground">
+				{rate ? calculateResult(rate) : "N/A"}
+			</span>
+
+			<div className="text-xs text-muted-foreground">
+				Tasa: {rate ? formatCurrency(rate) : "N/A"} Bs
 			</div>
 		</div>
 	);

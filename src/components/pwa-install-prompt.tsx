@@ -69,7 +69,9 @@ const PwaInstallPrompt = () => {
 	return (
 		<div>
 			{installPromptEvent && (
-				<Button onClick={handleInstallClick}>Instalar App</Button>
+				<Button onClick={handleInstallClick} className="h-9">
+					Instalar App
+				</Button>
 			)}
 		</div>
 	);

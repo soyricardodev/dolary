@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { Redis } from "@upstash/redis";
 import type { Monitor } from "../types";
 
-export const revalidate = 300;
-
 const redis = Redis.fromEnv();
 
 export async function GET() {
@@ -17,7 +15,7 @@ export async function GET() {
 		euroData,
 	]);
 
-	console.log(bcv, paralelo, euro);
+	console.log({ bcv, paralelo, euro });
 
 	return NextResponse.json({
 		data: {

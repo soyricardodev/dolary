@@ -39,42 +39,54 @@ const getFromCache = (): {
 export function useCurrencyData() {
 	const queryClient = useQueryClient();
 
-	useEffect(() => {
-		const checkForUpdates = () => {
-			if (shouldRefetch()) {
-				queryClient.invalidateQueries({ queryKey: ["rates"] });
-			}
-		};
-
-		// Check every 5 minutes
-		const intervalId = setInterval(checkForUpdates, 5 * 60 * 1000);
-
-		checkForUpdates();
-
-		return () => clearInterval(intervalId);
-	}, [queryClient]);
-
 	return useQuery({
 		queryKey: ["rates"],
 		queryFn: async () => {
 			try {
+				// Clear any stale data from localStorage when fetching fresh data
+				const { timestamp } = getFromCache();
+				const now = Date.now();
+				const isStale = now - timestamp > 5 * 60 * 1000; // 5 minutes
+
+				// If cache is stale, clear it before fetching
+				if (isStale) {
+					try {
+						localStorage.removeItem(CURRENCY_CACHE_KEY);
+						localStorage.removeItem(CACHE_TIMESTAMP_KEY);
+					} catch (error) {
+						console.error("Error clearing stale cache:", error);
+					}
+				}
+
 				const data = await getDolarRates();
 
+				console.log("data useCurrencyData", data);
+
+				// Only save to cache if the fetch was successful
 				saveToCache(data);
 
 				return data;
 			} catch (error) {
-				const { data } = getFromCache();
-				if (data) {
-					return data;
+				console.error("Error fetching rates:", error);
+
+				// Only use cache as fallback if it's not too old
+				const { data: cachedData, timestamp } = getFromCache();
+				const now = Date.now();
+				const isCacheValid = now - timestamp < 30 * 60 * 1000; // 30 minutes
+
+				if (cachedData && isCacheValid) {
+					console.log("Using cached data as fallback");
+					console.log("cachedData useCurrencyData", cachedData);
+					return cachedData;
 				}
+
 				throw error;
 			}
 		},
-		staleTime: 30 * 60 * 1000, // 30 minutes
-		gcTime: 1 * 60 * 60 * 1000, // 1 Hour temp test
-		//refetchOnWindowFocus: false,
-		//refetchOnMount: false,
-		//refetchOnReconnect: true,
+		staleTime: 5 * 60 * 1000, // 5 minutes
+		gcTime: 10 * 60 * 1000, // 10 minutes
+		refetchOnWindowFocus: true,
+		refetchOnMount: true,
+		refetchOnReconnect: true,
 	});
 }

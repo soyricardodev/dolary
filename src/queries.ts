@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache";
 import type { RatesResponse } from "./types";
 
 // export const getDolarRates = unstable_cache(

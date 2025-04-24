@@ -51,7 +51,7 @@ export function CurrencyCard({
 		<Card className={cn("relative", className)}>
 			<CardHeader className="pt-2 pb-0 flex flex-row w-full justify-between space-y-0">
 				<div className="flex gap-4 space-y-0">
-					<h2 className="text-xl font-bold" onMouseDown={onClick}>
+					<h2 className="text-lg lg:text-xl font-bold" onMouseDown={onClick}>
 						{title}
 					</h2>
 					{change != null && (

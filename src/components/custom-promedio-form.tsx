@@ -35,7 +35,7 @@ export function CustomPromedioForm({
 }) {
 	const { updateCustomCurrency } = useCurrencyContext();
 	const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
-	const [deleteCountdown, setDeleteCountdown] = useState(5);
+	const [deleteCountdown, setDeleteCountdown] = useState(3);
 
 	const form = useForm<AddCustomPromedioInput>({
 		resolver: zodResolver(addCustomPromedioSchema),
@@ -49,7 +49,7 @@ export function CustomPromedioForm({
 		if (!isConfirmingDelete) return;
 
 		// Reset countdown when starting confirmation
-		setDeleteCountdown(5);
+		setDeleteCountdown(3);
 
 		// Set up the countdown display
 		const countdownInterval = setInterval(() => {
@@ -61,7 +61,7 @@ export function CustomPromedioForm({
 			updateCustomCurrency(null);
 			setIsConfirmingDelete(false);
 			onSuccess?.();
-		}, 5000);
+		}, 3000);
 
 		// Clean up both timers
 		return () => {

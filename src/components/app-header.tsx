@@ -10,13 +10,29 @@ import PwaInstallPrompt from "./pwa-install-prompt";
 import { ShareOnWhatsapp } from "./share-on-whatsapp";
 import { ThemeSwitcher } from "./theme-switcher";
 import { IOSInstallPrompt } from "./notifications/ios-install-prompt";
+import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
 export function AppHeader() {
-	const { refetch, isRefetching } = useCurrencyData();
+	const queryClient = useQueryClient();
+	const [isUpdating, setIsUpdating] = useState(false);
 
 	async function getFreshData() {
-		revalidateRates();
-		refetch();
+		try {
+			// Set updating state to show animation
+			setIsUpdating(true);
+
+			// Just use revalidateRates for now
+			await revalidateRates();
+
+			// Simulate a minimum update time for better UX
+			setTimeout(() => {
+				setIsUpdating(false);
+			}, 1000);
+		} catch (error) {
+			console.error("Error refreshing data:", error);
+			setIsUpdating(false);
+		}
 	}
 
 	return (
@@ -32,12 +48,12 @@ export function AppHeader() {
 				<Button
 					size="icon"
 					onClick={() => getFreshData()}
-					disabled={isRefetching}
+					disabled={isUpdating}
 					aria-label="Refrescar Datos"
-					className="size-9 p-0 [&_svg]:size-5 hover:translate-x-[4px]! hover:translate-y-[4px]! hover:shadow-none bg-secondary-background "
+					className="size-9 p-0 [&_svg]:size-5 hover:translate-x-[4px]! hover:translate-y-[4px]! hover:shadow-none bg-secondary-background relative"
 				>
 					<RefreshCwIcon
-						className={`h-3.5 w-3.5 mr-1 stroke-foreground ${isRefetching ? "animate-spin" : ""}`}
+						className={`h-3.5 w-3.5 mr-1 stroke-foreground ${isUpdating ? "animate-spin" : ""}`}
 					/>
 				</Button>
 			</div>

@@ -72,6 +72,8 @@ async function updateRate(rate: "paralelo" | "bcv" | "eur", force = false) {
 					);
 					return;
 				}
+
+				console.log(`We need to update ${rate}`);
 			}
 		}
 
@@ -80,6 +82,53 @@ async function updateRate(rate: "paralelo" | "bcv" | "eur", force = false) {
 		if (rate === "paralelo") {
 			data = await getParalelo();
 			if (data?.last_update) {
+				// Check if the last_update from the get function is different from the one in Redis
+				if (lastUpdateRedis) {
+					const redisDate = new Date(lastUpdateRedis);
+					const dataDate = new Date(data.last_update);
+
+					// Normalize both dates to UTC for comparison
+					const redisDateUTC = new Date(
+						Date.UTC(
+							redisDate.getUTCFullYear(),
+							redisDate.getUTCMonth(),
+							redisDate.getUTCDate(),
+							redisDate.getUTCHours(),
+							redisDate.getUTCMinutes(),
+							redisDate.getUTCSeconds(),
+						),
+					);
+
+					const dataDateUTC = new Date(
+						Date.UTC(
+							dataDate.getUTCFullYear(),
+							dataDate.getUTCMonth(),
+							dataDate.getUTCDate(),
+							dataDate.getUTCHours(),
+							dataDate.getUTCMinutes(),
+							dataDate.getUTCSeconds(),
+						),
+					);
+
+					console.log(
+						`[${rate}] Redis last update: ${redisDate.toISOString()}`,
+					);
+					console.log(`[${rate}] Data last update: ${data.last_update}`);
+					console.log(`[${rate}] Redis UTC: ${redisDateUTC.toISOString()}`);
+					console.log(`[${rate}] Data UTC: ${dataDateUTC.toISOString()}`);
+					console.log(
+						`[${rate}] Dates match: ${redisDateUTC.getTime() === dataDateUTC.getTime()}`,
+					);
+
+					if (redisDateUTC.getTime() === dataDateUTC.getTime()) {
+						console.log(
+							`Skipping ${rate} update as the data hasn't changed since last update.`,
+						);
+						return;
+					}
+				}
+
+				console.log(`Updating ${rate} with data:`, data);
 				await updateRateInDb(rate, data);
 			}
 		} else if (rate === "bcv" || rate === "eur") {
@@ -93,7 +142,72 @@ async function updateRate(rate: "paralelo" | "bcv" | "eur", force = false) {
 				return;
 			}
 
+			// Check if the last_update from the get function is different from the one in Redis
+			if (lastUpdateRedis) {
+				const redisDate = new Date(lastUpdateRedis);
+				const usdDate = new Date(usdRate.last_update);
+				const eurDate = new Date(eurRate.last_update);
+
+				// Normalize all dates to UTC for comparison
+				const redisDateUTC = new Date(
+					Date.UTC(
+						redisDate.getUTCFullYear(),
+						redisDate.getUTCMonth(),
+						redisDate.getUTCDate(),
+						redisDate.getUTCHours(),
+						redisDate.getUTCMinutes(),
+						redisDate.getUTCSeconds(),
+					),
+				);
+
+				const usdDateUTC = new Date(
+					Date.UTC(
+						usdDate.getUTCFullYear(),
+						usdDate.getUTCMonth(),
+						usdDate.getUTCDate(),
+						usdDate.getUTCHours(),
+						usdDate.getUTCMinutes(),
+						usdDate.getUTCSeconds(),
+					),
+				);
+
+				const eurDateUTC = new Date(
+					Date.UTC(
+						eurDate.getUTCFullYear(),
+						eurDate.getUTCMonth(),
+						eurDate.getUTCDate(),
+						eurDate.getUTCHours(),
+						eurDate.getUTCMinutes(),
+						eurDate.getUTCSeconds(),
+					),
+				);
+
+				console.log(`[${rate}] Redis last update: ${redisDate.toISOString()}`);
+				console.log(`[${rate}] USD last update: ${usdRate.last_update}`);
+				console.log(`[${rate}] EUR last update: ${eurRate.last_update}`);
+				console.log(`[${rate}] Redis UTC: ${redisDateUTC.toISOString()}`);
+				console.log(`[${rate}] USD UTC: ${usdDateUTC.toISOString()}`);
+				console.log(`[${rate}] EUR UTC: ${eurDateUTC.toISOString()}`);
+				console.log(
+					`[${rate}] USD date match: ${redisDateUTC.getTime() === usdDateUTC.getTime()}`,
+				);
+				console.log(
+					`[${rate}] EUR date match: ${redisDateUTC.getTime() === eurDateUTC.getTime()}`,
+				);
+
+				if (
+					redisDateUTC.getTime() === usdDateUTC.getTime() &&
+					redisDateUTC.getTime() === eurDateUTC.getTime()
+				) {
+					console.log(
+						`Skipping ${rate} update as the data hasn't changed since last update.`,
+					);
+					return;
+				}
+			}
+
 			// Update both rates since they come from the same source
+			console.log("Updating bcv and eur with data:", { usdRate, eurRate });
 			await Promise.all([
 				updateRateInDb("bcv", usdRate),
 				updateRateInDb("eur", eurRate),
@@ -105,18 +219,37 @@ async function updateRate(rate: "paralelo" | "bcv" | "eur", force = false) {
 }
 
 async function updateRateInDb(rate: "paralelo" | "bcv" | "eur", data: Rate) {
+	console.log(`Updating ${rate} in db with data:`, data);
 	const monitorKey = `monitor:${rate}`;
 	const updateKey = `update:${rate}`;
 
 	await db.transaction(async (tx) => {
-		const [latestData] = await tx
+		let [latestData] = await tx
 			.select()
 			.from(monitorTable)
 			.where(eq(monitorTable.key, rate));
 
 		if (!latestData) {
-			console.warn(`No latest data found for ${rate}`);
-			return;
+			console.log(`No existing data found for ${rate}, creating new entry`);
+			await tx.insert(monitorTable).values({
+				key: rate,
+				price: data.price,
+				idPage: rate === "bcv" ? 1 : 2,
+				idCurrency: rate === "eur" ? 2 : 1,
+				title: rate,
+				priceOld: data.price,
+				change: 0,
+				symbol: "",
+				lastUpdate: data.last_update ? new Date(data.last_update) : new Date(),
+				color: "neutral",
+				percent: 0,
+			});
+			// Refetch the data after insert
+			[latestData] = await tx
+				.select()
+				.from(monitorTable)
+				.where(eq(monitorTable.key, rate));
+			if (!latestData) throw new Error("Failed to fetch newly inserted data");
 		}
 
 		const price = data.price;
@@ -174,7 +307,7 @@ async function updateRateInDb(rate: "paralelo" | "bcv" | "eur", data: Rate) {
 			const direction =
 				change > 0 ? "subió" : change < 0 ? "bajó" : "se mantuvo igual";
 			const notificationMessage = `La tasa ${rate} ${direction} a ${price.toFixed(2)}. Cambio: ${symbol} ${change} (${percent}%).`;
-			await sendNotificationToAllUsers(notificationMessage);
+			//await sendNotificationToAllUsers(notificationMessage);
 		}
 	});
 }

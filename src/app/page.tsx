@@ -12,7 +12,7 @@ import { Dolary } from "@/components/dolary";
 export default async function RootPage() {
 	const queryClient = new QueryClient();
 
-	void queryClient.prefetchQuery({
+	await queryClient.prefetchQuery({
 		queryKey: ["rates"],
 		queryFn: getDolarRates,
 	});

@@ -26,13 +26,10 @@ const TIME_FORMAT = "HH:mm";
 async function updateRate(rate: "paralelo" | "bcv" | "eur", force = false) {
 	console.log(`Updating ${rate}, force=${force}`);
 	const updateKey = `update:${rate}`;
-	const monitorKey = `monitor:${rate}`;
 
-	const [lastUpdateRedis, redisData] = await redis
-		.pipeline()
-		.get<Date>(updateKey)
-		.get<Monitor>(monitorKey)
-		.exec();
+	// For EUR rate, we should check BCV's update status since they share the same source
+	const checkKey = rate === "eur" ? "update:bcv" : updateKey;
+	const [lastUpdateRedis] = await redis.pipeline().get<Date>(checkKey).exec();
 
 	try {
 		if (!force && lastUpdateRedis) {
@@ -79,39 +76,28 @@ async function updateRate(rate: "paralelo" | "bcv" | "eur", force = false) {
 		}
 
 		let data: Rate | null = null;
-		let eurData: Rate | null = null;
 
 		if (rate === "paralelo") {
 			data = await getParalelo();
-		} else if (rate === "bcv") {
+			if (data?.last_update) {
+				await updateRateInDb(rate, data);
+			}
+		} else if (rate === "bcv" || rate === "eur") {
 			// BCV is the source of truth for both USD and EUR rates
 			const bcvData = await getBcv();
-			data = bcvData.find((r) => r.key === "usd") ?? null;
-			eurData = bcvData.find((r) => r.key === "eur") ?? null;
-		}
-		// We don't need to handle rate === "eur" separately since it's handled with BCV data
+			const usdRate = bcvData.find((r) => r.key === "usd") ?? null;
+			const eurRate = bcvData.find((r) => r.key === "eur") ?? null;
 
-		if (!data || !data.last_update) {
-			console.warn(`No data received for ${rate}.`);
-			return;
-		}
+			if (!usdRate?.last_update || !eurRate?.last_update) {
+				console.warn("Failed to get both USD and EUR rates from BCV");
+				return;
+			}
 
-		const dateMatch = redisData?.last_update
-			? new Date(data.last_update).toISOString() ===
-				new Date(redisData.last_update).toISOString()
-			: false;
-
-		if (dateMatch && !force) {
-			console.log("We don't have updated data for:", rate);
-			return;
-		}
-
-		// Update the requested rate
-		await updateRateInDb(rate, data);
-
-		// If we're updating BCV and have EUR data, update EUR as well
-		if (rate === "bcv" && eurData && eurData.last_update) {
-			await updateRateInDb("eur", eurData);
+			// Update both rates since they come from the same source
+			await Promise.all([
+				updateRateInDb("bcv", usdRate),
+				updateRateInDb("eur", eurRate),
+			]);
 		}
 	} catch (error) {
 		console.error(`Error updating ${rate}:`, error);
@@ -257,9 +243,8 @@ export async function POST(req: NextRequest) {
 			(!UPDATE_SCHEDULE.bcv.not.includes(day) &&
 				!VENEZUELAN_BANK_HOLIDAYS_2025.includes(todayDate))
 		) {
+			// BCV update will handle both USD and EUR rates
 			updates.push(runUpdateWithLock("bcv", forceUpdate));
-			// Also update Euro data when updating BCV data
-			updates.push(runUpdateWithLock("eur", forceUpdate));
 		} else {
 			if (VENEZUELAN_BANK_HOLIDAYS_2025.includes(todayDate)) {
 				console.log("Skipping bcv due to Venezuelan bank holiday.");

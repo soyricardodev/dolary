@@ -150,7 +150,7 @@ self.addEventListener("notificationclick", (event) => {
 });
 
 // Add error handling for precaching
-self.addEventListener("install", (event) => {
+self.addEventListener("install", () => {
 	// Skip waiting to activate the new service worker immediately
 	self.skipWaiting();
 });

@@ -2,7 +2,6 @@
 
 import { RefreshCwIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useCurrencyData } from "@/hooks/use-currency-data";
 import { Logo } from "./logo";
 import { PushNotificationManager } from "./notifications/push-notification-manager";
 import { revalidateRates } from "./actions";
@@ -10,11 +9,9 @@ import PwaInstallPrompt from "./pwa-install-prompt";
 import { ShareOnWhatsapp } from "./share-on-whatsapp";
 import { ThemeSwitcher } from "./theme-switcher";
 import { IOSInstallPrompt } from "./notifications/ios-install-prompt";
-import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 export function AppHeader() {
-	const queryClient = useQueryClient();
 	const [isUpdating, setIsUpdating] = useState(false);
 
 	async function getFreshData() {

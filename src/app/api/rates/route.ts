@@ -9,13 +9,19 @@ const redis = Redis.fromEnv();
 export async function GET() {
 	const bcvData = redis.get<Monitor>("monitor:bcv");
 	const paraleloData = redis.get<Monitor>("monitor:paralelo");
+	const euroData = redis.get<Monitor>("monitor:eur");
 
-	const [bcv, paralelo] = await Promise.all([bcvData, paraleloData]);
+	const [bcv, paralelo, euro] = await Promise.all([
+		bcvData,
+		paraleloData,
+		euroData,
+	]);
 
 	return NextResponse.json({
 		data: {
 			bcv,
 			paralelo,
+			eur: euro,
 		},
 	});
 }

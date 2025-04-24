@@ -45,6 +45,7 @@ export function CurrencyCalculator({
 
 	const bcv = data.data.bcv;
 	const paralelo = data.data.paralelo;
+	const eur = data.data.eur;
 
 	useEffect(() => {
 		if (isOpen && usdInputRef.current) {
@@ -69,6 +70,9 @@ export function CurrencyCalculator({
 		}
 		if (currency === "paralelo") {
 			return paralelo.price;
+		}
+		if (currency === "eur" && eur) {
+			return eur.price;
 		}
 
 		if (currency === "custom") {

@@ -1,7 +1,20 @@
 import { Providers } from "../components/providers";
 import type { Metadata, Viewport } from "next";
 import "./index.css";
-import { lazy, Suspense } from "react";
+import { lazy } from "react";
+
+import localFont from "next/font/local";
+
+// Font files can be colocated inside of `pages`
+const InterVariableFont = localFont({
+	src: "./InterVariable.woff2",
+	variable: "--font-sans",
+	style: "normal",
+	weight: "100 900",
+	display: "swap",
+	preload: true,
+	fallback: ["system-ui"],
+});
 
 const LazyAnalytics = lazy(() =>
 	import("@vercel/analytics/next").then((mod) => ({ default: mod.Analytics })),
@@ -84,7 +97,11 @@ export default function RootLayout({
 	children,
 }: { children: React.ReactNode }) {
 	return (
-		<html lang="es" suppressHydrationWarning>
+		<html
+			lang="es"
+			suppressHydrationWarning
+			className={InterVariableFont.variable}
+		>
 			<body className="bg-background text-foreground">
 				<LazyAnalytics />
 				<LazySpeedInsights />

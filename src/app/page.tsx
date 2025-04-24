@@ -23,9 +23,6 @@ export default async function RootPage() {
 				<AppHeader />
 
 				<div className="flex-grow flex flex-col gap-2 justify-evenly relative">
-					<h1 className="text-2xl font-extrabold text-center ">
-						¡Bienvenido a Dolary!
-					</h1>
 					<CurrencyProvider>
 						<Dolary />
 					</CurrencyProvider>

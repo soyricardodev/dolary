@@ -14,12 +14,58 @@ declare global {
 
 declare const self: ServiceWorkerGlobalScope;
 
+// Filter out any entries that might cause 404 errors
+const filterPrecacheEntries = (
+	entries: (PrecacheEntry | string)[] | undefined,
+) => {
+	if (!entries) return [];
+
+	// In development, we'll be more selective about what we precache
+	if (process.env.NODE_ENV === "development") {
+		// Only precache essential files in development
+		return entries.filter((entry) => {
+			// If it's a string, check if it's a static asset
+			if (typeof entry === "string") {
+				// Only precache static assets like images, icons, etc.
+				return /\.(png|jpg|jpeg|svg|gif|ico|webp)$/.test(entry);
+			}
+
+			// If it's a PrecacheEntry, check its URL
+			if (entry && typeof entry === "object" && "url" in entry) {
+				return /\.(png|jpg|jpeg|svg|gif|ico|webp)$/.test(entry.url as string);
+			}
+
+			return false;
+		});
+	}
+
+	// In production, we can be more aggressive with precaching
+	return entries;
+};
+
 const serwist = new Serwist({
-	precacheEntries: self.__SW_MANIFEST,
+	precacheEntries: filterPrecacheEntries(self.__SW_MANIFEST),
 	skipWaiting: true,
 	clientsClaim: true,
 	navigationPreload: true,
 	runtimeCaching: [
+		{
+			// API routes should use NetworkFirst with short cache times
+			matcher: ({ url }) => {
+				// Match API routes
+				return url.pathname.startsWith("/api/");
+			},
+			handler: new NetworkFirst({
+				cacheName: "api-cache",
+				plugins: [
+					new ExpirationPlugin({
+						maxEntries: 50,
+						maxAgeSeconds: 60, // 1 minute cache for API data
+					}),
+				],
+				networkTimeoutSeconds: 5,
+			}),
+		},
 		{
 			matcher: ({ url }) => url.origin === "https://dolary.vercel.app",
 			handler: new NetworkFirst({
@@ -52,6 +98,34 @@ const serwist = new Serwist({
 	],
 });
 
+// Add a listener for the 'message' event to handle cache clearing requests
+self.addEventListener("message", (event) => {
+	if (event.data && event.data.type === "CLEAR_CACHE") {
+		// Clear specific caches based on the request
+		if (event.data.cacheName) {
+			caches.delete(event.data.cacheName).then((success) => {
+				console.log(
+					`Cache ${event.data.cacheName} ${success ? "cleared" : "not found"}`,
+				);
+			});
+		} else {
+			// Clear all caches
+			caches
+				.keys()
+				.then((cacheNames) => {
+					return Promise.all(
+						cacheNames.map((cacheName) => {
+							return caches.delete(cacheName);
+						}),
+					);
+				})
+				.then(() => {
+					console.log("All caches cleared");
+				});
+		}
+	}
+});
+
 self.addEventListener("push", (event) => {
 	if (event.data) {
 		const data = event.data.json();
@@ -73,6 +147,12 @@ self.addEventListener("notificationclick", (event) => {
 	console.log("Notification click received");
 	event.notification.close();
 	event.waitUntil(self.clients.openWindow("https://dolary.vercel.app"));
+});
+
+// Add error handling for precaching
+self.addEventListener("install", (event) => {
+	// Skip waiting to activate the new service worker immediately
+	self.skipWaiting();
 });
 
 serwist.addEventListeners();

@@ -9,6 +9,8 @@ import {
 import { CurrencyProvider } from "@/context/currency-context";
 import { Dolary } from "@/components/dolary";
 
+export const dynamic = "force-dynamic";
+
 export default async function RootPage() {
 	const queryClient = new QueryClient();
 

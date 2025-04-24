@@ -51,7 +51,5 @@ export default withSerwist({
 		removeConsole:
 			process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
 	},
-	experimental: {
-		ppr: "incremental",
-	},
+	experimental: {},
 });

@@ -23,7 +23,7 @@ export function ResponsiveCalculator({
 	const bcv = data.data.bcv.price;
 	const paralelo = data.data.paralelo.price;
 	const promedio = (bcv + paralelo) / 2;
-	const eur = data.data.eur.price;
+	const eur = data.data.eur?.price ?? 0;
 	const customRate = custom?.price;
 
 	return (

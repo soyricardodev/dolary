@@ -193,31 +193,30 @@ export function SimpleCalculator({ rates }: SimpleCalculatorProps) {
 						</div>
 
 						{/* EUR Result */}
-						<div className="bg-secondary-background p-3 rounded-md border-2 border-black transition-colors">
-							<div className="flex justify-between items-center">
+						<div className="flex flex-col gap-1">
+							<div className="flex items-center justify-between">
 								<span className="text-sm font-medium text-foreground">EUR</span>
 								<div className="flex items-center gap-2">
-									<span className="text-lg font-bold text-foreground">
-										{calculateResult(rates.eur)}
+									<span className="text-sm font-medium text-foreground">
+										{rates.eur ? calculateResult(rates.eur) : "N/A"}
 									</span>
-									<Button
+									<button
+										type="button"
 										onClick={() =>
-											handleCopy(calculateResult(rates.eur), "eur")
+											rates.eur && handleCopy(calculateResult(rates.eur), "eur")
 										}
-										size="icon"
-										variant="noShadow"
-										className="size-8 p-0 [&_svg]:size-4"
+										className="text-muted-foreground hover:text-foreground"
 									>
 										{copiedRate === "eur" ? (
-											<CheckIcon className="size-4" />
+											<CheckIcon className="h-4 w-4" />
 										) : (
-											<CopyIcon className="size-4" />
+											<CopyIcon className="h-4 w-4" />
 										)}
-									</Button>
+									</button>
 								</div>
 							</div>
-							<div className="text-xs mt-1">
-								Tasa: {formatCurrency(rates.eur)} Bs
+							<div className="text-xs text-muted-foreground">
+								Tasa: {rates.eur ? formatCurrency(rates.eur) : "N/A"} Bs
 							</div>
 						</div>
 

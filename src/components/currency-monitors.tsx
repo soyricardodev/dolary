@@ -87,18 +87,20 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 					onClick={() => onCardClickAction("promedio")}
 				/>
 
-				<CurrencyCard
-					title="Euro BCV"
-					price={eur.price}
-					symbol={eur.symbol}
-					change={eur.change}
-					percent={eur.percent}
-					color={eur.color}
-					lastUpdate={formatVenezuelaDate(eur.last_update ?? new Date(), {
-						prefix: "Vigente hasta: ",
-					})}
-					onClick={() => onCardClickAction("eur")}
-				/>
+				{eur && (
+					<CurrencyCard
+						title="Euro BCV"
+						price={eur.price}
+						symbol={eur.symbol}
+						change={eur.change}
+						percent={eur.percent}
+						color={eur.color}
+						lastUpdate={formatVenezuelaDate(eur.last_update ?? new Date(), {
+							prefix: "Vigente hasta: ",
+						})}
+						onClick={() => onCardClickAction("eur")}
+					/>
+				)}
 
 				<CustomCurrencyCard onClickAction={() => onCardClickAction("custom")} />
 			</div>

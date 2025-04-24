@@ -23,6 +23,7 @@ export function ResponsiveCalculator({
 	const bcv = data.data.bcv.price;
 	const paralelo = data.data.paralelo.price;
 	const promedio = (bcv + paralelo) / 2;
+	const eur = data.data.eur.price;
 	const customRate = custom?.price;
 
 	return (
@@ -30,7 +31,7 @@ export function ResponsiveCalculator({
 			<DialogTitle className="my-4 text-center">Calculadora</DialogTitle>
 
 			<Calculator
-				rates={{ bcv, paralelo, promedio, custom: customRate }}
+				rates={{ bcv, paralelo, promedio, eur, custom: customRate }}
 				selectedCurrency={selectedCurrency}
 			/>
 		</ResponsiveDialog>

@@ -12,6 +12,7 @@ interface CalculatorProps {
 		bcv: number;
 		paralelo: number;
 		promedio: number;
+		eur: number;
 		custom?: number;
 	};
 	selectedCurrency: string;

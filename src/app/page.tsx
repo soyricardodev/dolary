@@ -19,7 +19,7 @@ export default async function RootPage() {
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<main className="min-h-screen p-3 flex flex-col gap-3 font-sans mx-auto">
+			<main className="min-h-screen p-3 flex flex-col gap-3 font-sans mx-auto max-w-lg">
 				<AppHeader />
 
 				<div className="flex-grow flex flex-col gap-2 justify-evenly relative">

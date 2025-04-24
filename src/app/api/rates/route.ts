@@ -4,6 +4,8 @@ import type { Monitor } from "../types";
 
 const redis = Redis.fromEnv();
 
+export const revalidate = 300;
+
 export async function GET() {
 	const bcvData = redis.get<Monitor>("monitor:bcv");
 	const paraleloData = redis.get<Monitor>("monitor:paralelo");

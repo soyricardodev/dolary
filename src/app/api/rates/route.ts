@@ -17,6 +17,8 @@ export async function GET() {
 		euroData,
 	]);
 
+	console.log(bcv, paralelo, euro);
+
 	return NextResponse.json({
 		data: {
 			bcv,

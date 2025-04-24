@@ -66,7 +66,6 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 					color={paralelo.color}
 					lastUpdate={formatVenezuelaDate(paralelo.last_update ?? new Date(), {
 						withTime: true,
-						prefix: "Actualizado: ",
 					})}
 					onClick={() => onCardClickAction("paralelo")}
 				/>

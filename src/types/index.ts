@@ -32,7 +32,7 @@ export interface RatesResponse {
 	data: {
 		bcv: Monitor;
 		paralelo: Monitor;
-		eur?: Monitor;
+		euro?: Monitor;
 	};
 }
 

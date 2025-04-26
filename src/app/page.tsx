@@ -1,6 +1,6 @@
 import { AppFooter } from "@/components/app-footer";
 import { AppHeader } from "@/components/app-header";
-import { getDolarRates } from "@/queries";
+import { prefetchRates } from "@/queries";
 import {
 	dehydrate,
 	HydrationBoundary,
@@ -12,9 +12,9 @@ import { Dolary } from "@/components/dolary";
 export default async function RootPage() {
 	const queryClient = new QueryClient();
 
-	void queryClient.prefetchQuery({
+	await queryClient.prefetchQuery({
 		queryKey: ["rates"],
-		queryFn: getDolarRates,
+		queryFn: prefetchRates,
 	});
 
 	return (

@@ -40,7 +40,7 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 	// Data is now sourced from context
 	const bcv = data.data.bcv;
 	const paralelo = data.data.paralelo;
-	const eur = data.data.eur;
+	const eur = data.data.euro;
 
 	return (
 		<div className="relative">
@@ -87,7 +87,7 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 					onClick={() => onCardClickAction("promedio")}
 				/>
 
-				{eur && (
+				{eur != null ? (
 					<CurrencyCard
 						title="Euro BCV"
 						price={eur.price}
@@ -100,8 +100,9 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 						})}
 						onClick={() => onCardClickAction("eur")}
 					/>
+				) : (
+					<div className="h-12" />
 				)}
-
 				<CustomCurrencyCard onClickAction={() => onCardClickAction("custom")} />
 			</div>
 		</div>

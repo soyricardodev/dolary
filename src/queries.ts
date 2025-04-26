@@ -1,3 +1,4 @@
+import { getRates } from "./features/rates/queries";
 import type { RatesResponse } from "./types";
 
 // export const getDolarRates = unstable_cache(
@@ -27,6 +28,7 @@ export const getDolarRates = async () => {
 	const response = await fetch(`${url}/api/rates`, {
 		next: {
 			tags: ["rates"],
+			revalidate: 60,
 		},
 	});
 
@@ -39,6 +41,13 @@ export const getDolarRates = async () => {
 	return data;
 };
 
+export const prefetchRates = async (): Promise<RatesResponse> => {
+	const { data } = await getRates();
+
+	console.log("prefetchRates", data);
+
+	return { data };
+};
 const url =
 	process.env.NODE_ENV === "production"
 		? "https://dolary.vercel.app"

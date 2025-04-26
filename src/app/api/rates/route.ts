@@ -1,29 +1,18 @@
 import { NextResponse } from "next/server";
-import { Redis } from "@upstash/redis";
-import type { Monitor } from "../types";
+import { getRates } from "@/features/rates/queries";
 
-const redis = Redis.fromEnv();
-
-export const revalidate = 300;
+export const revalidate = 60;
 
 export async function GET() {
-	const bcvData = redis.get<Monitor>("monitor:bcv");
-	const paraleloData = redis.get<Monitor>("monitor:paralelo");
-	const euroData = redis.get<Monitor>("monitor:eur");
+	const { data } = await getRates();
 
-	const [bcv, paralelo, euro] = await Promise.all([
-		bcvData,
-		paraleloData,
-		euroData,
-	]);
-
-	console.log({ bcv, paralelo, euro });
+	console.log({ data });
 
 	return NextResponse.json({
 		data: {
-			bcv,
-			paralelo,
-			eur: euro,
+			bcv: data.bcv,
+			paralelo: data.paralelo,
+			euro: data.euro,
 		},
 	});
 }

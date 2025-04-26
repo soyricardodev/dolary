@@ -50,9 +50,11 @@ export function CurrencyProvider({ children }: CurrencyProviderProps) {
 
 	useEffect(() => {
 		try {
-			const storedData = localStorage.getItem(CUSTOM_CURRENCY_STORAGE_KEY);
-			if (storedData) {
-				setCustomCurrency(JSON.parse(storedData));
+			const customCurrencyLocalStorage = localStorage.getItem(
+				CUSTOM_CURRENCY_STORAGE_KEY,
+			);
+			if (customCurrencyLocalStorage) {
+				setCustomCurrency(JSON.parse(customCurrencyLocalStorage));
 			}
 		} catch (e) {
 			console.error("Failed to load custom currency from localStorage:", e);

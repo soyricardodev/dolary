@@ -12,24 +12,24 @@ import { Dolary } from "@/components/dolary";
 export default async function RootPage() {
 	const queryClient = new QueryClient();
 
-	await queryClient.prefetchQuery({
+	void queryClient.prefetchQuery({
 		queryKey: ["rates"],
 		queryFn: getDolarRates,
 	});
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<main className="min-h-screen p-3 flex flex-col gap-3 font-sans mx-auto max-w-lg">
-				<AppHeader />
+			<CurrencyProvider>
+				<main className="min-h-screen p-3 flex flex-col gap-3 font-sans mx-auto max-w-lg">
+					<AppHeader />
 
-				<div className="flex-grow flex flex-col gap-2 justify-evenly relative">
-					<CurrencyProvider>
+					<div className="flex-grow flex flex-col gap-2 justify-evenly relative">
 						<Dolary />
-					</CurrencyProvider>
-				</div>
+					</div>
 
-				<AppFooter />
-			</main>
+					<AppFooter />
+				</main>
+			</CurrencyProvider>
 		</HydrationBoundary>
 	);
 }

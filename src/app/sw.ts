@@ -18,8 +18,7 @@ declare global {
 }
 
 // Use a specific version for the purge phase
-const SW_VERSION = "1.4-query-params-test";
-console.log("SW_VERSION", SW_VERSION);
+const SW_VERSION = "1.5-next-config-fix";
 
 declare const self: ServiceWorkerGlobalScope;
 

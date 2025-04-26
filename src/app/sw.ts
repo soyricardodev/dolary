@@ -1,6 +1,6 @@
 import { defaultCache } from "@serwist/next/worker";
 import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
-import { Serwist } from "serwist";
+import { Serwist, NetworkFirst, CacheFirst, ExpirationPlugin } from "serwist";
 
 // This declares the value of `injectionPoint` to TypeScript.
 // `injectionPoint` is the string that will be replaced by the
@@ -11,6 +11,8 @@ declare global {
 		__SW_MANIFEST: (PrecacheEntry | string)[] | undefined;
 	}
 }
+
+const SW_VERSION = 1.2;
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -48,8 +50,7 @@ const serwist = new Serwist({
 	skipWaiting: true,
 	clientsClaim: true,
 	navigationPreload: true,
-	runtimeCaching: defaultCache,
-	/*runtimeCaching: [
+	runtimeCaching: [
 		{
 			// API routes should use NetworkFirst with short cache times
 			matcher: ({ url }) => {
@@ -64,26 +65,28 @@ const serwist = new Serwist({
 						maxAgeSeconds: 60, // 1 minute cache for API data
 					}),
 				],
-				networkTimeoutSeconds: 5,
+				networkTimeoutSeconds: 5, // Consider adjusting timeout if needed
 			}),
 		},
 		{
+			// Keep caching strategy for your app's domain
 			matcher: ({ url }) => url.origin === "https://dolary.vercel.app",
 			handler: new NetworkFirst({
 				cacheName: "pages-cache",
 				plugins: [
 					new ExpirationPlugin({
 						maxEntries: 50,
-						maxAgeSeconds: 24 * 60 * 60, // 24 hours
+						maxAgeSeconds: 24 * 60 * 60, // 24 hours - Adjust if needed
 					}),
 				],
 				networkTimeoutSeconds: 10,
 			}),
 		},
 		{
+			// Keep CacheFirst for static assets
 			matcher: ({ request }) => {
 				const url = new URL(request.url);
-				return /\.(?:js|css|png|jpg|jpeg|svg|gif|ico)$/.test(url.pathname);
+				return /\.(?:css|png|jpg|jpeg|svg|gif|ico)$/.test(url.pathname);
 			},
 			handler: new CacheFirst({
 				cacheName: "static-resources",
@@ -95,8 +98,9 @@ const serwist = new Serwist({
 				],
 			}),
 		},
-		...defaultCache,
-	],*/
+		// Include defaultCache if you still want its behaviors for other requests
+		// ...defaultCache,
+	],
 });
 
 // Add a listener for the 'message' event to handle cache clearing requests

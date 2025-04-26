@@ -82,6 +82,8 @@ export async function sendNotificationToAllUsers(message: string) {
 			);
 		} catch (error) {
 			console.error(`Error sending notification to ${sub.endpoint}:`, error);
+		} finally {
+			unsubscribeNotification(sub.endpoint);
 		}
 	});
 

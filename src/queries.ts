@@ -25,7 +25,8 @@ import type { RatesResponse } from "./types";
 // );
 
 export const getDolarRates = async (): Promise<RatesResponse> => {
-	const response = await fetch(`${url}/api/rates`, {
+	const cacheBuster = Date.now();
+	const response = await fetch(`${url}/api/rates?v=${cacheBuster}&dpl=LATEST`, {
 		next: {
 			tags: ["rates"],
 			revalidate: 60,

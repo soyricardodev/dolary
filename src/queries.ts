@@ -24,7 +24,7 @@ import type { RatesResponse } from "./types";
 // 	{ revalidate: 900, tags: ["rates"] },
 // );
 
-export const getDolarRates = async () => {
+export const getDolarRates = async (): Promise<RatesResponse> => {
 	const response = await fetch(`${url}/api/rates`, {
 		next: {
 			tags: ["rates"],
@@ -42,11 +42,7 @@ export const getDolarRates = async () => {
 };
 
 export const prefetchRates = async (): Promise<RatesResponse> => {
-	const { data } = await getRates();
-
-	console.log("prefetchRates", data);
-
-	return { data };
+	return await getDolarRates();
 };
 const url =
 	process.env.NODE_ENV === "production"

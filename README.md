@@ -1,54 +1,31 @@
-# React + TypeScript + Vite
+# Dolary: Calculadora de Divisas para Venezuela
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Imagen de la App Dolary](./public/icon-384x384.png)
 
-Currently, two official plugins are available:
+Dolary es una calculadora de divisas moderna, rápida y completamente gratuita, diseñada pensando en la privacidad y la eficiencia del usuario.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Características Principales
 
-## Expanding the ESLint configuration
+*   **Gratuita y Sin Anuncios:** Usa la aplicación sin interrupciones ni costos ocultos. Creemos en ofrecer una herramienta útil sin monetización agresiva.
+*   **Calculadora Rápida:** Obtén conversiones de moneda al instante con una interfaz limpia y fácil de usar.
+*   **Soporte Offline (PWA):** Gracias a la tecnología Progressive Web App (PWA) y Serwist, puedes usar Dolary incluso sin conexión a internet una vez que la hayas cargado.
+*   **Analíticas Mínimas y Respetuosas:** Utilizamos Vercel Analytics únicamente para recopilar datos básicos y anónimos (navegador, país, tipo de dispositivo) para mejorar la aplicación. No rastreamos información personal.
+*   **Moderna y Eficiente:** Construida con las últimas tecnologías web, incluyendo Next.js 15, para garantizar velocidad y una experiencia de usuario fluida.
+*   **Código Abierto:** ¡Siéntete libre de explorar el código y contribuir!
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 ¿Por qué Dolary?
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+En un mundo lleno de aplicaciones con anuncios invasivos y rastreo excesivo, Dolary ofrece una alternativa limpia, rápida y respetuosa con tu privacidad para tus necesidades de conversión de divisas.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛠️ Tecnologías Utilizadas
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+*   [Next.js 15](https://nextjs.org/)
+*   [React](https://reactjs.org/)
+*   [TypeScript](https://www.typescriptlang.org/)
+*   [Tailwind CSS](https://tailwindcss.com/)
+*   [Serwist](https://serwist.pages.dev/) (Para PWA y soporte offline)
+*   [Vercel](https://vercel.com/) (Hosting y Analytics)
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+---
+
+*Hecho con ❤️ por Ricardo Castro*

@@ -57,9 +57,9 @@ export function CurrencyCard({
 					{change != null && (
 						<Badge className="w-fit h-fit px-1" variant={"neutral"}>
 							{isChangePositive ? (
-								<ArrowUpIcon className="size-3 mr-1" />
+								<ArrowUpIcon className="size-3" />
 							) : (
-								<ArrowDownIcon className="size-3 mr-1" />
+								<ArrowDownIcon className="size-3" />
 							)}
 
 							<span className="font-medium">

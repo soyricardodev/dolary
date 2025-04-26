@@ -1,4 +1,3 @@
-import { getRates } from "./features/rates/queries";
 import type { RatesResponse } from "./types";
 
 // export const getDolarRates = unstable_cache(

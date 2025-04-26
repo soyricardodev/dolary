@@ -7,7 +7,7 @@ export function AppFooter() {
 				<p className="flex gap-1">
 					Creado por{" "}
 					<a
-						href="https://github.com/soyricardodev"
+						href="https://github.com/soyricardodev/dolary"
 						target="_blank"
 						rel="noopener noreferrer"
 						aria-label="GitHub de Ricardo Castro"

@@ -1,6 +1,11 @@
-import { defaultCache } from "@serwist/next/worker";
 import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
-import { Serwist, NetworkFirst, CacheFirst, ExpirationPlugin } from "serwist";
+import {
+	Serwist,
+	NetworkFirst,
+	CacheFirst,
+	ExpirationPlugin,
+	NetworkOnly,
+} from "serwist";
 
 // This declares the value of `injectionPoint` to TypeScript.
 // `injectionPoint` is the string that will be replaced by the
@@ -12,7 +17,9 @@ declare global {
 	}
 }
 
-const SW_VERSION = 1.2;
+// Use a specific version for the purge phase
+const SW_VERSION = "1.3-purge";
+console.log("SW_VERSION", SW_VERSION);
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -57,8 +64,8 @@ const serwist = new Serwist({
 				// Match API routes
 				return url.pathname.startsWith("/api/");
 			},
-			handler: new NetworkFirst({
-				cacheName: "api-cache",
+			// Use NetworkOnly during the purge phase
+			handler: new NetworkOnly({
 				plugins: [
 					new ExpirationPlugin({
 						maxEntries: 50,
@@ -72,7 +79,8 @@ const serwist = new Serwist({
 			// Keep caching strategy for your app's domain
 			matcher: ({ url }) => url.origin === "https://dolary.vercel.app",
 			handler: new NetworkFirst({
-				cacheName: "pages-cache",
+				// Keep NetworkFirst for pages
+				cacheName: `pages-cache-v${SW_VERSION}`,
 				plugins: [
 					new ExpirationPlugin({
 						maxEntries: 50,
@@ -89,7 +97,8 @@ const serwist = new Serwist({
 				return /\.(?:css|png|jpg|jpeg|svg|gif|ico)$/.test(url.pathname);
 			},
 			handler: new CacheFirst({
-				cacheName: "static-resources",
+				// Keep CacheFirst for statics
+				cacheName: `static-resources-v${SW_VERSION}`,
 				plugins: [
 					new ExpirationPlugin({
 						maxEntries: 100,
@@ -172,10 +181,27 @@ self.addEventListener("notificationclick", (event) => {
 	event.waitUntil(self.clients.openWindow("https://dolary.vercel.app"));
 });
 
-// Add error handling for precaching
 self.addEventListener("install", () => {
+	console.log(`[SW ${SW_VERSION}] Install`);
 	// Skip waiting to activate the new service worker immediately
 	self.skipWaiting();
+});
+
+self.addEventListener("activate", (event) => {
+	console.log(`[SW ${SW_VERSION}] Activate`);
+	// Clear old caches that don't match the current version
+	event.waitUntil(
+		caches
+			.keys()
+			.then((cacheNames) => {
+				return Promise.all(
+					cacheNames
+						.filter((cacheName) => !cacheName.endsWith(`-v${SW_VERSION}`))
+						.map((cacheName) => caches.delete(cacheName)),
+				);
+			})
+			.then(() => self.clients.claim()), // Claim clients AFTER clearing old caches
+	);
 });
 
 serwist.addEventListeners();

@@ -307,7 +307,7 @@ async function updateRateInDb(rate: "paralelo" | "bcv" | "eur", data: Rate) {
 			const direction =
 				change > 0 ? "subió" : change < 0 ? "bajó" : "se mantuvo igual";
 			const notificationMessage = `La tasa ${rate} ${direction} a ${price.toFixed(2)}. Cambio: ${symbol} ${change} (${percent}%).`;
-			//await sendNotificationToAllUsers(notificationMessage);
+			await sendNotificationToAllUsers(notificationMessage);
 		}
 	});
 }

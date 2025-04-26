@@ -24,6 +24,11 @@ const LazySpeedInsights = lazy(() =>
 		default: mod.SpeedInsights,
 	})),
 );
+const LazyOfflineIndicator = lazy(() =>
+	import("../components/offline-indicator").then((mod) => ({
+		default: mod.OfflineIndicator,
+	})),
+);
 
 const APP_NAME = "Dolary";
 const APP_DEFAULT_TITLE =
@@ -105,7 +110,10 @@ export default function RootLayout({
 			<body className="bg-background text-foreground">
 				<LazyAnalytics />
 				<LazySpeedInsights />
-				<Providers>{children}</Providers>
+				<Providers>
+					{children}
+					<LazyOfflineIndicator />
+				</Providers>
 			</body>
 		</html>
 	);

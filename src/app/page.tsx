@@ -9,10 +9,10 @@ import {
 import { CurrencyProvider } from "@/context/currency-context";
 import { Dolary } from "@/components/dolary";
 
-export default async function RootPage() {
+export default function RootPage() {
 	const queryClient = new QueryClient();
 
-	await queryClient.prefetchQuery({
+	queryClient.prefetchQuery({
 		queryKey: ["rates"],
 		queryFn: prefetchRates,
 	});

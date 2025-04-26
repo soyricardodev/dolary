@@ -1,6 +1,10 @@
 "use client";
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+	useQuery,
+	useQueryClient,
+	useSuspenseQuery,
+} from "@tanstack/react-query";
 import { useEffect } from "react";
 import { shouldRefetch } from "@/lib/utils";
 import type { RatesResponse } from "@/types";
@@ -37,7 +41,7 @@ const getFromCache = (): {
 };
 
 export function useCurrencyData() {
-	return useQuery({
+	return useSuspenseQuery({
 		queryKey: ["rates"],
 		queryFn: () => getDolarRates(),
 		staleTime: 60 * 1000, // 1 minute

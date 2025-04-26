@@ -54,4 +54,13 @@ export default withSerwist({
 	experimental: {
 		ppr: "incremental",
 	},
+	generateBuildId() {
+		const timestamp = Date.now();
+		const random = Math.random().toString(36).substring(2, 15);
+		const buildId = `${timestamp}-${random}`;
+
+		process.env.NEXT_PUBLIC_BUILD_ID = buildId;
+
+		return buildId;
+	},
 });

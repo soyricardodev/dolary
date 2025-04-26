@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
 
 function useSkewProtectionBusted() {
@@ -24,13 +24,7 @@ function useSkewProtectionBusted() {
 
 		const handleOffline = () => {
 			setIsOnline(false);
-			// Notify user they're offline
-			toast.error("Sin conexión", {
-				description: "No hay conexión a internet",
-				position: "bottom-center",
-				duration: Number.POSITIVE_INFINITY, // Keep showing until back online
-				dismissible: true,
-			});
+			// Don't show toast when going offline
 		};
 
 		window.addEventListener("online", handleOnline);
@@ -79,12 +73,43 @@ function useSkewProtectionBusted() {
 
 export function SkewProtectionBuster() {
 	const isBusted = useSkewProtectionBusted();
+	const [isOnline, setIsOnline] = useState(true);
+	const toastIdRef = useRef<string | number | null>(null);
 
-	console.log(isBusted);
+	// Track online status
+	useEffect(() => {
+		setIsOnline(navigator.onLine);
+
+		const handleOnline = () => setIsOnline(true);
+		const handleOffline = () => {
+			setIsOnline(false);
+			console.log("is offline");
+			// Dismiss any active skew protection toast when going offline
+			if (toastIdRef.current) {
+				toast.dismiss(toastIdRef.current);
+				toastIdRef.current = null;
+			}
+		};
+
+		window.addEventListener("online", handleOnline);
+		window.addEventListener("offline", handleOffline);
+
+		return () => {
+			window.removeEventListener("online", handleOnline);
+			window.removeEventListener("offline", handleOffline);
+		};
+	}, []);
 
 	useEffect(() => {
-		if (isBusted) {
-			toast("La app está desactualizada", {
+		// Only show toast if we're online and the app is busted
+		if (isOnline && isBusted) {
+			// Dismiss any existing toast first
+			if (toastIdRef.current) {
+				toast.dismiss(toastIdRef.current);
+			}
+
+			// Show new toast and store its ID
+			toastIdRef.current = toast("La app está desactualizada", {
 				description: "Por favor refresca para tener la última versión",
 				action: {
 					label: "Refrescar ahora",
@@ -94,8 +119,12 @@ export function SkewProtectionBuster() {
 				dismissible: false,
 				duration: Number.POSITIVE_INFINITY,
 			});
+		} else if (!isOnline && toastIdRef.current) {
+			// Dismiss toast when going offline
+			toast.dismiss(toastIdRef.current);
+			toastIdRef.current = null;
 		}
-	}, [isBusted]);
+	}, [isBusted, isOnline]);
 
 	return (
 		<span className="sr-only">

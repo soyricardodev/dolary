@@ -8,6 +8,7 @@ import {
 	QueryClient,
 	QueryClientProvider,
 } from "@tanstack/react-query";
+import { Toaster } from "./ui/sonner";
 
 function makeQueryClient() {
 	return new QueryClient({
@@ -64,6 +65,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 				enableSystem
 				disableTransitionOnChange
 			>
+				<Toaster />
 				{children}
 			</ThemeProvider>
 			<ReactQueryDevtools initialIsOpen={false} />

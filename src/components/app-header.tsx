@@ -10,12 +10,15 @@ import { ShareOnWhatsapp } from "./share-on-whatsapp";
 import { ThemeSwitcher } from "./theme-switcher";
 import { IOSInstallPrompt } from "./notifications/ios-install-prompt";
 import { useState } from "react";
+import { useCurrencyData } from "@/hooks/use-currency-data";
 
 export function AppHeader() {
 	const [isUpdating, setIsUpdating] = useState(false);
+	const { refetch } = useCurrencyData();
 
 	async function getFreshData() {
 		try {
+			refetch();
 			// Set updating state to show animation
 			setIsUpdating(true);
 

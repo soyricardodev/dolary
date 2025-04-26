@@ -48,7 +48,8 @@ const serwist = new Serwist({
 	skipWaiting: true,
 	clientsClaim: true,
 	navigationPreload: true,
-	runtimeCaching: [
+	runtimeCaching: defaultCache,
+	/*runtimeCaching: [
 		{
 			// API routes should use NetworkFirst with short cache times
 			matcher: ({ url }) => {
@@ -95,7 +96,7 @@ const serwist = new Serwist({
 			}),
 		},
 		...defaultCache,
-	],
+	],*/
 });
 
 // Add a listener for the 'message' event to handle cache clearing requests
@@ -131,15 +132,33 @@ self.addEventListener("push", (event) => {
 		const data = event.data.json();
 		const options = {
 			body: data.body,
-			icon: data.icon || "/icon-72x72.png",
-			badge: "/icon-48x48.png",
-			vibrate: [100, 50, 100],
+			icon: data.icon || "/icon-192x192.png", // Larger default icon
+			badge: "/badge.png", // Use app icon as badge
+			vibrate: [200, 100, 200], // Stronger vibration pattern
+			tag: data.tag || "default", // Group similar notifications
+			renotify: true, // Vibrate on new notifications even if tag matches
+			actions: [
+				{
+					action: "open",
+					title: "Abrir",
+				},
+				{
+					action: "close",
+					title: "Cerrar",
+				},
+			],
 			data: {
-				dateOfArrival: Date.now(),
-				primaryKey: "2",
+				timestamp: Date.now(),
+				url: data.url || "https://dolary.vercel.app",
 			},
 		};
-		event.waitUntil(self.registration.showNotification(data.title, options));
+
+		event.waitUntil(
+			self.registration.showNotification(data.title, {
+				...options,
+				silent: data.silent || false, // Allow control over sound
+			}),
+		);
 	}
 });
 

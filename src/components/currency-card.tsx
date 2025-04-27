@@ -8,8 +8,10 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn, formatCurrency } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
+import { useCalculatorContext } from "@/context/calculator-context";
 
 export interface CurrencyCardProps {
+	key: string;
 	title: string;
 	price: number;
 	symbol?: string;
@@ -17,26 +19,27 @@ export interface CurrencyCardProps {
 	percent?: number;
 	color?: string;
 	lastUpdate?: string;
-	onClick?: () => void;
 	className?: string;
 	subtitle?: React.ReactNode;
 	headerActions?: React.ReactNode;
 }
 
 export function CurrencyCard({
+	key,
 	title,
 	price,
 	symbol,
 	change,
 	percent,
 	lastUpdate,
-	onClick,
 	className = "",
 	color,
 	subtitle,
 	headerActions,
 }: CurrencyCardProps) {
 	const [copied, setCopied] = useState(false);
+
+	const { openCalculator } = useCalculatorContext();
 
 	const handleCopy = (e: React.MouseEvent) => {
 		e.stopPropagation();
@@ -51,7 +54,10 @@ export function CurrencyCard({
 		<Card className={cn("relative", className)}>
 			<CardHeader className="pt-2 pb-0 flex flex-row w-full justify-between space-y-0">
 				<div className="flex gap-2 space-y-0">
-					<h2 className="text-lg lg:text-xl font-bold" onMouseDown={onClick}>
+					<h2
+						className="text-lg lg:text-xl font-bold"
+						onMouseDown={() => openCalculator(key)}
+					>
 						{title}
 					</h2>
 					{change != null && (
@@ -107,7 +113,7 @@ export function CurrencyCard({
 					variant="neutral"
 					type="button"
 					className="h-8 px-2"
-					onClick={onClick}
+					onClick={() => openCalculator(key)}
 				>
 					Calcular
 				</Button>

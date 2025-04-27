@@ -8,11 +8,7 @@ import { useCurrencyContext } from "@/context/currency-context";
 import { CustomCurrencyCard } from "./custom-currency-card";
 import { formatVenezuelaDate } from "@/lib/utils";
 
-interface CurrencyMonitorsProps {
-	onCardClickAction: (currency: string) => void;
-}
-
-export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
+export function CurrencyMonitors() {
 	const { data, promedio, isLoading, error } = useCurrencyContext();
 
 	if (isLoading && !data) {
@@ -47,6 +43,7 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 			<div className="grid grid-cols-1 gap-3">
 				<CurrencyCard
 					title="Dólar BCV"
+					key="bcv"
 					price={bcv.price}
 					symbol={bcv.symbol}
 					change={bcv.change}
@@ -55,10 +52,10 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 					lastUpdate={formatVenezuelaDate(bcv.last_update ?? new Date(), {
 						prefix: "Vigente hasta: ",
 					})}
-					onClick={() => onCardClickAction("bcv")}
 				/>
 
 				<CurrencyCard
+					key="paralelo"
 					title="Dólar Paralelo"
 					price={paralelo.price}
 					symbol={paralelo.symbol}
@@ -68,10 +65,10 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 					lastUpdate={formatVenezuelaDate(paralelo.last_update ?? new Date(), {
 						withTime: true,
 					})}
-					onClick={() => onCardClickAction("paralelo")}
 				/>
 
 				<CurrencyCard
+					key="promedio"
 					title="Dólar Promedio"
 					price={promedio.price}
 					symbol={promedio.symbol}
@@ -84,11 +81,11 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 							Promedio entre BCV y Paralelo
 						</span>
 					}
-					onClick={() => onCardClickAction("promedio")}
 				/>
 
 				{eur != null ? (
 					<CurrencyCard
+						key="eur"
 						title="Euro BCV"
 						price={eur.price}
 						symbol={eur.symbol}
@@ -98,12 +95,11 @@ export function CurrencyMonitors({ onCardClickAction }: CurrencyMonitorsProps) {
 						lastUpdate={formatVenezuelaDate(eur.last_update ?? new Date(), {
 							prefix: "Vigente hasta: ",
 						})}
-						onClick={() => onCardClickAction("eur")}
 					/>
 				) : (
 					<div className="h-12" />
 				)}
-				<CustomCurrencyCard onClickAction={() => onCardClickAction("custom")} />
+				<CustomCurrencyCard key="custom" />
 			</div>
 		</div>
 	);

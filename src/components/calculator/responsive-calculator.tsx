@@ -4,21 +4,14 @@ import { ResponsiveDialog } from "@/components/responsive-dialog";
 import { DialogTitle } from "@/components/ui/dialog";
 import { Calculator } from "./calculator";
 import { useCurrencyContext } from "@/context/currency-context";
+import { useCalculatorContext } from "@/context/calculator-context";
 
-interface ResponsiveCalculatorProps {
-	isOpen: boolean;
-	onCloseAction: () => void;
-	selectedCurrency: string;
-}
-
-export function ResponsiveCalculator({
-	isOpen,
-	onCloseAction,
-	selectedCurrency,
-}: ResponsiveCalculatorProps) {
+export function ResponsiveCalculator() {
 	const { data, custom } = useCurrencyContext();
+	const { calculatorVisible, closeCalculator, selectedCurrency } =
+		useCalculatorContext();
 
-	if (!data) return;
+	if (!data) return null;
 
 	const bcv = data.data.bcv.price;
 	const paralelo = data.data.paralelo.price;
@@ -26,8 +19,10 @@ export function ResponsiveCalculator({
 	const eur = data.data.euro?.price ?? 0;
 	const customRate = custom?.price;
 
+	if (!selectedCurrency) return null;
+
 	return (
-		<ResponsiveDialog open={isOpen} onOpenChange={onCloseAction}>
+		<ResponsiveDialog open={calculatorVisible} onOpenChange={closeCalculator}>
 			<DialogTitle className="my-4 text-center hidden">Calculadora</DialogTitle>
 
 			<Calculator

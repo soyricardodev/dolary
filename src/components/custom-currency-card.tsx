@@ -6,9 +6,7 @@ import { ModifyCustomPromedio } from "./modify-custom-promedio";
 import { useCurrencyContext } from "@/context/currency-context";
 import { CurrencyCard } from "./currency-card";
 
-export function CustomCurrencyCard({
-	onClickAction,
-}: { onClickAction: () => void }) {
+export function CustomCurrencyCard({ key }: { key: string }) {
 	const { custom } = useCurrencyContext();
 
 	if (!custom) return <AddCustomPromedio />;
@@ -19,7 +17,7 @@ export function CustomCurrencyCard({
 		<CurrencyCard
 			title={custom.name || "Personalizado"}
 			price={custom.price}
-			onClick={onClickAction}
+			key={key}
 			subtitle={"Tasa personalizada"}
 			headerActions={configAction}
 		/>

@@ -9,6 +9,7 @@ import {
 	QueryClientProvider,
 } from "@tanstack/react-query";
 import { Toaster } from "./ui/sonner";
+import { CalculatorProvider } from "@/context/calculator-context";
 
 function makeQueryClient() {
 	return new QueryClient({
@@ -65,8 +66,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
 				enableSystem
 				disableTransitionOnChange
 			>
-				<Toaster />
-				{children}
+				<CalculatorProvider>
+					<Toaster />
+					{children}
+				</CalculatorProvider>
 			</ThemeProvider>
 			<ReactQueryDevtools initialIsOpen={false} />
 		</QueryClientProvider>

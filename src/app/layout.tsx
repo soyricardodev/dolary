@@ -108,11 +108,15 @@ export default function RootLayout({
 			className={InterVariableFont.variable}
 		>
 			<body className="bg-background text-foreground">
-				<LazyAnalytics />
-				<LazySpeedInsights />
 				<Providers>
 					{children}
-					<LazyOfflineIndicator />
+					{process.env.NODE_ENV === "production" && (
+						<>
+							<LazyAnalytics />
+							<LazySpeedInsights />
+							<LazyOfflineIndicator />
+						</>
+					)}
 				</Providers>
 			</body>
 		</html>

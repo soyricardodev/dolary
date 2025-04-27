@@ -28,7 +28,10 @@ interface QueryWithMeta {
 	isFetching: boolean;
 	status: string;
 	meta?: OfflineMeta;
-	[key: string]: unknown; // Allow other properties from the original query
+	refetch: () => Promise<unknown>;
+	error: Error | null;
+	isError: boolean;
+	isSuccess: boolean;
 }
 
 export function useCurrencyData() {
@@ -114,6 +117,10 @@ export function useCurrencyData() {
 					(Date.now() - storedData.timestamp) / 1000 / 60,
 				), // minutes
 			},
+			refetch: () => Promise.resolve(),
+			error: null,
+			isError: false,
+			isSuccess: true,
 		};
 
 		return offlineQuery;

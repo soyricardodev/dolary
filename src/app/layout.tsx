@@ -30,6 +30,12 @@ const LazyOfflineIndicator = lazy(() =>
 	})),
 );
 
+const LazySkewProtectionBuster = lazy(() =>
+	import("../components/skew-protection-buster").then((mod) => ({
+		default: mod.SkewProtectionBuster,
+	})),
+);
+
 const APP_NAME = "Dolary";
 const APP_DEFAULT_TITLE =
 	"Dolary: Calculadora de tasas del Dólar para Venezuela";
@@ -115,6 +121,7 @@ export default function RootLayout({
 							<LazyAnalytics />
 							<LazySpeedInsights />
 							<LazyOfflineIndicator />
+							<LazySkewProtectionBuster />
 						</>
 					)}
 				</Providers>

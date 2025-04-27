@@ -32,7 +32,7 @@ export interface CurrencyContextType {
 	custom: CustomCurrencyData | null;
 	updateCustomCurrency: (data: CustomCurrencyData | null) => void;
 	isLoading: boolean;
-	error: Error | null;
+	error: unknown;
 }
 
 const CurrencyContext = createContext<CurrencyContextType | undefined>(

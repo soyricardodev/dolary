@@ -43,7 +43,7 @@ export function CurrencyMonitors() {
 			<div className="grid grid-cols-1 gap-3">
 				<CurrencyCard
 					title="Dólar BCV"
-					key="bcv"
+					currencyKey="bcv"
 					price={bcv.price}
 					symbol={bcv.symbol}
 					change={bcv.change}
@@ -55,7 +55,7 @@ export function CurrencyMonitors() {
 				/>
 
 				<CurrencyCard
-					key="paralelo"
+					currencyKey="paralelo"
 					title="Dólar Paralelo"
 					price={paralelo.price}
 					symbol={paralelo.symbol}
@@ -68,7 +68,7 @@ export function CurrencyMonitors() {
 				/>
 
 				<CurrencyCard
-					key="promedio"
+					currencyKey="promedio"
 					title="Dólar Promedio"
 					price={promedio.price}
 					symbol={promedio.symbol}
@@ -85,7 +85,7 @@ export function CurrencyMonitors() {
 
 				{eur != null ? (
 					<CurrencyCard
-						key="eur"
+						currencyKey="eur"
 						title="Euro BCV"
 						price={eur.price}
 						symbol={eur.symbol}

@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { useCalculatorContext } from "@/context/calculator-context";
 
 export interface CurrencyCardProps {
-	key: string;
+	currencyKey: string;
 	title: string;
 	price: number;
 	symbol?: string;
@@ -25,7 +25,7 @@ export interface CurrencyCardProps {
 }
 
 export function CurrencyCard({
-	key,
+	currencyKey,
 	title,
 	price,
 	symbol,
@@ -56,7 +56,7 @@ export function CurrencyCard({
 				<div className="flex gap-2 space-y-0">
 					<h2
 						className="text-lg lg:text-xl font-bold"
-						onMouseDown={() => openCalculator(key)}
+						onMouseDown={() => openCalculator(currencyKey)}
 					>
 						{title}
 					</h2>
@@ -113,7 +113,7 @@ export function CurrencyCard({
 					variant="neutral"
 					type="button"
 					className="h-8 px-2"
-					onClick={() => openCalculator(key)}
+					onClick={() => openCalculator(currencyKey)}
 				>
 					Calcular
 				</Button>

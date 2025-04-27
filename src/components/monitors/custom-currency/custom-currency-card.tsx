@@ -15,7 +15,7 @@ export function CustomCurrencyCard() {
 
 	return (
 		<CurrencyCard
-			key="custom"
+			currencyKey="custom"
 			title={custom.name || "Personal"}
 			price={custom.price}
 			subtitle={"Tasa personalizada"}

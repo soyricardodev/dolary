@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-query";
 import { CurrencyProvider } from "@/context/currency-context";
 import { CurrencyMonitors } from "@/components/monitors";
-import { ResponsiveCalculator } from "@/components/calculator/responsive-calculator";
+import { Calculator } from "@/components/calculator/calculator";
 
 export default function RootPage() {
 	const queryClient = new QueryClient();
@@ -21,7 +21,7 @@ export default function RootPage() {
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
 			<CurrencyProvider>
-				<ResponsiveCalculator />
+				<Calculator />
 				<main className="min-h-screen p-3 flex flex-col gap-3 font-sans mx-auto max-w-lg">
 					<AppHeader />
 

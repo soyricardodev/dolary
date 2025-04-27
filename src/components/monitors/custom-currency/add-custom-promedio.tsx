@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { ResponsiveDialog } from "./responsive-dialog";
-import { Button } from "./ui/button";
-import { DialogTitle } from "./ui/dialog";
+import { ResponsiveDialog } from "@/components/responsive-dialog";
+import { Button } from "@/components/ui/button";
+import { DialogTitle } from "@/components/ui/dialog";
 
 import { CustomPromedioForm } from "./custom-promedio-form";
 

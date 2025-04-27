@@ -4,9 +4,9 @@ import type React from "react";
 import { AddCustomPromedio } from "./add-custom-promedio";
 import { ModifyCustomPromedio } from "./modify-custom-promedio";
 import { useCurrencyContext } from "@/context/currency-context";
-import { CurrencyCard } from "./currency-card";
+import { CurrencyCard } from "../currency-card";
 
-export function CustomCurrencyCard({ key }: { key: string }) {
+export function CustomCurrencyCard() {
 	const { custom } = useCurrencyContext();
 
 	if (!custom) return <AddCustomPromedio />;
@@ -15,9 +15,9 @@ export function CustomCurrencyCard({ key }: { key: string }) {
 
 	return (
 		<CurrencyCard
-			title={custom.name || "Personalizado"}
+			key="custom"
+			title={custom.name || "Personal"}
 			price={custom.price}
-			key={key}
 			subtitle={"Tasa personalizada"}
 			headerActions={configAction}
 		/>

@@ -7,7 +7,7 @@ import {
 	QueryClient,
 } from "@tanstack/react-query";
 import { CurrencyProvider } from "@/context/currency-context";
-import { CurrencyMonitors } from "@/components/currency-monitors";
+import { CurrencyMonitors } from "@/components/monitors";
 import { ResponsiveCalculator } from "@/components/calculator/responsive-calculator";
 
 export default function RootPage() {

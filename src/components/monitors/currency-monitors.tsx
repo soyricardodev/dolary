@@ -3,9 +3,9 @@
 import { Loader2Icon } from "lucide-react";
 import { InfoIcon } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { CurrencyCard } from "@/components/currency-card";
+import { CurrencyCard } from "@/components/monitors/currency-card";
 import { useCurrencyContext } from "@/context/currency-context";
-import { CustomCurrencyCard } from "./custom-currency-card";
+import { CustomCurrencyCard } from "@/components/monitors/custom-currency/custom-currency-card";
 import { formatVenezuelaDate } from "@/lib/utils";
 
 export function CurrencyMonitors() {
@@ -96,10 +96,8 @@ export function CurrencyMonitors() {
 							prefix: "Vigente hasta: ",
 						})}
 					/>
-				) : (
-					<div className="h-12" />
-				)}
-				<CustomCurrencyCard key="custom" />
+				) : null}
+				<CustomCurrencyCard />
 			</div>
 		</div>
 	);

@@ -16,14 +16,14 @@ interface SimpleCalculatorProps {
 }
 
 export function SimpleCalculator({ rates }: SimpleCalculatorProps) {
-	const [input, setInput] = useState("1");
+	const [input, setInput] = useState("");
 	const [conversionMode, setConversionMode] = useState<
 		"dollarToBs" | "bsToDollar"
 	>("dollarToBs");
 	const [copiedRate, setCopiedRate] = useState<string | null>(null);
 
 	const calculateResult = (rate: number): string => {
-		const amount = Number.parseFloat(input) || 0;
+		const amount = input === "" ? 1 : Number.parseFloat(input) || 0;
 		return formatCurrency(
 			conversionMode === "dollarToBs" ? amount * rate : amount / rate,
 		);
@@ -142,7 +142,7 @@ export function SimpleCalculator({ rates }: SimpleCalculatorProps) {
 							formatCurrency={formatCurrency}
 						/>
 
-						{rates.custom != null && (
+						{rates.custom != null && rates.custom !== 0 ? (
 							<RateCard
 								rate={rates.custom}
 								label="Personal"
@@ -152,7 +152,7 @@ export function SimpleCalculator({ rates }: SimpleCalculatorProps) {
 								calculateResult={calculateResult}
 								formatCurrency={formatCurrency}
 							/>
-						)}
+						) : null}
 					</div>
 				</div>
 			</div>

@@ -18,9 +18,9 @@ export function AppHeader() {
 
 	async function getFreshData() {
 		try {
+			setIsUpdating(true);
 			refetch();
 			// Set updating state to show animation
-			setIsUpdating(true);
 
 			// Just use revalidateRates for now
 			await revalidateRates();

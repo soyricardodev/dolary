@@ -1,23 +1,18 @@
 "use client";
 
-import { Loader2Icon } from "lucide-react";
 import { InfoIcon } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { CurrencyCard } from "@/components/monitors/currency-card";
 import { useCurrencyContext } from "@/context/currency-context";
 import { CustomCurrencyCard } from "@/components/monitors/custom-currency/custom-currency-card";
 import { formatVenezuelaDate } from "@/lib/utils";
+import { CurrencySkeleton } from "@/components/monitors/currency-skeleton";
 
 export function CurrencyMonitors() {
 	const { data, promedio, isLoading, error } = useCurrencyContext();
 
 	if (isLoading && !data) {
-		return (
-			<div className="flex justify-center items-center h-32">
-				<Loader2Icon className="h-6 w-6 animate-spin text-primary" />
-				<span className="ml-2 text-gray-600 text-sm">Cargando datos...</span>
-			</div>
-		);
+		return <CurrencySkeleton />;
 	}
 
 	if (error) {

@@ -10,7 +10,6 @@ export async function GET() {
 		{
 			data: {
 				bcv: data.bcv,
-				paralelo: data.paralelo,
 				euro: data.euro,
 			},
 		},

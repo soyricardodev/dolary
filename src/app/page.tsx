@@ -9,8 +9,11 @@ import {
 import { CurrencyProvider } from "@/context/currency-context";
 import { CurrencyMonitors } from "@/components/monitors";
 import { Calculator } from "@/components/calculator/calculator";
+import { redirect } from "next/navigation";
 
 export default function RootPage() {
+	redirect("https://www.bcv.org.ve");
+
 	const queryClient = new QueryClient();
 
 	queryClient.prefetchQuery({

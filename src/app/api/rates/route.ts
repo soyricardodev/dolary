@@ -11,6 +11,7 @@ export async function GET() {
 			data: {
 				bcv: data.bcv,
 				euro: data.euro,
+				paralelo: data.paralelo
 			},
 		},
 		{
